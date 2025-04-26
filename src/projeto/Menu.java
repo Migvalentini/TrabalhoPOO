@@ -28,7 +28,7 @@ public class Menu {
 			System.out.println(" 3 - Remover passageiro");
 			System.out.println(" 4 - Consultar lista de passageiros");
 			System.out.println(" 5 - Consultar carga do carro");
-			System.out.println(" 7 - Teste");
+			System.out.println(" 7 - Teste2");
 			System.out.println(" 0 - sair ");
 			opcao = sc.nextInt();
 			sc.nextLine();
