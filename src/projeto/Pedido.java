@@ -3,13 +3,15 @@ package projeto;
 import java.sql.Date;
 
 public class Pedido {
+	private static int ultimoCodigo = 0;
+	private int codigo;
 	private int numero;
 	private Date dataPedido;
 	private Date dataEntrega;
 	private String situacao;
 	
 	public Pedido(int numero, Date dataPedido, Date dataEntrega, String situacao) {
-		super();
+		this.codigo = ultimoCodigo++;
 		this.numero = numero;
 		this.dataPedido = dataPedido;
 		this.dataEntrega = dataEntrega;
@@ -47,4 +49,12 @@ public class Pedido {
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
+
+	@Override
+	public String toString() {
+		return "Pedido:\nCódigo=" + codigo + " Número=" + numero + " DataPedido=" + dataPedido + " DataEntrega="
+				+ dataEntrega + " Situação=" + situacao;
+	}
+	
+	
 }

@@ -24,4 +24,11 @@ public class Estoque {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
+
+	@Override
+	public String toString() {
+		return "Quantidade=" + quantidade + " Preço=" + preco;
+	}
+	
+	
 }

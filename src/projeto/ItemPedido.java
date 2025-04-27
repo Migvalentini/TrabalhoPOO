@@ -1,11 +1,13 @@
 package projeto;
 
 public class ItemPedido {
+	private static int ultimoCodigo = 0;
+	private int codigo;
 	private int quantidade;
 	private double preco;
 	
 	public ItemPedido(int quantidade, double preco) {
-		super();
+		this.codigo = ultimoCodigo++;
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
@@ -24,6 +26,11 @@ public class ItemPedido {
 
 	public void setPreco(double preco) {
 		this.preco = preco;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemPedido:\nCódigo=" + codigo + " Quantidade=" + quantidade + " Preço=" + preco;
 	}
 	
 	

@@ -1,6 +1,10 @@
 package projeto;
 
+import java.util.Arrays;
+
 public class Cliente {
+	private static int ultimoCodigo = 0;
+	private int codigo;
 	private String nome;
 	private String telefone;
 	private String email;
@@ -9,6 +13,7 @@ public class Cliente {
 	private Pedido pedidos[];
 	
 	public Cliente(String nome, String telefone, String email, String cartaoCredito, Endereco endereco, Pedido pedidos[]) {
+		this.codigo = ultimoCodigo++;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
@@ -64,4 +69,13 @@ public class Cliente {
 	public void setPedidos(Pedido[] pedidos) {
 		this.pedidos = pedidos;
 	}
+
+	@Override
+	public String toString() {
+		return "Cliente:\nCódigo=" + codigo + " Nome=" + nome + " Telefone=" + telefone + " Email=" + email
+				+ " CartãoCrédito=" + cartaoCredito + " Endereco=" + endereco + " Pedidos="
+				+ Arrays.toString(pedidos);
+	}
+	
+	
 }
