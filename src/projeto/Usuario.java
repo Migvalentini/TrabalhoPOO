@@ -3,8 +3,8 @@ package projeto;
 public class Usuario {
 	private String usuario;
     private String senha;
-    private TipoUsuario tipo; // "ADMIN" ou "CLIENTE"
-    private Cliente cliente; // se for cliente, associa o objeto Cliente aqui
+    private TipoUsuario tipo;
+    private Cliente cliente;
 
     public Usuario(String usuario, String senha, TipoUsuario tipo, Cliente cliente) {
         this.usuario = usuario;

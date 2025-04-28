@@ -1,6 +1,5 @@
 package projeto;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Fornecedor {
@@ -78,6 +77,18 @@ public class Fornecedor {
 	public void setProdutos(Produto produtos[]) {
 		this.produtos = produtos;
 	}
+	
+    public void adicionarProduto(Produto produto) {
+        if (this.produtos == null) {
+            this.produtos = new Produto[100];
+        }
+        for (int i = 0; i < produtos.length; i++) {
+            if (produtos[i] == null) {
+                produtos[i] = produto;
+                break;
+            }
+        }
+    }
 
 	public static Fornecedor criarFornecedor(Scanner sc) {
         System.out.println("Nome do fornecedor:");
@@ -95,9 +106,38 @@ public class Fornecedor {
 	
 	@Override
 	public String toString() {
-		return "Fornecedor:\nCódigo=" + codigo + " Nome=" + nome + " Descrição=" + descricao + " Telefone=" + telefone
-				+ " Email=" + email + " Endereço=" + endereco + " Produtos=" + Arrays.toString(produtos);
+	    StringBuilder produtosStr = new StringBuilder();
+	    
+	    if (produtos != null) {
+	        for (Produto p : produtos) {
+	            if (p != null) {
+	                produtosStr.append("\n    - ").append(p.toString());
+	            }
+	        }
+	    } else {
+	        produtosStr.append("\n    Nenhum produto cadastrado.");
+	    }
+
+	    StringBuilder enderecoStr = new StringBuilder();
+	    if (endereco != null) {
+	        enderecoStr.append("\n    Rua: ").append(endereco.getRua());
+	        enderecoStr.append("\n    Número: ").append(endereco.getNumero());
+	        enderecoStr.append("\n    Complemento: ").append(endereco.getComplemento());
+	        enderecoStr.append("\n    Bairro: ").append(endereco.getBairro());
+	        enderecoStr.append("\n    CEP: ").append(endereco.getCep());
+	        enderecoStr.append("\n    Cidade: ").append(endereco.getCidade());
+	        enderecoStr.append("\n    Estado: ").append(endereco.getEstado());
+	    } else {
+	        enderecoStr.append("\n    Não informado");
+	    }
+	    
+	    return "\nFornecedor:"
+	         + "\n  Código: " + codigo
+	         + "\n  Nome: " + nome
+	         + "\n  Descrição: " + descricao
+	         + "\n  Telefone: " + telefone
+	         + "\n  Email: " + email
+	         + "\n  Endereço:" + enderecoStr
+	         + "\n  Produtos:" + produtosStr;
 	}
-	
-	
 }

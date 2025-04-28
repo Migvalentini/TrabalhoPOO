@@ -27,8 +27,12 @@ public class Estoque {
 
 	@Override
 	public String toString() {
-		return "Quantidade=" + quantidade + " Preço=" + preco;
+	    StringBuilder sb = new StringBuilder();
+	    
+	    sb.append("Estoque:");
+	    sb.append("\n    Quantidade: ").append(quantidade);
+	    sb.append("\n    Preço: R$ ").append(String.format("%.2f", preco));
+	    
+	    return sb.toString();
 	}
-	
-	
 }

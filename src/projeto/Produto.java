@@ -49,7 +49,7 @@ public class Produto {
 	}
 	
 	public static Produto criarProduto(Scanner sc) {
-        System.out.println("Nome do fornecedor:");
+        System.out.println("Nome do produto:");
         String nome = sc.nextLine();
         System.out.println("Descrição:");
         String descricao = sc.nextLine();
@@ -59,8 +59,19 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return "Produto:\nCódigo=" + codigo + " Nome=" + nome + " Descricao=" + descricao + " Estoque=" + estoque;
+	    StringBuilder sb = new StringBuilder();
+	    
+	    sb.append("\nProduto:");
+	    sb.append("\n  Código: ").append(codigo);
+	    sb.append("\n  Nome: ").append(nome);
+	    sb.append("\n  Descrição: ").append(descricao);
+	    
+	    if (estoque != null) {
+	        sb.append("\n  Estoque: ").append(estoque.toString());
+	    } else {
+	        sb.append("\n  Estoque: Não informado");
+	    }
+	    
+	    return sb.toString();
 	}
-	
-	
 }
