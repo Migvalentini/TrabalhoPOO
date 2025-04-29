@@ -1,23 +1,68 @@
 package projeto;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
 	static int totalUsuarios = 100;
 	static int totalFornecedores = 100;
 	static int totalProdutos = 100;
+	static int totalEstoques = 100;
 	static Usuario[] usuarios = new Usuario[totalUsuarios];
 	static Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
-	static Produto[] produtos = new Produto[100];
+	static Produto[] produtos = new Produto[totalProdutos];
+	static Estoque[] estoques = new Estoque[totalEstoques];
 
 	public static void main(String[] args) {
+		try {
+			File myObj = new File("database.txt");
+			if (myObj.createNewFile()) {
+				System.out.println("File created: " + myObj.getName());
+			} else {
+				System.out.println("Arquivo já criado.\n");
+			}
+	    } catch (IOException e) {
+	    	System.out.println("An error occurred.");
+	    	e.printStackTrace();
+	    }
+
+		try {
+			FileWriter myWriter = new FileWriter("database.txt");
+			Endereco e = new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado");
+			Fornecedor f = new Fornecedor("nome", "descrição", "telefone", "email", e, null);
+			
+		    myWriter.write(f.toStringTxt()+"\n");
+
+			myWriter.close();
+		    System.out.println("Arquivo escrito com sucesso.");
+	    } catch (IOException e) {
+	    	System.out.println("Erro na escrita do arquivo.");
+	    	e.printStackTrace();
+	    }
+		
+		try {
+			File myObj = new File("database.txt");
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				fornecedores[posicaoVaziaFornecedores(fornecedores)] = Fornecedor.fromString(data);
+			}
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Erro ao ler arquivo.");
+			e.printStackTrace();
+		}
+		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
 
-		System.out.println("SEJA MUITO BEM-VINDO(A) AO MELHOR SISTEMA DE COMPRAS QUE VOCÊ JÁ USOU!");
+		System.out.println("SEJA MUITO BEM-VINDO(A) AO SISTEMA DE COMPRAS DESENVOLVIDO PELOS ALUNOS MIGUEL VALENTINI, HENRY PECATTI TIBOLA E VINICIUS BAREA PARA A DISCPLINA DE POO!");
 		
 		while (continuar) {
-			System.out.println("\n" + linha() + "\nMenu Principal\n" + linha());
+			System.out.println("\n" + linha() + "\n         Menu Principal\n" + linha());
 			System.out.println("1 - Cadastrar usuário");
 			System.out.println("2 - Excluir usuário");
 			System.out.println("3 - Realizar login");
@@ -66,7 +111,7 @@ public class Menu {
     	System.out.println("\nLogin como ADMINISTRADOR realizado com sucesso!");
     	
     	while (continuar) {
-    		System.out.println("\n" + linha() + "\nMenu de Administrador\n" + linha());
+    		System.out.println("\n" + linha() + "\n     Menu de Administrador\n" + linha());
     		System.out.println("-- Fornecedores --");
     		System.out.println(" 1 - Cadastrar fornecedor");
     		System.out.println(" 2 - Editar fornecedor");
@@ -80,6 +125,7 @@ public class Menu {
     		System.out.println(" 9 - Consultar produto por código/nome");
     		System.out.println("10 - Consultar todos produtos");
     		System.out.println("11 - Vincular produto a um fornecedor");
+    		System.out.println("12 - Editar estoque de produto");
     		System.out.println("\n99 - Facilitar testes");
     		System.out.println(" 0 - Voltar ao menu principal");
     		System.out.print("Opção: ");
@@ -146,12 +192,14 @@ public class Menu {
     		case "11":
     			vincularProdutoAFornecedor(sc);
     			break;
+    		case "12":
+    			editarEstoqueProduto(sc);
+    			break;
     		case "99":
     			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null);
     			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null);
-    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome", "descrição", null);
-    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome2", "descrição2", null);
-    			
+    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome", "descrição", new Estoque(0, 0));
+    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome2", "descrição2", new Estoque(0, 0));
     			break;
     		case "0":
     			continuar = false;
@@ -281,7 +329,8 @@ public class Menu {
     
     private static void cadastrarProduto(Scanner sc) {
         System.out.println("\n--- Cadastro de Produto ---");
-        Produto novoProduto = Produto.criarProduto(sc);
+        Estoque novoEstoque = Estoque.criarEstoque(sc);
+        Produto novoProduto = Produto.criarProduto(novoEstoque, sc);
         produtos[posicaoVaziaProdutos(produtos)] = novoProduto;
         System.out.println("Produto cadastrado com sucesso!");
     }
@@ -298,6 +347,35 @@ public class Menu {
     	System.out.println("Digite a nova descrição do produto: ");
     	String descricao = sc.nextLine();
     	p.setDescricao(descricao);
+    	
+    	System.out.print("\nDeseja alterar o estoque? (s/n): ");
+        String alterarEstoque = sc.nextLine();
+        if (alterarEstoque.equalsIgnoreCase("s")) {
+            System.out.print("Digite a nova quantidade: ");
+            int quantidade = sc.nextInt();
+            p.getEstoque().setQuantidade(quantidade);
+            System.out.print("Digite o novo preço: ");
+            double preco = sc.nextDouble();
+            p.getEstoque().setPreco(preco);
+            sc.nextLine();
+        }
+    	
+    	return true;
+    }
+
+    private static boolean editarEstoqueProduto(Scanner sc) {
+    	Produto p = consultarProduto(sc);
+    	if(p==null) {   
+    		return false;
+    	}
+    	
+        System.out.print("Digite a quantidade: ");
+        int quantidade = sc.nextInt();
+        p.getEstoque().setQuantidade(quantidade);
+        System.out.print("Digite o preço: ");
+        double preco = sc.nextDouble();
+        p.getEstoque().setPreco(preco);
+        sc.nextLine();
     	
     	return true;
     }
@@ -425,23 +503,7 @@ public class Menu {
         	System.out.print("Cartão de Crédito: ");
         	String cartaoCredito = sc.nextLine();
         	
-        	System.out.println("\n-- Cadastro de Endereço --");
-        	System.out.print("Rua: ");
-        	String rua = sc.nextLine();
-        	System.out.print("Número: ");
-        	String numero = sc.nextLine();
-        	System.out.print("Complemento: ");
-        	String complemento = sc.nextLine();
-        	System.out.print("Bairro: ");
-        	String bairro = sc.nextLine();
-        	System.out.print("CEP: ");
-        	String cep = sc.nextLine();
-        	System.out.print("Cidade: ");
-        	String cidade = sc.nextLine();
-        	System.out.print("Estado: ");
-        	String estado = sc.nextLine();
-        	
-        	Endereco endereco = new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
+        	Endereco endereco = Endereco.criarEndereco(sc);
         	Cliente cliente = new Cliente(nome, telefone, email, cartaoCredito, endereco, null);
         	
         	usuarios[posicaoVaziaUsuarios(usuarios)] = new Usuario(login, senha, TipoUsuario.CLIENTE, cliente);
@@ -513,6 +575,6 @@ public class Menu {
     ////USUÁRIOS
     
     private static String linha() {
-    	return "-------------------------------";
+    	return "--------------------------------";
     }
 }

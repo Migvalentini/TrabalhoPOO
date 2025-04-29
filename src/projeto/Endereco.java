@@ -78,22 +78,27 @@ public class Endereco {
 	}
 	
 	public static Endereco criarEndereco(Scanner sc) {
-        System.out.println("Rua:");
-        String rua = sc.nextLine();
-        System.out.println("Número:");
-        String numero = sc.nextLine();
-        System.out.println("Complemento:");
-        String complemento = sc.nextLine();
-        System.out.println("Bairro:");
-        String bairro = sc.nextLine();
-        System.out.println("CEP:");
-        String cep = sc.nextLine();
-        System.out.println("Cidade:");
-        String cidade = sc.nextLine();
-        System.out.println("Estado:");
-        String estado = sc.nextLine();
-        
-        return new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
+		try {			
+			System.out.println("Rua:");
+			String rua = sc.nextLine();
+			System.out.println("Número:");
+			String numero = sc.nextLine();
+			System.out.println("Complemento:");
+			String complemento = sc.nextLine();
+			System.out.println("Bairro:");
+			String bairro = sc.nextLine();
+			System.out.println("CEP:");
+			String cep = sc.nextLine();
+			System.out.println("Cidade:");
+			String cidade = sc.nextLine();
+			System.out.println("Estado:");
+			String estado = sc.nextLine();
+			
+			return new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar endereço: " + ex);
+			return null;
+		}
     }
 
 	@Override
@@ -108,5 +113,13 @@ public class Endereco {
 	           "\n  Estado: " + estado +
 	           "\n}";
 	}
+	
+	public String toStringTxt() {
+        return rua + "," + numero + "," + complemento + "," + bairro + "," + cep + "," + cidade + "," + estado;
+    }
 
+	public static Endereco fromString(String texto) {
+        String[] partes = texto.split(",");
+        return new Endereco(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5], partes[6]);
+    }
 }

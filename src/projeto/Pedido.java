@@ -5,17 +5,28 @@ import java.sql.Date;
 public class Pedido {
 	private static int ultimoCodigo = 0;
 	private int codigo;
+	private int idCliente;
 	private int numero;
 	private Date dataPedido;
 	private Date dataEntrega;
 	private String situacao;
 	
-	public Pedido(int numero, Date dataPedido, Date dataEntrega, String situacao) {
+	public Pedido(int idCliente, int numero, Date dataPedido, Date dataEntrega, String situacao) {
 		this.codigo = ultimoCodigo++;
+		this.idCliente = idCliente;
 		this.numero = numero;
 		this.dataPedido = dataPedido;
 		this.dataEntrega = dataEntrega;
 		this.situacao = situacao;
+	}
+
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}
 
 	public int getNumero() {

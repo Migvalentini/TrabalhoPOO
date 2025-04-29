@@ -1,5 +1,7 @@
 package projeto;
 
+import java.util.Scanner;
+
 public class Estoque {
 	private int quantidade;
 	private double preco;
@@ -24,6 +26,23 @@ public class Estoque {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
+	
+	public static Estoque criarEstoque(Scanner sc) {
+		try {
+			System.out.println("Quantidade:");
+			int quantidade = sc.nextInt();
+			System.out.println("Preço:");
+			double preco = sc.nextDouble();
+			sc.nextLine();
+
+			return new Estoque(quantidade, preco);
+		} catch (Exception ex) {
+			System.out.println("Erro ao cadastrar estoque: " + ex);
+			sc.nextLine();
+			return null;
+		}
+        
+    }
 
 	@Override
 	public String toString() {

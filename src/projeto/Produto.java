@@ -48,13 +48,18 @@ public class Produto {
 		this.estoque = estoque;
 	}
 	
-	public static Produto criarProduto(Scanner sc) {
-        System.out.println("Nome do produto:");
-        String nome = sc.nextLine();
-        System.out.println("Descrição:");
-        String descricao = sc.nextLine();
-        
-        return new Produto(nome, descricao, null);
+	public static Produto criarProduto(Estoque estoque, Scanner sc) {
+		try {			
+			System.out.println("Nome do produto:");
+			String nome = sc.nextLine();
+			System.out.println("Descrição:");
+			String descricao = sc.nextLine();
+			
+			return new Produto(nome, descricao, estoque);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar produto: " + ex);
+			return null;
+		}
     }
 
 	@Override

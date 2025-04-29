@@ -91,17 +91,22 @@ public class Fornecedor {
     }
 
 	public static Fornecedor criarFornecedor(Scanner sc) {
-        System.out.println("Nome do fornecedor:");
-        String nome = sc.nextLine();
-        System.out.println("Descrição:");
-        String descricao = sc.nextLine();
-        System.out.println("Telefone:");
-        String telefone = sc.nextLine();
-        System.out.println("Email:");
-        String email = sc.nextLine();
-        Endereco endereco = Endereco.criarEndereco(sc);
-        
-        return new Fornecedor(nome, descricao, telefone, email, endereco, null);
+		try {
+			System.out.println("Nome do fornecedor:");
+			String nome = sc.nextLine();
+			System.out.println("Descrição:");
+			String descricao = sc.nextLine();
+			System.out.println("Telefone:");
+			String telefone = sc.nextLine();
+			System.out.println("Email:");
+			String email = sc.nextLine();
+			Endereco endereco = Endereco.criarEndereco(sc);
+			
+			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar fornecedor: " + ex);
+			return null;
+		}
     }
 	
 	@Override
@@ -140,4 +145,14 @@ public class Fornecedor {
 	         + "\n  Endereço:" + enderecoStr
 	         + "\n  Produtos:" + produtosStr;
 	}
+	
+	public String toStringTxt() {
+        return nome + ";" + descricao + ";" + telefone + ";" + email + ";" + endereco.toStringTxt();
+    }
+
+    public static Fornecedor fromString(String texto) {
+        String[] partes = texto.split(";");
+        Endereco endereco = Endereco.fromString(partes[4]);
+        return new Fornecedor(partes[0], partes[1], partes[2], partes[3], endereco, null);
+    }
 }
