@@ -519,7 +519,7 @@ public class Menu {
         String senha = sc.nextLine();
 
         Usuario usuario = buscarUsuario(login, senha);
-        
+
         if (usuario != null) {
             if (usuario.getTipo().equals(TipoUsuario.ADMIN)) {
                 menuAdministrador(usuario, sc);
@@ -533,7 +533,7 @@ public class Menu {
     
     private static Usuario buscarUsuario(String login, String senha) {
         for (int i = 0; i < totalUsuarios; i++) {
-            if (usuarios[i].getUsuario().equals(login) && usuarios[i].getSenha().equals(senha)) {
+            if (usuarios[i] != null && usuarios[i].getUsuario().equals(login) && usuarios[i].getSenha().equals(senha)) {
                 return usuarios[i];
             }
         }
