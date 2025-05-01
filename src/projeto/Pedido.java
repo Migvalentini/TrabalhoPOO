@@ -9,9 +9,9 @@ public class Pedido {
 	private int numero;
 	private Date dataPedido;
 	private Date dataEntrega;
-	private String situacao;
+	private TipoPedido situacao;
 	
-	public Pedido(int idCliente, int numero, Date dataPedido, Date dataEntrega, String situacao) {
+	public Pedido(int idCliente, int numero, Date dataPedido, Date dataEntrega, TipoPedido situacao) {
 		this.codigo = ultimoCodigo++;
 		this.idCliente = idCliente;
 		this.numero = numero;
@@ -53,11 +53,11 @@ public class Pedido {
 		this.dataEntrega = dataEntrega;
 	}
 
-	public String getSituacao() {
+	public TipoPedido getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(String situacao) {
+	public void setSituacao(TipoPedido situacao) {
 		this.situacao = situacao;
 	}
 

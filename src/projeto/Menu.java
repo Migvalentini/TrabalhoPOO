@@ -17,44 +17,8 @@ public class Menu {
 	static Estoque[] estoques = new Estoque[totalEstoques];
 
 	public static void main(String[] args) {
-		try {
-			File myObj = new File("database.txt");
-			if (myObj.createNewFile()) {
-				System.out.println("File created: " + myObj.getName());
-			} else {
-				System.out.println("Arquivo já criado.\n");
-			}
-	    } catch (IOException e) {
-	    	System.out.println("An error occurred.");
-	    	e.printStackTrace();
-	    }
-
-		try {
-			FileWriter myWriter = new FileWriter("database.txt");
-			Endereco e = new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado");
-			Fornecedor f = new Fornecedor("nome", "descrição", "telefone", "email", e, null);
-			
-		    myWriter.write(f.toStringTxt()+"\n");
-
-			myWriter.close();
-		    System.out.println("Arquivo escrito com sucesso.");
-	    } catch (IOException e) {
-	    	System.out.println("Erro na escrita do arquivo.");
-	    	e.printStackTrace();
-	    }
-		
-		try {
-			File myObj = new File("database.txt");
-			Scanner myReader = new Scanner(myObj);
-			while (myReader.hasNextLine()) {
-				String data = myReader.nextLine();
-				fornecedores[posicaoVaziaFornecedores(fornecedores)] = Fornecedor.fromString(data);
-			}
-			myReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("Erro ao ler arquivo.");
-			e.printStackTrace();
-		}
+		abrirArquivo();
+		leArquivo();
 		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
@@ -75,7 +39,12 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				cadastrarUsuario(sc);
+				if(cadastrarUsuario(sc)) {
+					System.out.println("\nUsuário cadastrado com sucesso!");
+				} else {
+					System.out.println("\nErro no cadastro do usuário!");
+				}
+				
 				break;
 			case "2":
 				if(excluirUsuario(sc)) {					
@@ -97,6 +66,7 @@ public class Menu {
 			case "0":
 				continuar = false;
 				System.out.println("\nEncerrando sistema...");
+				escreveNoArquivo(fornecedores);
 				break;
 			default:
 				System.out.println("\nOpção inválida!");
@@ -134,7 +104,11 @@ public class Menu {
     		
     		switch (resposta) {
     		case "1":
-    			cadastrarFornecedor(sc);
+    			if(cadastrarFornecedor(sc)) {
+    				System.out.println("\nFornecedor cadastrado com sucesso!");
+    			} else {
+    				System.out.println("\nErro no cadastro do fornecedor");
+    			}
     			break;
     		case "2":
     			if(editarFornecedor(sc)) {
@@ -162,7 +136,12 @@ public class Menu {
     			mostrarFornecedores();
     			break;
     		case "6":
-    			cadastrarProduto(sc);
+    			if(cadastrarProduto(sc)) {
+    				System.out.println("\nProduto cadastrado com sucesso!");
+    			}
+    			else {
+    				System.out.println("Erro no cadastro de produto");
+    			}
     			break;
     		case "7":
     			if(editarProduto(sc)) {
@@ -190,17 +169,27 @@ public class Menu {
     			mostrarProdutos();
     			break;
     		case "11":
-    			vincularProdutoAFornecedor(sc);
+    			if(vincularProdutoAFornecedor(sc)) {
+    				System.out.println("\nProduto vinculado ao fornecedor com sucesso!");
+    			} else {
+    				System.out.println("\nErro ao vincular produto ao fornecedor");
+    			}
     			break;
     		case "12":
-    			editarEstoqueProduto(sc);
+    			if(editarEstoqueProduto(sc)) {
+    				System.out.println("Estoque editado com sucesso");
+    			} else {
+    				System.out.println("Erro ao editar o estoque do produto");
+    			}
     			break;
     		case "99":
-    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null);
-    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null);
-    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome", "descrição", new Estoque(0, 0));
-    			produtos[posicaoVaziaProdutos(produtos)] = new Produto("nome2", "descrição2", new Estoque(0, 0));
-    			break;
+    			Produto p1 = new Produto("nome", "descrição", new Estoque(0, 0));
+    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
+    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
+    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new Produto[] {p1});
+    			produtos[posicaoVaziaProdutos(produtos)] = p1;
+    			produtos[posicaoVaziaProdutos(produtos)] = p2;
+    			break;  
     		case "0":
     			continuar = false;
     			System.out.println("\nSaindo do acesso de adminstrador...");
@@ -221,11 +210,15 @@ public class Menu {
     
     //FORNECEDORES
     
-    private static void cadastrarFornecedor(Scanner sc) {
-        System.out.println("\n--- Cadastro de Fornecedor ---");
-        Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
-        fornecedores[posicaoVaziaFornecedores(fornecedores)] = novoFornecedor;
-        System.out.println("\nFornecedor cadastrado com sucesso!");
+    private static boolean cadastrarFornecedor(Scanner sc) {
+    	try {    		
+    		System.out.println("\n--- Cadastro de Fornecedor ---");
+    		Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
+    		fornecedores[posicaoVaziaFornecedores(fornecedores)] = novoFornecedor;
+    		return true;
+    	} catch (Exception e) {
+    		return false;
+    	}
     }
     
     private static boolean editarFornecedor(Scanner sc) {
@@ -277,31 +270,40 @@ public class Menu {
     }
     
     private static boolean excluirFornecedor(Scanner sc) {
-    	System.out.print("Digite o código do fornecedor a ser excluído: ");
-		int codigo = sc.nextInt();
-		sc.nextLine();
-		
-    	for(int i=0; i<fornecedores.length; i++) {
-    		if(fornecedores[i] != null && fornecedores[i].getCodigo()==codigo) {
-    			fornecedores[i] = null;
-    			return true;
+    	try {    		
+    		System.out.print("Digite o código do fornecedor a ser excluído: ");
+    		int codigo = sc.nextInt();
+    		sc.nextLine();
+    		
+    		for(int i=0; i<fornecedores.length; i++) {
+    			if(fornecedores[i] != null && fornecedores[i].getCodigo()==codigo) {
+    				fornecedores[i] = null;
+    				return true;
+    			}
     		}
+    	} catch (Exception e) {
+    		return false;
     	}
     	return false;
     }
     
     private static Fornecedor consultarFornecedor(Scanner sc) {
-    	System.out.println("Digite o código do fornecedor a ser pesquisado: ");
-		int codigo = sc.nextInt();
-		sc.nextLine();
-		System.out.println("Digite o nome do fornecedor a ser pesquisado: ");
-		String nome = sc.nextLine();
-		
-    	for(int i=0; i<fornecedores.length; i++) {
-    		if(fornecedores[i]!=null && (fornecedores[i].getCodigo()==codigo || fornecedores[i].getNome().equals(nome))) {
-    			return fornecedores[i];
+    	try {    		
+    		System.out.println("Digite o código do fornecedor a ser pesquisado: ");
+    		int codigo = sc.nextInt();
+    		sc.nextLine();
+    		System.out.println("Digite o nome do fornecedor a ser pesquisado: ");
+    		String nome = sc.nextLine();
+    		
+    		for(int i=0; i<fornecedores.length; i++) {
+    			if(fornecedores[i]!=null && (fornecedores[i].getCodigo()==codigo || fornecedores[i].getNome().equals(nome))) {
+    				return fornecedores[i];
+    			}
     		}
+    	} catch (Exception e) {
+    		return null;
     	}
+    	
     	return null;
     }
     
@@ -310,6 +312,7 @@ public class Menu {
     	for (int i = 0; i < totalFornecedores; i++) {
     		if(fornecedores[i] != null) {    			
     			System.out.println(fornecedores[i].toString());
+    			System.out.println(linha());
     		}
     	}
     }
@@ -327,85 +330,104 @@ public class Menu {
     
     //PRODUTOS
     
-    private static void cadastrarProduto(Scanner sc) {
-        System.out.println("\n--- Cadastro de Produto ---");
-        Estoque novoEstoque = Estoque.criarEstoque(sc);
-        Produto novoProduto = Produto.criarProduto(novoEstoque, sc);
-        produtos[posicaoVaziaProdutos(produtos)] = novoProduto;
-        System.out.println("Produto cadastrado com sucesso!");
+    private static boolean cadastrarProduto(Scanner sc) {
+    	try {    		
+    		System.out.println("\n--- Cadastro de Produto ---");
+    		Estoque novoEstoque = Estoque.criarEstoque(sc);
+    		Produto novoProduto = Produto.criarProduto(novoEstoque, sc);
+    		produtos[posicaoVaziaProdutos(produtos)] = novoProduto;
+    		
+    		return true;
+    	} catch (Exception e) {
+    		return false;
+    	}
     }
     
     private static boolean editarProduto(Scanner sc) {
-    	Produto p = consultarProduto(sc);
-    	if(p==null) {   
+    	try {    		
+    		Produto p = consultarProduto(sc);
+    		if(p==null) {   
+    			return false;
+    		}
+    		System.out.println(p.toString());
+    		System.out.println("Digite o novo nome do produto: ");
+    		String nome = sc.nextLine();
+    		p.setNome(nome);
+    		System.out.println("Digite a nova descrição do produto: ");
+    		String descricao = sc.nextLine();
+    		p.setDescricao(descricao);
+    		
+    		System.out.print("\nDeseja alterar o estoque? (s/n): ");
+    		String alterarEstoque = sc.nextLine();
+    		if (alterarEstoque.equalsIgnoreCase("s")) {
+    			System.out.print("Digite a nova quantidade: ");
+    			int quantidade = sc.nextInt();
+    			p.getEstoque().setQuantidade(quantidade);
+    			System.out.print("Digite o novo preço: ");
+    			double preco = sc.nextDouble();
+    			p.getEstoque().setPreco(preco);
+    			sc.nextLine();
+    		}
+    	} catch (Exception e) {
     		return false;
     	}
-    	System.out.println(p.toString());
-    	System.out.println("Digite o novo nome do produto: ");
-    	String nome = sc.nextLine();
-    	p.setNome(nome);
-    	System.out.println("Digite a nova descrição do produto: ");
-    	String descricao = sc.nextLine();
-    	p.setDescricao(descricao);
-    	
-    	System.out.print("\nDeseja alterar o estoque? (s/n): ");
-        String alterarEstoque = sc.nextLine();
-        if (alterarEstoque.equalsIgnoreCase("s")) {
-            System.out.print("Digite a nova quantidade: ");
-            int quantidade = sc.nextInt();
-            p.getEstoque().setQuantidade(quantidade);
-            System.out.print("Digite o novo preço: ");
-            double preco = sc.nextDouble();
-            p.getEstoque().setPreco(preco);
-            sc.nextLine();
-        }
     	
     	return true;
     }
 
     private static boolean editarEstoqueProduto(Scanner sc) {
-    	Produto p = consultarProduto(sc);
-    	if(p==null) {   
+    	try {    		
+    		Produto p = consultarProduto(sc);
+    		if(p==null) {   
+    			return false;
+    		}
+    		
+    		System.out.print("Digite a quantidade: ");
+    		int quantidade = sc.nextInt();
+    		p.getEstoque().setQuantidade(quantidade);
+    		System.out.print("Digite o preço: ");
+    		double preco = sc.nextDouble();
+    		p.getEstoque().setPreco(preco);
+    		sc.nextLine();
+    	} catch (Exception e) {
     		return false;
     	}
-    	
-        System.out.print("Digite a quantidade: ");
-        int quantidade = sc.nextInt();
-        p.getEstoque().setQuantidade(quantidade);
-        System.out.print("Digite o preço: ");
-        double preco = sc.nextDouble();
-        p.getEstoque().setPreco(preco);
-        sc.nextLine();
     	
     	return true;
     }
     
     private static boolean excluirProduto(Scanner sc) {
-    	System.out.print("Digite o código do produto a ser excluído: ");
-		int codigo = sc.nextInt();
-		sc.nextLine();
-    	
-    	for(int i=0; i<produtos.length; i++) {
-    		if(produtos[i] != null && produtos[i].getCodigo()==codigo) {
-    			produtos[i] = null;
-    			return true;
+    	try {
+    		System.out.print("Digite o código do produto a ser excluído: ");
+    		int codigo = sc.nextInt();
+    		sc.nextLine();
+    		
+    		for(int i=0; i<produtos.length; i++) {
+    			if(produtos[i] != null && produtos[i].getCodigo()==codigo) {
+    				produtos[i] = null;
+    				return true;
+    			}
     		}
+    	} catch(Exception e) {
+    		return false;
     	}
     	return false;
     }
     
     private static Produto consultarProduto(Scanner sc) {
-    	System.out.println("Digite o código do produto a ser pesquisado: ");
-		int codigo = sc.nextInt();
-		sc.nextLine();
-		System.out.println("Digite o nome do produto a ser pesquisado: ");
-		String nome = sc.nextLine();
-    	
-    	for(int i=0; i<produtos.length; i++) {
-    		if(produtos[i]!=null && (produtos[i].getCodigo()==codigo || produtos[i].getNome().equals(nome))) {
-    			return produtos[i];
+    	try {    		
+    		System.out.println("Digite o código do produto a ser pesquisado: ");
+    		int codigo = sc.nextInt();
+    		sc.nextLine();
+    		System.out.println("Digite o nome do produto a ser pesquisado: ");
+    		String nome = sc.nextLine();
+    		
+    		for(int i=0; i<produtos.length; i++) {
+    			if(produtos[i]!=null && (produtos[i].getCodigo()==codigo || produtos[i].getNome().equals(nome))) {
+    				return produtos[i];
+    			}
     		}
-    	}
+    	} catch(Exception e) {}
     	return null;
     }
     
@@ -414,41 +436,42 @@ public class Menu {
     	for (int i = 0; i < totalProdutos; i++) {
     		if(produtos[i] != null) {    			
     			System.out.println(produtos[i].toString());
+    			System.out.println(linha());
     		}
     	}
     }
     
     private static boolean vincularProdutoAFornecedor(Scanner sc) {
-        System.out.println("\n--- Vincular Produto a Fornecedor ---");
-        
-        mostrarProdutos();
-        Produto p = consultarProduto(sc);
-        if (p == null) {
-            System.out.println("\nProduto não encontrado.");
-            return false;
-        }
-        
-        mostrarFornecedores();
-        System.out.print("Digite o código do fornecedor: ");
-        int codigoFornecedor = sc.nextInt();
-        sc.nextLine();
-        
-        Fornecedor fornecedorSelecionado = null;
-        for (Fornecedor f : fornecedores) {
-            if (f != null && f.getCodigo() == codigoFornecedor) {
-                fornecedorSelecionado = f;
-                break;
-            }
-        }
-        
-        if (fornecedorSelecionado == null) {
-            System.out.println("\nFornecedor não encontrado.");
-            return false;
-        }
-        
-        fornecedorSelecionado.adicionarProduto(p);
-        
-        System.out.println("\nProduto vinculado ao fornecedor com sucesso!");
+    	try {    		
+    		System.out.println("\n--- Vincular Produto a Fornecedor ---");
+    		
+    		mostrarProdutos();
+    		Produto p = consultarProduto(sc);
+    		if (p == null) {
+    			System.out.println("\nProduto não encontrado.");
+    			return false;
+    		}
+    		
+    		mostrarFornecedores();
+    		System.out.print("Digite o código do fornecedor: ");
+    		int codigoFornecedor = sc.nextInt();
+    		sc.nextLine();
+    		
+    		Fornecedor fornecedorSelecionado = null;
+    		for (Fornecedor f : fornecedores) {
+    			if (f != null && f.getCodigo() == codigoFornecedor) {
+    				fornecedorSelecionado = f;
+    				break;
+    			}
+    		}
+    		
+    		if (fornecedorSelecionado == null) {
+    			System.out.println("\nFornecedor não encontrado.");
+    			return false;
+    		}
+    		
+    		fornecedorSelecionado.adicionarProduto(p);
+    	} catch(Exception e) {}
         return true;
     }
 
@@ -466,7 +489,7 @@ public class Menu {
     
     //USUÁRIOS
     
-    private static void cadastrarUsuario(Scanner sc) {
+    private static boolean cadastrarUsuario(Scanner sc) {
         System.out.println("\n--- Cadastro de Novo Usuário ---");
         
         String tipo;
@@ -485,8 +508,7 @@ public class Menu {
         
         for (int i = 0; i < totalUsuarios; i++) {
             if (usuarios[i] != null && usuarios[i].getUsuario().equals(login)) {
-                System.out.println("\nEsse login já está em uso. Escolha outro.");
-                return;
+                return false;
             }
         }
         
@@ -509,7 +531,7 @@ public class Menu {
         	usuarios[posicaoVaziaUsuarios(usuarios)] = new Usuario(login, senha, TipoUsuario.CLIENTE, cliente);
         }
         
-        System.out.println("\nUsuário cadastrado com sucesso!");
+        return true;
     }
     
     private static void realizarLogin(Scanner sc) {
@@ -531,6 +553,7 @@ public class Menu {
         }
     }
     
+    
     private static Usuario buscarUsuario(String login, String senha) {
         for (int i = 0; i < totalUsuarios; i++) {
             if (usuarios[i] != null && usuarios[i].getUsuario().equals(login) && usuarios[i].getSenha().equals(senha)) {
@@ -540,15 +563,17 @@ public class Menu {
         return null;
     }
 
+    
     private static void mostrarUsuarios() {
     	System.out.println("\n-- Lista de Usuários Cadastrados: --");
         for (int i = 0; i < totalUsuarios; i++) {
         	if(usuarios[i] != null) {
         		System.out.println(usuarios[i].toString());
-        		System.out.println("----------");
+        		System.out.println(linha());
         	}
         }
     }
+    
     
     private static int posicaoVaziaUsuarios(Usuario usuarios[]) {
     	for(int i=0; i<usuarios.length; i++) {
@@ -558,6 +583,7 @@ public class Menu {
     	}
     	return -1;
     }
+    
     
     private static boolean excluirUsuario(Scanner sc) {
     	System.out.print("Digite o usuário a ser excluído: ");
@@ -574,7 +600,62 @@ public class Menu {
 
     ////USUÁRIOS
     
+    
     private static String linha() {
     	return "--------------------------------";
     }
+    
+    
+    //ARQUIVOS
+    
+    private static void abrirArquivo() {
+    	try {
+			File myObj = new File("database.txt");
+			if (myObj.createNewFile()) {
+				System.out.println("Criado arquivo: " + myObj.getName());
+			} else {
+				System.out.println("Arquivo já criado.\n");
+			}
+	    } catch (IOException e) {
+	    	System.out.println("Aconteceu algum erro na criação do arquivo.");
+	    	e.printStackTrace();
+	    }
+    }
+    
+    
+    private static void escreveNoArquivo(Fornecedor fornecedores[]) {
+    	try {
+			FileWriter myWriter = new FileWriter("database.txt");
+			for(Fornecedor f : fornecedores) {	
+				if(f != null) {					
+					myWriter.write(f.toStringTxt()+"\n");
+				}
+			}
+			
+
+			myWriter.close();
+		    System.out.println("Arquivo escrito com sucesso.");
+	    } catch (IOException e) {
+	    	System.out.println("Erro na escrita do arquivo: " + e);
+	    }
+    }
+    
+    
+    private static void leArquivo() {
+    	try {
+			File myObj = new File("database.txt"); 
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				System.out.println(data);
+				fornecedores[posicaoVaziaFornecedores(fornecedores)] = Fornecedor.fromString(data);
+			}
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Erro ao ler arquivo.");
+			e.printStackTrace();
+		}
+    }
+    
+    ////ARQUIVOS
 }
