@@ -1,0 +1,3 @@
+miguel;1234;ADMIN;null
+teste;321;ADMIN;null
+cliente;senha;CLIENTE;nome;telefone;email;cartao;rua,numero,complemento,bairro,cep,cidade,estado
