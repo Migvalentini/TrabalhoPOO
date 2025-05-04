@@ -77,5 +77,23 @@ public class Cliente {
 				+ Arrays.toString(pedidos);
 	}
 	
-	
+	public String toStringTxt() {
+	    String enderecoStr = (endereco != null) ? endereco.toStringTxt() : "null";
+	    return nome + ";" + telefone + ";" + email + ";" + cartaoCredito + ";" + enderecoStr;
+	}
+
+	public static Cliente fromString(String linha) {
+	    String[] partes = linha.split(";", 9);
+	    String nome = partes[0];
+	    String telefone = partes[1];
+	    String email = partes[2];
+	    String cartaoCredito = partes[3];
+	    
+	    Endereco endereco = Endereco.fromString(
+	        partes[4] + ";" + partes[5] + ";" + partes[6] + ";" + partes[7] + ";" + partes[8] + ";" + partes[9] + ";" + partes[10]
+	    );
+
+	    return new Cliente(nome, telefone, email, cartaoCredito, endereco, new Pedido[0]);
+	}
+
 }

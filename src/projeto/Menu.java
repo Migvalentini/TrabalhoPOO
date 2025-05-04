@@ -15,10 +15,11 @@ public class Menu {
 	static Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	static Produto[] produtos = new Produto[totalProdutos];
 	static Estoque[] estoques = new Estoque[totalEstoques];
+	static String[] arquivos = {"fornecedores", "produtos", "clientes", "usuarios", "pedidos"};
 
 	public static void main(String[] args) {
-		abrirArquivo();
-		leArquivo();
+		//abrirArquivos(arquivos);
+		//leArquivo(usuarios, "usuarios", Usuario.class);
 		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
@@ -44,7 +45,6 @@ public class Menu {
 				} else {
 					System.out.println("\nErro no cadastro do usuário!");
 				}
-				
 				break;
 			case "2":
 				if(excluirUsuario(sc)) {					
@@ -60,13 +60,13 @@ public class Menu {
 				mostrarUsuarios();
 				break;
 			case "5":
-				usuarios[posicaoVaziaUsuarios(usuarios)] = new Usuario("m", "1", TipoUsuario.ADMIN, null);
+				usuarios[posicaoVazia(usuarios)] = new Usuario("m", "1", TipoUsuario.ADMIN, null);
 				menuAdministrador(null, sc);
 				break;
 			case "0":
 				continuar = false;
 				System.out.println("\nEncerrando sistema...");
-				escreveNoArquivo(fornecedores);
+				//escreveNoArquivo(usuarios, "usuarios");
 				break;
 			default:
 				System.out.println("\nOpção inválida!");
@@ -185,10 +185,10 @@ public class Menu {
     		case "99":
     			Produto p1 = new Produto("nome", "descrição", new Estoque(0, 0));
     			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
-    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
-    			fornecedores[posicaoVaziaFornecedores(fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new Produto[] {p1});
-    			produtos[posicaoVaziaProdutos(produtos)] = p1;
-    			produtos[posicaoVaziaProdutos(produtos)] = p2;
+    			fornecedores[posicaoVazia(fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
+    			fornecedores[posicaoVazia(fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new Produto[] {p1});
+    			produtos[posicaoVazia(produtos)] = p1;
+    			produtos[posicaoVazia(produtos)] = p2;
     			break;  
     		case "0":
     			continuar = false;
@@ -214,7 +214,7 @@ public class Menu {
     	try {    		
     		System.out.println("\n--- Cadastro de Fornecedor ---");
     		Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
-    		fornecedores[posicaoVaziaFornecedores(fornecedores)] = novoFornecedor;
+    		fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
     		return true;
     	} catch (Exception e) {
     		return false;
@@ -316,15 +316,7 @@ public class Menu {
     		}
     	}
     }
-    
-    private static int posicaoVaziaFornecedores(Fornecedor fornecedores[]) {
-    	for(int i=0; i<fornecedores.length; i++) {
-    		if(fornecedores[i] == null) {
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
+
     
     ////FORNECEDORES
     
@@ -335,7 +327,7 @@ public class Menu {
     		System.out.println("\n--- Cadastro de Produto ---");
     		Estoque novoEstoque = Estoque.criarEstoque(sc);
     		Produto novoProduto = Produto.criarProduto(novoEstoque, sc);
-    		produtos[posicaoVaziaProdutos(produtos)] = novoProduto;
+    		produtos[posicaoVazia(produtos)] = novoProduto;
     		
     		return true;
     	} catch (Exception e) {
@@ -427,7 +419,9 @@ public class Menu {
     				return produtos[i];
     			}
     		}
-    	} catch(Exception e) {}
+    	} catch(Exception e) {
+    		return null;
+    	}
     	return null;
     }
     
@@ -471,19 +465,12 @@ public class Menu {
     		}
     		
     		fornecedorSelecionado.adicionarProduto(p);
-    	} catch(Exception e) {}
+    	} catch(Exception e) {
+    		return false;
+    	}
         return true;
     }
 
-    private static int posicaoVaziaProdutos(Produto produtos[]) {
-    	for(int i=0; i<produtos.length; i++) {
-    		if(produtos[i] == null) {
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
-    
     
     ////PRODUTOS
     
@@ -513,8 +500,8 @@ public class Menu {
         }
         
         if(tipo.equals("0")) {
-        	usuarios[posicaoVaziaUsuarios(usuarios)] = new Usuario(login, senha, TipoUsuario.ADMIN, null);
-        } else {  
+        	usuarios[posicaoVazia(usuarios)] = new Usuario(login, senha, TipoUsuario.ADMIN, null);
+        } else {
         	System.out.println("\n--- Cadastro de Novo Cliente ---");
         	System.out.print("Nome: ");
         	String nome = sc.nextLine();
@@ -528,7 +515,7 @@ public class Menu {
         	Endereco endereco = Endereco.criarEndereco(sc);
         	Cliente cliente = new Cliente(nome, telefone, email, cartaoCredito, endereco, null);
         	
-        	usuarios[posicaoVaziaUsuarios(usuarios)] = new Usuario(login, senha, TipoUsuario.CLIENTE, cliente);
+        	usuarios[posicaoVazia(usuarios)] = new Usuario(login, senha, TipoUsuario.CLIENTE, cliente);
         }
         
         return true;
@@ -553,7 +540,6 @@ public class Menu {
         }
     }
     
-    
     private static Usuario buscarUsuario(String login, String senha) {
         for (int i = 0; i < totalUsuarios; i++) {
             if (usuarios[i] != null && usuarios[i].getUsuario().equals(login) && usuarios[i].getSenha().equals(senha)) {
@@ -563,7 +549,6 @@ public class Menu {
         return null;
     }
 
-    
     private static void mostrarUsuarios() {
     	System.out.println("\n-- Lista de Usuários Cadastrados: --");
         for (int i = 0; i < totalUsuarios; i++) {
@@ -573,18 +558,8 @@ public class Menu {
         	}
         }
     }
-    
-    
-    private static int posicaoVaziaUsuarios(Usuario usuarios[]) {
-    	for(int i=0; i<usuarios.length; i++) {
-    		if(usuarios[i] == null) {
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
-    
-    
+
+       
     private static boolean excluirUsuario(Scanner sc) {
     	System.out.print("Digite o usuário a ser excluído: ");
 		String usuario = sc.nextLine();
@@ -600,62 +575,81 @@ public class Menu {
 
     ////USUÁRIOS
     
-    
     private static String linha() {
     	return "--------------------------------";
     }
-    
-    
+        
     //ARQUIVOS
     
-    private static void abrirArquivo() {
+    /*private static void abrirArquivos(String[] arquivos) {
     	try {
-			File myObj = new File("database.txt");
-			if (myObj.createNewFile()) {
-				System.out.println("Criado arquivo: " + myObj.getName());
-			} else {
-				System.out.println("Arquivo já criado.\n");
-			}
+    		for(String arquivo : arquivos) {    			
+    			File myObj = new File(arquivo + ".txt");
+    			if (myObj.createNewFile()) {
+    				System.out.println("Criado arquivo: " + myObj.getName());
+    			} else {
+    				System.out.println("Arquivo já criado.\n");
+    			}
+    		}
 	    } catch (IOException e) {
 	    	System.out.println("Aconteceu algum erro na criação do arquivo.");
 	    	e.printStackTrace();
 	    }
     }
     
+    private static void escreveNoArquivo(Object[] array, String nomeArquivo) {
+        try {
+            FileWriter myWriter = new FileWriter(nomeArquivo + ".txt");
+            
+            for (Object obj : array) {
+                if (obj != null) {
+                    String texto = (String) obj.getClass().getMethod("toStringTxt").invoke(obj);
+                    myWriter.write(texto + "\n");
+                }
+            }
+            
+            myWriter.close();
+            System.out.println("Arquivo escrito com sucesso.");
+        } catch (IOException | ReflectiveOperationException e) {
+            System.out.println("Erro na escrita do arquivo: " + e);
+        }
+    }
     
-    private static void escreveNoArquivo(Fornecedor fornecedores[]) {
-    	try {
-			FileWriter myWriter = new FileWriter("database.txt");
-			for(Fornecedor f : fornecedores) {	
-				if(f != null) {					
-					myWriter.write(f.toStringTxt()+"\n");
-				}
-			}
-			
+    private static void leArquivo(Object[] array, String nomeArquivo, Class<?> classe) {
+        try {
+            File myObj = new File(nomeArquivo + ".txt"); 
+            Scanner myReader = new Scanner(myObj);
+            
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println("Lendo linha: " + data);
+                
+                Object obj = classe.getMethod("fromString", String.class).invoke(null, data);
+                
+                array[posicaoVazia(array)] = obj;
+            }
+            
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro ao ler arquivo.");
+            e.printStackTrace();
+        } catch (ReflectiveOperationException e) {
+            System.out.println("Erro ao invocar o método fromString.");
+            e.printStackTrace();
+        }
+    }*/
 
-			myWriter.close();
-		    System.out.println("Arquivo escrito com sucesso.");
-	    } catch (IOException e) {
-	    	System.out.println("Erro na escrita do arquivo: " + e);
-	    }
-    }
-    
-    
-    private static void leArquivo() {
-    	try {
-			File myObj = new File("database.txt"); 
-			Scanner myReader = new Scanner(myObj);
-			while (myReader.hasNextLine()) {
-				String data = myReader.nextLine();
-				System.out.println(data);
-				fornecedores[posicaoVaziaFornecedores(fornecedores)] = Fornecedor.fromString(data);
-			}
-			myReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("Erro ao ler arquivo.");
-			e.printStackTrace();
-		}
-    }
     
     ////ARQUIVOS
+
+
+    private static int posicaoVazia(Object[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == null) {
+                return i;
+            }
+        }
+        return -1; 
+    }
+
 }

@@ -54,4 +54,16 @@ public class Estoque {
 	    
 	    return sb.toString();
 	}
+	
+	public String toStringTxt() {
+	    return quantidade + ";" + preco;
+	}
+
+	public static Estoque fromString(String linha) {
+	    String[] partes = linha.split(";");
+	    int quantidade = Integer.parseInt(partes[0]);
+	    double preco = Double.parseDouble(partes[1]);
+	    return new Estoque(quantidade, preco);
+	}
+
 }

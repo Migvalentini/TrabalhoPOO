@@ -79,4 +79,27 @@ public class Produto {
 	    
 	    return sb.toString();
 	}
+	
+	public String toStringTxt() {
+	    String estoqueStr = (estoque != null) ? estoque.toStringTxt() : "null";
+	    return codigo + ";" + nome + ";" + descricao + ";" + estoqueStr;
+	}
+
+	public static Produto fromString(String linha) {
+	    String[] partes = linha.split(";", 6); 
+
+	    int codigo = Integer.parseInt(partes[0]);
+	    String nome = partes[1];
+	    String descricao = partes[2];
+	    
+	    Estoque estoque = partes[3].equals("null") 
+	        ? null 
+	        : Estoque.fromString(partes[3] + ";" + partes[4] + ";" + partes[5]);
+
+	    Produto produto = new Produto(nome, descricao, estoque);
+	    produto.setCodigo(codigo);
+
+	    return produto;
+	}
+
 }

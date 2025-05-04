@@ -67,5 +67,22 @@ public class Pedido {
 				+ dataEntrega + " Situação=" + situacao;
 	}
 	
-	
+	public String toStringTxt() {
+	    return codigo + ";" + idCliente + ";" + numero + ";" + dataPedido + ";" + dataEntrega + ";" + situacao;
+	}
+
+	public static Pedido fromString(String linha) {
+	    String[] partes = linha.split(";");
+	    int codigo = Integer.parseInt(partes[0]);
+	    int idCliente = Integer.parseInt(partes[1]);
+	    int numero = Integer.parseInt(partes[2]);
+	    Date dataPedido = Date.valueOf(partes[3]);
+	    Date dataEntrega = Date.valueOf(partes[4]);
+	    TipoPedido situacao = TipoPedido.valueOf(partes[5]);
+
+	    Pedido pedido = new Pedido(idCliente, numero, dataPedido, dataEntrega, situacao);
+	    pedido.codigo = codigo;
+	    return pedido;
+	}
+
 }
