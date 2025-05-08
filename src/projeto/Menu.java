@@ -1,9 +1,9 @@
 package projeto;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileWriter;
+//import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
@@ -19,7 +19,7 @@ public class Menu {
 
 	public static void main(String[] args) {
 		//abrirArquivos(arquivos);
-		//leArquivo(usuarios, "usuarios", Usuario.class); teste
+		//leArquivo(usuarios, "usuarios", Usuario.class);
 		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
