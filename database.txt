@@ -1,0 +1,7 @@
+nas consultas, retornar um vetor com os elementos encontrados
+inverter usuario com cliente. Um cliente possui usuário, ao invés do usuário ter cliente
+tirar os métodos do menu, criando uma classe/pacote Loja
+usar InputMismatchException para erros do tipo input errado
+usar loop quando dá erro, ao invés de retornar erro
+nas consultas, usar apenas um elemento, percorrendo pelo código e pelo nome
+criar um método geral de consulta, que recebe a mensagem, o tipo do dado e faça a lógica necessária de consulta

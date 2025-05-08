@@ -1,5 +1,6 @@
 package projeto;
 
+import java.util.InputMismatchException;
 //import java.io.File;
 //import java.io.FileNotFoundException;
 //import java.io.FileWriter;
@@ -419,7 +420,7 @@ public class Menu {
     				return produtos[i];
     			}
     		}
-    	} catch(Exception e) {
+    	} catch(InputMismatchException e) {
     		return null;
     	}
     	return null;
