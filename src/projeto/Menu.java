@@ -19,7 +19,7 @@ public class Menu {
 
 	public static void main(String[] args) {
 		//abrirArquivos(arquivos);
-		//leArquivo(usuarios, "usuarios", Usuario.class);
+		//leArquivo(usuarios, "usuarios", Usuario.class); teste
 		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
