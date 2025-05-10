@@ -54,7 +54,7 @@ public class Menu {
 				break;
 			case "5":
 				loja.usuarios[loja.posicaoVazia(loja.usuarios)] = new Usuario("m", "1", TipoUsuario.ADMIN, null);
-				menuAdministrador(null, sc);
+				menu.menuAdministrador(null, sc);
 				break;
 			case "0":
 				continuar = false;
@@ -69,7 +69,7 @@ public class Menu {
 		sc.close();
 	}
 	
-    public static void menuAdministrador(Usuario usuario, Scanner sc) {
+    public void menuAdministrador(Usuario usuario, Scanner sc) {
     	boolean continuar = true;
     	System.out.println("\nLogin como ADMINISTRADOR realizado com sucesso!");
     	
@@ -79,13 +79,13 @@ public class Menu {
     		System.out.println(" 1 - Cadastrar fornecedor");
     		System.out.println(" 2 - Editar fornecedor");
     		System.out.println(" 3 - Excluir fornecedor");
-    		System.out.println(" 4 - Consultar fornecedor por código/nome");
+    		System.out.println(" 4 - Consultar fornecedores por código/nome");
     		System.out.println(" 5 - Consultar todos fornecedores");
     		System.out.println("\n-- Produtos --");
     		System.out.println(" 6 - Cadastrar produto");
     		System.out.println(" 7 - Editar produto");
     		System.out.println(" 8 - Excluir produto");
-    		System.out.println(" 9 - Consultar produto por código/nome");
+    		System.out.println(" 9 - Consultar produtos por código/nome");
     		System.out.println("10 - Consultar todos produtos");
     		System.out.println("11 - Vincular produto a um fornecedor");
     		System.out.println("12 - Editar estoque de produto");
@@ -118,15 +118,11 @@ public class Menu {
     			}
     			break;
     		case "4":
-    			Fornecedor f = loja.consultarFornecedor(sc);
-    			if(f!=null) {    				
-    				System.out.println("\n" + f.toString());
-    			} else {
-    				System.out.println("\nFalha ao buscar fornecedor");
-    			}
+    			Fornecedor[] fo = loja.consultarFornecedores(sc);
+    			loja.mostrarFornecedores(fo);
     			break;
     		case "5":
-    			loja.mostrarFornecedores();
+    			loja.mostrarFornecedores(loja.fornecedores);
     			break;
     		case "6":
     			if(loja.cadastrarProduto(sc)) {
@@ -151,15 +147,11 @@ public class Menu {
     			}
     			break;
     		case "9":
-    			Produto p = loja.consultarProduto(sc);
-    			if(p!=null) {    				
-    				System.out.println("\n" + p.toString());
-    			} else {
-    				System.out.println("\nFalha ao buscar produto");
-    			}
+    			Produto[] listaProdutos = loja.consultarProdutos(sc);
+    			loja.mostrarProdutos(listaProdutos);
     			break;
     		case "10":
-    			loja.mostrarProdutos();
+    			loja.mostrarProdutos(loja.produtos);
     			break;
     		case "11":
     			if(loja.vincularProdutoAFornecedor(sc)) {
@@ -176,9 +168,9 @@ public class Menu {
     			}
     			break;
     		case "99":
-    			Produto p1 = new Produto("nome", "descrição", new Estoque(0, 0));
+    			Produto p1 = new Produto("nome1", "descrição", new Estoque(0, 0));
     			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
-    			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
+    			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
     			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new Produto[] {p1});
     			loja.produtos[loja.posicaoVazia(loja.produtos)] = p1;
     			loja.produtos[loja.posicaoVazia(loja.produtos)] = p2;

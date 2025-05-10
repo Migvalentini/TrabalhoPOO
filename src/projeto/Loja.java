@@ -1,22 +1,20 @@
 package projeto;
 
-import java.util.InputMismatchException;
+//import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	static int totalUsuarios = 100;
-	static int totalFornecedores = 100;
-	static int totalProdutos = 100;
-	static int totalEstoques = 100;
+	int totalUsuarios = 100;
+	int totalFornecedores = 100;
+	int totalProdutos = 100;
+	int totalEstoques = 100;
 	Usuario[] usuarios = new Usuario[totalUsuarios];
 	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	Produto[] produtos = new Produto[totalProdutos];
 	Estoque[] estoques = new Estoque[totalEstoques];
 	String[] arquivos = {"fornecedores", "produtos", "clientes", "usuarios", "pedidos"};
 	
-	//FORNECEDORES
-    
-    public boolean cadastrarFornecedor(Scanner sc) {
+	public boolean cadastrarFornecedor(Scanner sc) {
     	try {    		
     		System.out.println("\n--- Cadastro de Fornecedor ---");
     		Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
@@ -28,7 +26,8 @@ public class Loja {
     }
     
     public boolean editarFornecedor(Scanner sc) {
-       	Fornecedor f = consultarFornecedor(sc);
+       	Fornecedor[] listaFornecedores = consultarFornecedores(sc);
+       	Fornecedor f = listaFornecedores[0];
     	if(f==null) {   
     		return false;
     	}
@@ -93,40 +92,46 @@ public class Loja {
     	return false;
     }
     
-    public Fornecedor consultarFornecedor(Scanner sc) {
-    	try {    		
-    		System.out.println("Digite o código do fornecedor a ser pesquisado: ");
-    		int codigo = sc.nextInt();
-    		sc.nextLine();
-    		System.out.println("Digite o nome do fornecedor a ser pesquisado: ");
-    		String nome = sc.nextLine();
-    		
-    		for(int i=0; i<fornecedores.length; i++) {
-    			if(fornecedores[i]!=null && (fornecedores[i].getCodigo()==codigo || fornecedores[i].getNome().equals(nome))) {
-    				return fornecedores[i];
-    			}
-    		}
-    	} catch (Exception e) {
-    		return null;
-    	}
+    public Fornecedor[] consultarFornecedores(Scanner sc) {
+    	Fornecedor[] listaFornecedores = new Fornecedor[totalFornecedores];
+    	int cont=0;
+    	   		
+		System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
+		String termoBusca = sc.nextLine().trim().toLowerCase();
+		
+		try {
+			int codigoBusca = Integer.parseInt(termoBusca);
+			for (Fornecedor fornecedor : fornecedores) {
+		        if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
+		        	listaFornecedores[cont++] = fornecedor;
+		        	break;
+		        }
+			}
+		} catch(Exception e) {}
+		for(Fornecedor fornecedor : fornecedores) {
+			if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
+				listaFornecedores[cont++] = fornecedor;
+			}
+		}	
     	
-    	return null;
+    	return listaFornecedores;
     }
     
-    public void mostrarFornecedores() {
+    
+    public void mostrarFornecedores(Fornecedor[] fornecedores) {
     	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
-    	for (int i = 0; i < totalFornecedores; i++) {
-    		if(fornecedores[i] != null) {    			
-    			System.out.println(fornecedores[i].toString());
+    	for (Fornecedor fornecedor : fornecedores) {
+    		if(fornecedores != null) {    			
+    			System.out.println(fornecedor.toString());
     			System.out.println(linha());
     		}
     	}
     }
-
-    
+ 
     ////FORNECEDORES
     
     //PRODUTOS
+    
     
     public boolean cadastrarProduto(Scanner sc) {
     	try {    		
@@ -141,9 +146,10 @@ public class Loja {
     	}
     }
     
+    
     public boolean editarProduto(Scanner sc) {
     	try {    		
-    		Produto p = consultarProduto(sc);
+    		Produto p = consultarProdutos(sc)[0];
     		if(p==null) {   
     			return false;
     		}
@@ -173,9 +179,10 @@ public class Loja {
     	return true;
     }
 
+    
     public boolean editarEstoqueProduto(Scanner sc) {
-    	try {    		
-    		Produto p = consultarProduto(sc);
+    	try {
+    		Produto p = consultarProdutos(sc)[0];
     		if(p==null) {   
     			return false;
     		}
@@ -194,6 +201,7 @@ public class Loja {
     	return true;
     }
     
+    
     public boolean excluirProduto(Scanner sc) {
     	try {
     		System.out.print("Digite o código do produto a ser excluído: ");
@@ -210,32 +218,37 @@ public class Loja {
     		return false;
     	}
     	return false;
+    }    
+
+    public Produto[] consultarProdutos(Scanner sc) {
+    	Produto[] listaProdutos = new Produto[totalProdutos];
+    	int cont=0;
+    	    		
+		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+		String termoBusca = sc.nextLine().trim().toLowerCase();
+		
+		try {
+            int codigoBusca = Integer.parseInt(termoBusca);
+            for (Produto produto : produtos) {
+                if (produto != null && produto.getCodigo() == codigoBusca) {
+                	listaProdutos[cont++] = produto;
+                }
+            }
+        } catch (NumberFormatException e) {}
+		for (Produto produto : produtos) {
+			if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
+				listaProdutos[cont++] = produto;
+			}
+		}
+		
+		return listaProdutos;
     }
     
-    public Produto consultarProduto(Scanner sc) {
-    	try {    		
-    		System.out.println("Digite o código do produto a ser pesquisado: ");
-    		int codigo = sc.nextInt();
-    		sc.nextLine();
-    		System.out.println("Digite o nome do produto a ser pesquisado: ");
-    		String nome = sc.nextLine();
-    		
-    		for(int i=0; i<produtos.length; i++) {
-    			if(produtos[i]!=null && (produtos[i].getCodigo()==codigo || produtos[i].getNome().equals(nome))) {
-    				return produtos[i];
-    			}
-    		}
-    	} catch(InputMismatchException e) {
-    		return null;
-    	}
-    	return null;
-    }
-    
-    public void mostrarProdutos() {
+    public void mostrarProdutos(Produto[] listaProdutos) {
     	System.out.println("\n-- Lista de Produtos Cadastrados --");
-    	for (int i = 0; i < totalProdutos; i++) {
-    		if(produtos[i] != null) {    			
-    			System.out.println(produtos[i].toString());
+    	for (int i = 0; i < listaProdutos.length; i++) {
+    		if(listaProdutos[i] != null) {    			
+    			System.out.println(listaProdutos[i].toString());
     			System.out.println(linha());
     		}
     	}
@@ -245,14 +258,14 @@ public class Loja {
     	try {    		
     		System.out.println("\n--- Vincular Produto a Fornecedor ---");
     		
-    		mostrarProdutos();
-    		Produto p = consultarProduto(sc);
+    		mostrarProdutos(produtos);
+    		Produto p = consultarProdutos(sc)[0];
     		if (p == null) {
     			System.out.println("\nProduto não encontrado.");
     			return false;
     		}
     		
-    		mostrarFornecedores();
+    		mostrarFornecedores(fornecedores);
     		System.out.print("Digite o código do fornecedor: ");
     		int codigoFornecedor = sc.nextInt();
     		sc.nextLine();
@@ -276,11 +289,11 @@ public class Loja {
     	}
         return true;
     }
-
     
     ////PRODUTOS
     
     //USUÁRIOS
+    
     
     public boolean cadastrarUsuario(Scanner sc) {
         System.out.println("\n--- Cadastro de Novo Usuário ---");
@@ -327,6 +340,7 @@ public class Loja {
         return true;
     }
     
+    
     public Usuario buscarUsuario(String login, String senha) {
         for (int i = 0; i < totalUsuarios; i++) {
             if (usuarios[i] != null && usuarios[i].getUsuario().equals(login) && usuarios[i].getSenha().equals(senha)) {
@@ -336,6 +350,7 @@ public class Loja {
         return null;
     }
 
+    
     public void mostrarUsuarios() {
     	System.out.println("\n-- Lista de Usuários Cadastrados: --");
         for (int i = 0; i < totalUsuarios; i++) {
@@ -346,6 +361,7 @@ public class Loja {
         }
     }
  
+    
     public boolean excluirUsuario(Scanner sc) {
     	System.out.print("Digite o usuário a ser excluído: ");
 		String usuario = sc.nextLine();
@@ -358,8 +374,6 @@ public class Loja {
     	}
     	return false;
     }
-
-    ////USUÁRIOS
     
     public String linha() {
     	return "--------------------------------";
