@@ -1,16 +1,16 @@
 package projeto;
 
+import java.util.Scanner;
+
 public class Usuario {
 	private String usuario;
     private String senha;
     private TipoUsuario tipo;
-    private Cliente cliente;
 
-    public Usuario(String usuario, String senha, TipoUsuario tipo, Cliente cliente) {
+    public Usuario(String usuario, String senha, TipoUsuario tipo) {
         this.usuario = usuario;
         this.senha = senha;
         this.tipo = tipo;
-        this.cliente = cliente;
     }
     
 	public String getUsuario() { 
@@ -25,18 +25,27 @@ public class Usuario {
     	return tipo; 
     }
     
-    public Cliente getCliente() { 
-    	return cliente; 
+    public static Usuario criarUsuario(Scanner sc, TipoUsuario tipo) {
+		try {			
+			System.out.println("Usuário:");
+			String usuario = sc.nextLine();
+			System.out.println("Senha:");
+			String senha = sc.nextLine();
+			
+			return new Usuario(usuario, senha, tipo);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar endereço: " + ex);
+			return null;
+		}
     }
 
 	@Override
 	public String toString() {
-		return "Usuário: " + usuario + " Senha: " + ("*".repeat(senha.length())) + " Tipo: " + tipo + " Cliente: " + cliente;
+		return "Usuário: " + usuario + " Senha: " + senha + " Tipo: " + tipo;
 	}
 	
 	public String toStringTxt() {
-	    String clienteStr = (cliente != null) ? cliente.toStringTxt() : "null";
-	    return usuario + ";" + senha + ";" + tipo + ";" + clienteStr;
+	    return usuario + ";" + senha + ";" + tipo + ";";
 	}
 
 	public static Usuario fromString(String linha) {
@@ -44,9 +53,7 @@ public class Usuario {
 	    String usuario = partes[0];
 	    String senha = partes[1];
 	    TipoUsuario tipo = TipoUsuario.valueOf(partes[2]);
-	    Cliente cliente = partes[3].equals("null") ? null : Cliente.fromString(partes[3]);
 	    
-	    return new Usuario(usuario, senha, tipo, cliente);
+	    return new Usuario(usuario, senha, tipo);
 	}
-
 }
