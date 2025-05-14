@@ -1,4 +1,4 @@
-package projeto;
+package br.ucs.poo.projeto.menu;
 
 import java.util.Arrays;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package projeto;
+package br.ucs.poo.projeto.menu;
 
 //import java.io.File;
 //import java.io.FileNotFoundException;
@@ -203,10 +203,10 @@ public class Menu {
     	System.out.println("\nLogin como CLIENTE realizado com sucesso!");
     	
     	while (continuar) {
-    	
 	    	System.out.println("\n" + loja.linha() + "\n     Menu de Cliente\n" + loja.linha());
 	    	System.out.println("\n-- Produtos --");
 			System.out.println(" 1 - Consultar todos produtos");
+			System.out.println(" 2 - Consultar produtos por código/nome");
 	    	System.out.println(" 0 - Voltar ao menu principal");
 	    	System.out.print("Opção: ");
 	    	
@@ -215,7 +215,11 @@ public class Menu {
 			switch (resposta) {
 			case "1":
 				loja.mostrarProdutos(loja.produtos);
-				break; 
+				break;
+			case "2":
+				Produto[] listaProdutos = loja.consultarProdutos(sc);
+    			loja.mostrarProdutos(listaProdutos);
+    			break;
 			case "0":
 				continuar = false;
 				System.out.println("\nSaindo do acesso de adminstrador...");

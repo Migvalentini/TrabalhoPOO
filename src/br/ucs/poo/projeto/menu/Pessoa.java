@@ -1,4 +1,4 @@
-package projeto;
+package br.ucs.poo.projeto.menu;
 
 public class Pessoa {
     private String nome;

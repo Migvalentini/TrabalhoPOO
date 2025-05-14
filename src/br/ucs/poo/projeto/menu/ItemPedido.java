@@ -1,4 +1,4 @@
-package projeto;
+package br.ucs.poo.projeto.menu;
 
 public class ItemPedido {
 	private static int ultimoCodigo = 0;

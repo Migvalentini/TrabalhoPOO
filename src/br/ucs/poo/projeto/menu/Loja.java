@@ -1,4 +1,4 @@
-package projeto;
+package br.ucs.poo.projeto.menu;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -18,6 +18,8 @@ public class Loja {
 	public Loja() {
 	        usuariosAdmin[0] = new Usuario("admin", "123", TipoUsuario.ADMIN);
 	    }
+	
+	//FORNECEDOR
 	
 	public boolean cadastrarFornecedor(Scanner sc) {
     	try {
@@ -148,6 +150,10 @@ public class Loja {
     		}
     	}
     }
+    
+    ////FORNECEDOR
+    
+    //PRODUTO
     
     public boolean cadastrarProduto(Scanner sc) {
     	try {
@@ -329,6 +335,10 @@ public class Loja {
         }
     }
     
+    ////PRODUTO
+    
+    //USUARIO
+    
     public boolean cadastrarUsuarioAdmin(Scanner sc) {
         try {
             System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
@@ -431,9 +441,9 @@ public class Loja {
     	}
     }
     
-    
+    //USUARIO
         
-    //ARQUIVOS
+    ////ARQUIVOS
     
     /*public void abrirArquivos(String[] arquivos) {
     	try {
