@@ -7,17 +7,22 @@ package br.ucs.poo.projeto.menu;
 import java.util.Scanner;
 
 public class Menu {
-	private static Loja loja = new Loja();
-	private static Menu menu = new Menu();
+	private Loja loja;
+	
+	public Menu() {
+		this.loja  = new Loja();
+	}
 	
 	public static void main(String[] args) {
+		Menu m = new Menu();
+		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
 
 		System.out.println("SEJA MUITO BEM-VINDO(A) AO SISTEMA DE COMPRAS DESENVOLVIDO PELOS ALUNOS MIGUEL VALENTINI, HENRY PECATTI TIBOLA E VINICIUS BAREA PARA A DISCPLINA DE POO!");
 		
 		while (continuar) {
-			System.out.println("\n" + loja.linha() + "\n         Menu Principal\n" + loja.linha());
+			System.out.println("\n" + m.loja.linha() + "\n         Menu Principal\n" + m.loja.linha());
 			System.out.println(" 1 - Realizar Cadastro");
 			System.out.println(" 2 - Realizar Login");
 			System.out.println("99 - Facilitar testes");
@@ -28,17 +33,18 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				if(loja.cadastrarCliente(sc)) {
+				System.out.println("\n--- Cadastro de Fornecedor ---");
+				if(m.loja.cadastrarCliente(sc)) {
 					System.out.println("\nCliente cadastrado com sucesso!");
 				} else {
 					System.out.println("\nErro no cadastro do cliente!");
 				}
 				break;
 			case "2":
-				menu.realizarLogin(sc);
+				m.realizarLogin(sc);
 				break;
 			case "99":
-				menu.menuAdministrador(sc);
+				m.menuAdministrador(sc);
 				break;
 			case "0":
 				continuar = false;
@@ -86,11 +92,15 @@ public class Menu {
     		
     		switch (resposta) {
     		case "1":
-    			if(loja.cadastrarFornecedor(sc)) {
-    				System.out.println("\nFornecedor cadastrado com sucesso!");
-    			} else {
-    				System.out.println("\nErro no cadastro do fornecedor");
-    			}
+    			
+    			Fornecedor f = this.criarFornecedor(sc);
+    			this.loja.cadastrarFornecedor(f);
+    			
+//    			if(loja.cadastrarFornecedor(sc)) {
+//    				System.out.println("\nFornecedor cadastrado com sucesso!");
+//    			} else {
+//    				System.out.println("\nErro ao cadastrar fornecedor. Tente novamente.");
+//    			}
     			break;
     		case "2":
     			if(loja.editarFornecedor(sc)) {
@@ -247,5 +257,24 @@ public class Menu {
         } else {
             System.out.println("\nErro: Login ou senha incorretos ou não encontrados");
         }
+    }
+    
+    public Fornecedor criarFornecedor(Scanner sc) {
+		try {
+			System.out.println("Nome do fornecedor:");
+			String nome = sc.nextLine();
+			System.out.println("Descrição:");
+			String descricao = sc.nextLine();
+			System.out.println("Telefone:");
+			String telefone = sc.nextLine();
+			System.out.println("Email:");
+			String email = sc.nextLine();
+			Endereco endereco = Endereco.criarEndereco(sc);
+			
+			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar fornecedor: " + ex);
+			return null;
+		}
     }
 }

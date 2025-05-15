@@ -4,11 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	int totalUsuarios = 100;
-	int totalFornecedores = 100;
-	int totalProdutos = 100;
-	int totalEstoques = 100;
-	int totalClientes = 100;
+	int totalUsuarios = 3;
+	int totalFornecedores = 2;
+	int totalProdutos = 3;
+	int totalEstoques = 3;
+	int totalClientes = 3;
 	Usuario[] usuariosAdmin = new Usuario[totalUsuarios];
 	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	Produto[] produtos = new Produto[totalProdutos];
@@ -16,21 +16,22 @@ public class Loja {
 	Cliente[] clientes = new Cliente[totalClientes];
 	
 	public Loja() {
-	        usuariosAdmin[0] = new Usuario("admin", "123", TipoUsuario.ADMIN);
-	    }
+		usuariosAdmin[0] = new Usuario("admin", "123", TipoUsuario.ADMIN);
+	}
 	
 	//FORNECEDOR
 	
-	public boolean cadastrarFornecedor(Scanner sc) {
-    	try {
-            System.out.println("\n--- Cadastro de Fornecedor ---");
-            Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
-            fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
-            return true;
-        } catch (Exception e) {
-            System.out.println("Erro ao cadastrar fornecedor: " + e.getMessage() + ". Tente novamente.");
-            return cadastrarFornecedor(sc);
-        }
+//	public boolean cadastrarFornecedor_(Scanner sc) {
+//    	Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
+//        if(novoFornecedor==null) {
+//        	return false;
+//        }
+//        fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
+//        return true;
+//    }
+	
+	public void cadastrarFornecedor(Fornecedor novoFornecedor) {
+    	fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
     }
     
     public boolean editarFornecedor(Scanner sc) {

@@ -51,24 +51,7 @@ public class Fornecedor extends Pessoa {
         }
     }
 
-	public static Fornecedor criarFornecedor(Scanner sc) {
-		try {
-			System.out.println("Nome do fornecedor:");
-			String nome = sc.nextLine();
-			System.out.println("Descrição:");
-			String descricao = sc.nextLine();
-			System.out.println("Telefone:");
-			String telefone = sc.nextLine();
-			System.out.println("Email:");
-			String email = sc.nextLine();
-			Endereco endereco = Endereco.criarEndereco(sc);
-			
-			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
-		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar fornecedor: " + ex);
-			return null;
-		}
-    }
+	
 	
 	@Override
     public String toString() {
