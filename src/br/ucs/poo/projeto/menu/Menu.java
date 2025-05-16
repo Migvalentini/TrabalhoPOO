@@ -95,12 +95,6 @@ public class Menu {
     			
     			Fornecedor f = this.criarFornecedor(sc);
     			this.loja.cadastrarFornecedor(f);
-    			
-//    			if(loja.cadastrarFornecedor(sc)) {
-//    				System.out.println("\nFornecedor cadastrado com sucesso!");
-//    			} else {
-//    				System.out.println("\nErro ao cadastrar fornecedor. Tente novamente.");
-//    			}
     			break;
     		case "2":
     			if(loja.editarFornecedor(sc)) {
@@ -124,12 +118,9 @@ public class Menu {
     			loja.mostrarFornecedores(loja.fornecedores);
     			break;
     		case "6":
-    			if(loja.cadastrarProduto(sc)) {
-    				System.out.println("\nProduto cadastrado com sucesso!");
-    			}
-    			else {
-    				System.out.println("Erro no cadastro de produto");
-    			}
+    			Estoque e = this.criarEstoque(sc);
+    			Produto p = this.criarProduto(e, sc);
+    			this.loja.cadastrarProduto(p);
     			break;
     		case "7":
     			if(loja.editarProduto(sc)) {
@@ -274,6 +265,36 @@ public class Menu {
 			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
 		} catch(Exception ex) {
 			System.out.println("Erro ao cadastrar fornecedor: " + ex);
+			return null;
+		}
+    }
+    
+    public Produto criarProduto(Estoque estoque, Scanner sc) {
+		try {			
+			System.out.println("Nome do produto:");
+			String nome = sc.nextLine();
+			System.out.println("Descrição:");
+			String descricao = sc.nextLine();
+			
+			return new Produto(nome, descricao, estoque);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar produto: " + ex);
+			return null;
+		}
+    }
+    
+    public Estoque criarEstoque(Scanner sc) {
+		try {
+			System.out.println("Quantidade:");
+			int quantidade = sc.nextInt();
+			System.out.println("Preço:");
+			double preco = sc.nextDouble();
+			sc.nextLine();
+
+			return new Estoque(quantidade, preco);
+		} catch (Exception ex) {
+			System.out.println("Erro ao cadastrar estoque: " + ex);
+			sc.nextLine();
 			return null;
 		}
     }

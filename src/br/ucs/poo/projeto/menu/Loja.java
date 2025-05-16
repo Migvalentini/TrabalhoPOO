@@ -21,16 +21,7 @@ public class Loja {
 	
 	//FORNECEDOR
 	
-//	public boolean cadastrarFornecedor_(Scanner sc) {
-//    	Fornecedor novoFornecedor = Fornecedor.criarFornecedor(sc);
-//        if(novoFornecedor==null) {
-//        	return false;
-//        }
-//        fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
-//        return true;
-//    }
-	
-	public void cadastrarFornecedor(Fornecedor novoFornecedor) {
+    public void cadastrarFornecedor(Fornecedor novoFornecedor) {
     	fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
     }
     
@@ -156,17 +147,8 @@ public class Loja {
     
     //PRODUTO
     
-    public boolean cadastrarProduto(Scanner sc) {
-    	try {
-             System.out.println("\n--- Cadastro de Produto ---");
-             Estoque novoEstoque = Estoque.criarEstoque(sc);
-             Produto novoProduto = Produto.criarProduto(novoEstoque, sc);
-             produtos[posicaoVazia(produtos)] = novoProduto;
-             return true;
-         } catch (Exception e) {
-             System.out.println("Erro ao cadastrar produto: " + e.getMessage() + ". Tente novamente.");
-             return cadastrarProduto(sc);
-         }
+    public void cadastrarProduto(Produto novoProduto) {
+    	produtos[posicaoVazia(produtos)] = novoProduto;
     }
     
     public boolean editarProduto(Scanner sc) {
