@@ -92,9 +92,10 @@ public class Menu {
     		
     		switch (resposta) {
     		case "1":
-    			
     			Fornecedor f = this.criarFornecedor(sc);
-    			this.loja.cadastrarFornecedor(f);
+    			if(f != null) {
+    				this.loja.cadastrarFornecedor(f);
+    			}
     			break;
     		case "2":
     			if(loja.editarFornecedor(sc)) {
@@ -115,12 +116,15 @@ public class Menu {
     			loja.mostrarFornecedores(fo);
     			break;
     		case "5":
+    	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
     			loja.mostrarFornecedores(loja.fornecedores);
     			break;
     		case "6":
     			Estoque e = this.criarEstoque(sc);
     			Produto p = this.criarProduto(e, sc);
-    			this.loja.cadastrarProduto(p);
+    			if(p != null) {
+    				this.loja.cadastrarProduto(p);
+    			}
     			break;
     		case "7":
     			if(loja.editarProduto(sc)) {
@@ -138,12 +142,18 @@ public class Menu {
     			break;
     		case "9":
     			Produto[] listaProdutos = loja.consultarProdutos(sc);
-    			loja.mostrarProdutos(listaProdutos);
+    			if(listaProdutos == null) {
+    				System.out.println("\nFalha ao consultar produtos");
+    			} else {
+    				loja.mostrarProdutos(listaProdutos);
+    			}
     			break;
     		case "10":
+    	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
     			loja.mostrarProdutos(loja.produtos);
     			break;
     		case "11":
+    			System.out.println("\n--- Vincular Produto a Fornecedor ---");
     			if(loja.vincularProdutoAFornecedor(sc)) {
     				System.out.println("\nProduto vinculado ao fornecedor com sucesso!");
     			} else {
@@ -158,9 +168,11 @@ public class Menu {
     			}
     			break;
     		case "13":
+    	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
     			loja.mostrarClientes(loja.clientes);
     			break;
     		case "14":
+    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
     			loja.mostrarUsuariosAdmin(loja.usuariosAdmin);
     			break;
     		case "15":

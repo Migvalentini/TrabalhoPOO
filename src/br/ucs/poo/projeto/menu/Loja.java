@@ -4,11 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	int totalUsuarios = 3;
-	int totalFornecedores = 2;
-	int totalProdutos = 3;
-	int totalEstoques = 3;
-	int totalClientes = 3;
+	int totalUsuarios = 100;
+	int totalFornecedores = 100;
+	int totalProdutos = 100;
+	int totalEstoques = 100;
+	int totalClientes = 100;
 	Usuario[] usuariosAdmin = new Usuario[totalUsuarios];
 	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	Produto[] produtos = new Produto[totalProdutos];
@@ -113,16 +113,13 @@ public class Loja {
 		System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
-		try {
-			int codigoBusca = Integer.parseInt(termoBusca);
-			for (Fornecedor fornecedor : fornecedores) {
-		        if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
-		        	listaFornecedores[cont++] = fornecedor;
-		        	break;
-		        }
+		int codigoBusca = Integer.parseInt(termoBusca);
+		for (Fornecedor fornecedor : fornecedores) {
+			if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
+				listaFornecedores[cont++] = fornecedor;
+				break;
 			}
-		} 
-		catch(Exception e) {}
+		}
 		
 		for(Fornecedor fornecedor : fornecedores) {
 			if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
@@ -134,7 +131,6 @@ public class Loja {
     }  
     
     public void mostrarFornecedores(Fornecedor[] listaFornecedores) {
-    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
     	for (Fornecedor fornecedor : listaFornecedores) {
     		if(fornecedor != null) {    			
     			System.out.println(fornecedor.toString());
@@ -247,14 +243,12 @@ public class Loja {
 		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
-		try {
-            int codigoBusca = Integer.parseInt(termoBusca);
-            for (Produto produto : produtos) {
-                if (produto != null && produto.getCodigo() == codigoBusca) {
-                	listaProdutos[cont++] = produto;
-                }
-            }
-        } catch (NumberFormatException e) {}
+		int codigoBusca = Integer.parseInt(termoBusca);
+		for (Produto produto : produtos) {
+			if (produto != null && produto.getCodigo() == codigoBusca) {
+				listaProdutos[cont++] = produto;
+			}
+		}
 		
 		for (Produto produto : produtos) {
 			if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
@@ -266,7 +260,6 @@ public class Loja {
     }
     
     public void mostrarProdutos(Produto[] listaProdutos) {
-    	System.out.println("\n-- Lista de Produtos Cadastrados --");
     	for (int i = 0; i < listaProdutos.length; i++) {
     		if(listaProdutos[i] != null) {    			
     			System.out.println(listaProdutos[i].toString());
@@ -277,7 +270,6 @@ public class Loja {
     
     public boolean vincularProdutoAFornecedor(Scanner sc) {
     	try {
-            System.out.println("\n--- Vincular Produto a Fornecedor ---");
 
             mostrarProdutos(produtos);
             Produto[] resultadosProduto = consultarProdutos(sc);
@@ -369,7 +361,6 @@ public class Loja {
     }
 
     public void mostrarUsuariosAdmin(Usuario[] usuarios) {
-    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
         for (Usuario usuario : usuarios) {
         	if(usuario != null) {
         		System.out.println(usuario.toString());
@@ -415,7 +406,6 @@ public class Loja {
     }
     
     public void mostrarClientes(Cliente[] listaClientes) {
-    	System.out.println("\n-- Lista de Clientes Cadastrados --");
     	for (int i = 0; i < listaClientes.length; i++) {
     		if(listaClientes[i] != null) {    			
     			System.out.println(listaClientes[i].toString());

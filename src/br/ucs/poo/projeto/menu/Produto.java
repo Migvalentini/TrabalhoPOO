@@ -69,7 +69,7 @@ public class Produto {
 	    return codigo + ";" + nome + ";" + descricao + ";" + estoqueStr;
 	}
 
-	public static Produto fromString(String linha) {
+	public Produto fromString(String linha) {
 	    String[] partes = linha.split(";", 6); 
 
 	    int codigo = Integer.parseInt(partes[0]);

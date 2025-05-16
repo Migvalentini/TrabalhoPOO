@@ -71,7 +71,7 @@ public class Pedido {
 	    return codigo + ";" + idCliente + ";" + numero + ";" + dataPedido + ";" + dataEntrega + ";" + situacao;
 	}
 
-	public static Pedido fromString(String linha) {
+	public Pedido fromString(String linha) {
 	    String[] partes = linha.split(";");
 	    int codigo = Integer.parseInt(partes[0]);
 	    int idCliente = Integer.parseInt(partes[1]);

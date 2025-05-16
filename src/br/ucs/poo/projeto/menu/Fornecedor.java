@@ -1,7 +1,5 @@
 package br.ucs.poo.projeto.menu;
 
-import java.util.Scanner;
-
 public class Fornecedor extends Pessoa {
 	private static int ultimoCodigo = 0;
 	private int codigo;
