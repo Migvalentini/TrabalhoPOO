@@ -7,7 +7,7 @@ public class Fornecedor extends Pessoa {
 	private Produto produtos[];
 	
 	public Fornecedor(String nome, String descricao, String telefone, String email, Endereco endereco, Produto produtos[]) {
-        super(nome, telefone, email, endereco); // Chama o construtor da classe Pessoa
+        super(nome, telefone, email, endereco);
         this.codigo = ultimoCodigo++;
         this.descricao = descricao;
         this.produtos = produtos;
@@ -48,8 +48,6 @@ public class Fornecedor extends Pessoa {
             }
         }
     }
-
-	
 	
 	@Override
     public String toString() {
@@ -67,11 +65,12 @@ public class Fornecedor extends Pessoa {
 
         return "\nFornecedor:" +
                 "\n  Código: " + codigo +
-                "\n  " + super.toString() +
+                "\n " + super.toString() +
                 "\n  Descrição: " + descricao +
                 "\n  Produtos:" + produtosStr;
     }
 
+	/*
     @Override
     public String toStringTxt() {
         return super.toStringTxt() + ";" + descricao;
@@ -83,4 +82,5 @@ public class Fornecedor extends Pessoa {
         String descricao = partes[4];
         return new Fornecedor(pessoa.getNome(), descricao, pessoa.getTelefone(), pessoa.getEmail(), pessoa.getEndereco(), null);
     }
+    */
 }

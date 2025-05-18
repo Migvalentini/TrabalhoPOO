@@ -47,9 +47,10 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return "Nome=" + nome + ", Telefone=" + telefone + ", Email=" + email + ", Endereco=" + endereco;
+        return " Nome=" + nome + ",\n  Telefone=" + telefone + ",\n  Email=" + email + ",\n  Endereco=" + endereco;
     }
 
+    /*
     public String toStringTxt() {
         return nome + ";" + telefone + ";" + email + ";" + (endereco != null ? endereco.toStringTxt() : "");
     }
@@ -62,4 +63,5 @@ public class Pessoa {
         Endereco endereco = Endereco.fromString(partes[3]);
         return new Pessoa(nome, telefone, email, endereco);
     }
+    */
 }

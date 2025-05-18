@@ -26,64 +26,75 @@ public class Loja {
     }
     
     public boolean editarFornecedor(Scanner sc) {
-    	while (true) {
-            Fornecedor[] resultados = consultarFornecedores(sc);
-            if (resultados[0] == null) {
-                System.out.println("\nFornecedor não encontrado!");
+        try {
+            System.out.print("Digite o código do fornecedor a ser editado: ");
+            int codigo = sc.nextInt();
+            sc.nextLine();
+
+            Fornecedor fornecedorEncontrado = null;
+            for (Fornecedor f : fornecedores) {
+                if (f != null && f.getCodigo() == codigo) {
+                    fornecedorEncontrado = f;
+                    break;
+                }
+            }
+
+            if (fornecedorEncontrado == null) {
+                System.out.println("\nFornecedor não encontrado com o código informado.");
                 return false;
             }
-            Fornecedor f = resultados[0];
-            System.out.println(f.toString());
+
+            System.out.println("\nFornecedor atual:");
+            System.out.println(fornecedorEncontrado.toString());
             System.out.println("Digite o novo nome do fornecedor (ou deixe em branco para manter): ");
             String nome = sc.nextLine();
-            if (!nome.isEmpty()) f.setNome(nome);
+            if (!nome.isBlank()) fornecedorEncontrado.setNome(nome);
             System.out.println("Digite a nova descrição do fornecedor (ou deixe em branco para manter): ");
             String descricao = sc.nextLine();
-            if (!descricao.isEmpty()) f.setDescricao(descricao);
+            if (!descricao.isBlank()) fornecedorEncontrado.setDescricao(descricao);
             System.out.println("Digite o novo telefone do fornecedor (ou deixe em branco para manter): ");
             String telefone = sc.nextLine();
-            if (!telefone.isEmpty()) f.setTelefone(telefone);
+            if (!telefone.isBlank()) fornecedorEncontrado.setTelefone(telefone);
             System.out.println("Digite o novo email do fornecedor (ou deixe em branco para manter): ");
             String email = sc.nextLine();
-            if (!email.isEmpty()) f.setEmail(email);
-
+            if (!email.isBlank()) fornecedorEncontrado.setEmail(email);
             System.out.print("\nDeseja alterar o endereço? (s/n): ");
             String alterarEndereco = sc.nextLine();
             if (alterarEndereco.equalsIgnoreCase("s")) {
-                try {
-                    if (f.getEndereco() == null) {
-                        f.setEndereco(Endereco.criarEndereco(sc));
-                    } else {
-                        System.out.print("Digite a nova rua (ou deixe em branco para manter): ");
-                        String rua = sc.nextLine();
-                        if (!rua.isEmpty()) f.getEndereco().setRua(rua);
-                        System.out.print("Digite o novo número (ou deixe em branco para manter): ");
-                        String numero = sc.nextLine();
-                        if (!numero.isEmpty()) f.getEndereco().setNumero(numero);
-                        System.out.print("Digite o novo complemento (ou deixe em branco para manter): ");
-                        String complemento = sc.nextLine();
-                        if (!complemento.isEmpty()) f.getEndereco().setComplemento(complemento);
-                        System.out.print("Digite o novo bairro (ou deixe em branco para manter): ");
-                        String bairro = sc.nextLine();
-                        if (!bairro.isEmpty()) f.getEndereco().setBairro(bairro);
-                        System.out.print("Digite o novo cep (ou deixe em branco para manter): ");
-                        String cep = sc.nextLine();
-                        if (!cep.isEmpty()) f.getEndereco().setCep(cep);
-                        System.out.print("Digite a nova cidade (ou deixe em branco para manter): ");
-                        String cidade = sc.nextLine();
-                        if (!cidade.isEmpty()) f.getEndereco().setCidade(cidade);
-                        System.out.print("Digite o novo estado (ou deixe em branco para manter): ");
-                        String estado = sc.nextLine();
-                        if (!estado.isEmpty()) f.getEndereco().setEstado(estado);
-                    }
-                    return true;
-                } catch (Exception e) {
-                    System.out.println("Erro ao editar endereço do fornecedor: " + e.getMessage() + ". Tente novamente.");
-                }
+                System.out.print("Digite a nova rua (ou deixe em branco para manter): ");
+                String rua = sc.nextLine();
+                if (!rua.isBlank()) fornecedorEncontrado.getEndereco().setRua(rua);
+                System.out.print("Digite o novo número (ou deixe em branco para manter): ");
+                String numero = sc.nextLine();
+                if (!numero.isBlank()) fornecedorEncontrado.getEndereco().setNumero(numero);
+                System.out.print("Digite o novo complemento (ou deixe em branco para manter): ");
+                String complemento = sc.nextLine();
+                if (!complemento.isBlank()) fornecedorEncontrado.getEndereco().setComplemento(complemento);
+                System.out.print("Digite o novo bairro (ou deixe em branco para manter): ");
+                String bairro = sc.nextLine();
+                if (!bairro.isBlank()) fornecedorEncontrado.getEndereco().setBairro(bairro);
+                System.out.print("Digite o novo CEP (ou deixe em branco para manter): ");
+                String cep = sc.nextLine();
+                if (!cep.isBlank()) fornecedorEncontrado.getEndereco().setCep(cep);
+                System.out.print("Digite a nova cidade (ou deixe em branco para manter): ");
+                String cidade = sc.nextLine();
+                if (!cidade.isBlank()) fornecedorEncontrado.getEndereco().setCidade(cidade);
+                System.out.print("Digite o novo estado (ou deixe em branco para manter): ");
+                String estado = sc.nextLine();
+                if (!estado.isBlank()) fornecedorEncontrado.getEndereco().setEstado(estado);
             }
+
             return true;
+
+        } catch (InputMismatchException e) {
+            System.out.println("\nErro: Código inválido. Por favor, digite um número.");
+            sc.nextLine();
+            return editarFornecedor(sc);
+        } catch (Exception e) {
+            return false;
         }
     }
+
     
     public boolean excluirFornecedor(Scanner sc) {
     	try {
@@ -91,13 +102,12 @@ public class Loja {
             int codigo = sc.nextInt();
             sc.nextLine();
 
-            for(Fornecedor fornecedor : fornecedores) {
-    			if(fornecedor != null && fornecedor.getCodigo()==codigo) {
-    				fornecedor = null;
-    				return true;
-    			}
-    		}
-            System.out.println("Fornecedor com código " + codigo + " não encontrado.");
+            for (int i = 0; i < fornecedores.length; i++) {
+                if (fornecedores[i] != null && fornecedores[i].getCodigo() == codigo) {
+                	fornecedores[i] = null;
+                    return true;
+                }
+            }
             return false;
         } catch (InputMismatchException e) {
             System.out.println("\nErro: Código inválido. Por favor, digite um número.");
@@ -113,14 +123,15 @@ public class Loja {
 		System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
-		int codigoBusca = Integer.parseInt(termoBusca);
-		for (Fornecedor fornecedor : fornecedores) {
-			if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
-				listaFornecedores[cont++] = fornecedor;
-				break;
+		try {
+			int codigoBusca = Integer.parseInt(termoBusca);
+			for (Fornecedor fornecedor : fornecedores) {
+		        if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
+		        	listaFornecedores[cont++] = fornecedor;
+		        	break;
+		        }
 			}
-		}
-		
+		} catch(Exception e) {}
 		for(Fornecedor fornecedor : fornecedores) {
 			if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
 				listaFornecedores[cont++] = fornecedor;
@@ -128,22 +139,13 @@ public class Loja {
 		}	
     	
     	return listaFornecedores;
-    }  
-    
-    public void mostrarFornecedores(Fornecedor[] listaFornecedores) {
-    	for (Fornecedor fornecedor : listaFornecedores) {
-    		if(fornecedor != null) {    			
-    			System.out.println(fornecedor.toString());
-    			System.out.println(linha());
-    		}
-    	}
     }
     
     ////FORNECEDOR
     
     //PRODUTO
     
-    public void cadastrarProduto(Produto novoProduto) {
+    public void cadastrarProduto(Produto novoProduto, Scanner sc) {
     	produtos[posicaoVazia(produtos)] = novoProduto;
     }
     
@@ -151,7 +153,6 @@ public class Loja {
     	try {    		
     		Produto[] resultados = consultarProdutos(sc);
     	    if (resultados[0] == null) {
-    	        System.out.println("\nProduto não encontrado!");
     	        return false;
     	    }
     	    Produto p = resultados[0];
@@ -192,7 +193,6 @@ public class Loja {
     	try {
             Produto[] resultados = consultarProdutos(sc);
             if (resultados[0] == null) {
-                System.out.println("\nProduto não encontrado!");
                 return false;
             }
             Produto p = resultados[0];
@@ -221,13 +221,12 @@ public class Loja {
             int codigo = sc.nextInt();
             sc.nextLine();
 
-            for(Produto produto : produtos) {
-    			if(produto != null && produto.getCodigo()==codigo) {
-    				produto = null;
-    				return true;
-    			}
-    		}
-            System.out.println("Produto com código " + codigo + " não encontrado.");
+            for (int i = 0; i < produtos.length; i++) {
+                if (produtos[i] != null && produtos[i].getCodigo() == codigo) {
+                    produtos[i] = null;
+                    return true;
+                }
+            }
             return false;
         } catch (InputMismatchException e) {
             System.out.println("\nErro: Código inválido. Por favor, digite um número.");
@@ -243,13 +242,14 @@ public class Loja {
 		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
-		int codigoBusca = Integer.parseInt(termoBusca);
-		for (Produto produto : produtos) {
-			if (produto != null && produto.getCodigo() == codigoBusca) {
-				listaProdutos[cont++] = produto;
-			}
-		}
-		
+		try {
+            int codigoBusca = Integer.parseInt(termoBusca);
+            for (Produto produto : produtos) {
+                if (produto != null && produto.getCodigo() == codigoBusca) {
+                	listaProdutos[cont++] = produto;
+                }
+            }
+        } catch (NumberFormatException e) {}
 		for (Produto produto : produtos) {
 			if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
 				listaProdutos[cont++] = produto;
@@ -258,56 +258,28 @@ public class Loja {
 		
 		return listaProdutos;
     }
-    
-    public void mostrarProdutos(Produto[] listaProdutos) {
-    	for (int i = 0; i < listaProdutos.length; i++) {
-    		if(listaProdutos[i] != null) {    			
-    			System.out.println(listaProdutos[i].toString());
-    			System.out.println(linha());
-    		}
-    	}
-    }
-    
-    public boolean vincularProdutoAFornecedor(Scanner sc) {
-    	try {
 
-            mostrarProdutos(produtos);
-            Produto[] resultadosProduto = consultarProdutos(sc);
-            if (resultadosProduto[0] == null) {
-                System.out.println("\nProduto não encontrado.");
-                return false;
+    public boolean vincularProdutoAFornecedor(Produto p, Scanner sc) {
+    	mostrarObjetos(fornecedores);
+        
+        System.out.print("Digite o código do fornecedor: ");
+        int codigoFornecedor = sc.nextInt();
+        sc.nextLine();
+
+        Fornecedor fornecedorSelecionado = null;
+        for (Fornecedor f : fornecedores) {
+            if (f != null && f.getCodigo() == codigoFornecedor) {
+                fornecedorSelecionado = f;
+                break;
             }
-            Produto p = resultadosProduto[0];
-
-            mostrarFornecedores(fornecedores);
-
-            System.out.print("Digite o código do fornecedor: ");
-            int codigoFornecedor = sc.nextInt();
-            sc.nextLine();
-
-            Fornecedor fornecedorSelecionado = null;
-            for (Fornecedor f : fornecedores) {
-                if (f != null && f.getCodigo() == codigoFornecedor) {
-                    fornecedorSelecionado = f;
-                    break;
-                }
-            }
-
-            if (fornecedorSelecionado == null) {
-                System.out.println("\nFornecedor não encontrado.");
-                return false;
-            }
-
-            fornecedorSelecionado.adicionarProduto(p);
-            return true;
-        } catch (InputMismatchException e) {
-            System.out.println("\nErro: Código inválido. Por favor, digite um número.");
-            sc.nextLine();
-            return vincularProdutoAFornecedor(sc);
-        } catch (Exception e) {
-            System.out.println("Erro ao vincular produto ao fornecedor: " + e.getMessage() + ". Tente novamente.");
-            return vincularProdutoAFornecedor(sc);
         }
+
+        if (fornecedorSelecionado == null) {
+            return false;
+        }
+
+        fornecedorSelecionado.adicionarProduto(p);
+        return true;
     }
     
     ////PRODUTO
@@ -316,8 +288,6 @@ public class Loja {
     
     public boolean cadastrarUsuarioAdmin(Scanner sc) {
         try {
-            System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
-
             System.out.print("Escolha um login: ");
             String login = sc.nextLine();
             System.out.print("Escolha uma senha: ");
@@ -359,27 +329,18 @@ public class Loja {
     	
         return null;
     }
-
-    public void mostrarUsuariosAdmin(Usuario[] usuarios) {
-        for (Usuario usuario : usuarios) {
-        	if(usuario != null) {
-        		System.out.println(usuario.toString());
-        		System.out.println(linha());
-        	}
-        }
-    }
  
     public boolean excluirUsuarioAdmin(Scanner sc) {
     	try {
             System.out.print("Digite o usuário a ser excluído: ");
             String user = sc.nextLine();
 
-            for(Usuario usuario : usuariosAdmin) {
-        		if(usuario != null && usuario.getUsuario().equals(user) && !"admin".equals(user)) {
-        			usuario = null;
-        			return true;
-        		}
-        	}
+            for (int i = 0; i < usuariosAdmin.length; i++) {
+            	if(usuariosAdmin[i] != null && usuariosAdmin[i].getUsuario().equals(user) && !"admin".equals(user)) {
+                	usuariosAdmin[i] = null;
+                    return true;
+                }
+            }
             System.out.println("Usuário " + user + " não encontrado ou não pode ser excluído.");
             return false;
         } catch (Exception e) {
@@ -388,30 +349,20 @@ public class Loja {
         }
     }
     
-    public boolean cadastrarCliente(Scanner sc) {
-        try {
-            System.out.println("\n--- Cadastro de Cliente ---");
-            Cliente novoCliente = Cliente.criarCliente(sc, this);
-            if (novoCliente != null) {
-                clientes[posicaoVazia(clientes)] = novoCliente;
-                return true;
-            } else {
-                System.out.println("Falha ao criar cliente.");
-                return cadastrarCliente(sc);
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao cadastrar cliente: " + e.getMessage() + ". Tente novamente.");
-            return cadastrarCliente(sc);
-        }
+    public void cadastrarCliente(Cliente novoCliente) {
+    	clientes[posicaoVazia(clientes)] = novoCliente;
     }
     
-    public void mostrarClientes(Cliente[] listaClientes) {
-    	for (int i = 0; i < listaClientes.length; i++) {
-    		if(listaClientes[i] != null) {    			
-    			System.out.println(listaClientes[i].toString());
-    			System.out.println(linha());
-    		}
-    	}
+    public boolean clienteJaCadastrado(Usuario usuario) {
+    	for (Cliente cliente : clientes) {
+            if(cliente != null) {
+            	Usuario usuarioCliente = cliente.getUsuario();
+            	if(usuarioCliente != null && (usuarioCliente.getUsuario().equals(usuario.getUsuario()))) {
+            		return true;
+            	}
+            }
+        }
+    	return false;
     }
     
     //USUARIO
@@ -487,6 +438,15 @@ public class Loja {
             }
         }
         return -1; 
+    }
+    
+    public <T> void mostrarObjetos(T[] objetos) {
+        for (T obj : objetos) {
+            if (obj != null) {
+                System.out.println(obj.toString());
+                System.out.println(linha());
+            }
+        }
     }
     
     public String linha() {

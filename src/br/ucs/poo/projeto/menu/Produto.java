@@ -64,6 +64,7 @@ public class Produto {
 	    return sb.toString();
 	}
 	
+	/*
 	public String toStringTxt() {
 	    String estoqueStr = (estoque != null) ? estoque.toStringTxt() : "null";
 	    return codigo + ";" + nome + ";" + descricao + ";" + estoqueStr;
@@ -85,5 +86,5 @@ public class Produto {
 
 	    return produto;
 	}
-
+	*/
 }

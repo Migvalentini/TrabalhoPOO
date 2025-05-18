@@ -1,7 +1,6 @@
 package br.ucs.poo.projeto.menu;
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
@@ -41,43 +40,14 @@ public class Cliente extends Pessoa {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	public static Cliente criarCliente(Scanner sc, Loja loja) {
-		try {
- 			System.out.println("Nome do cliente:");
-			String nome = sc.nextLine();
-			System.out.println("Telefone:");
-			String telefone = sc.nextLine();
-			System.out.println("Email:");
-			String email = sc.nextLine();
-			System.out.println("Cartão de Crédito:");
-			String cartaoCredito = sc.nextLine();
-			Endereco endereco = Endereco.criarEndereco(sc);
-			Usuario usuario = Usuario.criarUsuario(sc, TipoUsuario.CLIENTE);
-			
-			for (Cliente cliente : loja.clientes) {
-	            if(cliente != null) {
-	            	Usuario usuarioCliente = cliente.getUsuario();
-	            	if(usuarioCliente != null && (usuarioCliente.getUsuario().equals(usuario.getUsuario()))) {
-	            		System.out.println("Usuário já utilizado!");
-	            		return null;
-	            	}
-	            }
-	        }
-			
-			return new Cliente(nome, telefone, email, cartaoCredito, endereco, null, usuario);
-		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar cliente: " + ex);
-			return null;
-		}
-    }
 
 	@Override
     public String toString() {
         return "Cliente:\nCódigo=" + codigo + ", " + super.toString() + ", CartãoCrédito=" + cartaoCredito + ", Pedidos=" + Arrays.toString(pedidos) +
                 "\n" + usuario.toString();
     }
-
+	
+	/*
     @Override
     public String toStringTxt() {
         return super.toStringTxt() + ";" + cartaoCredito;
@@ -91,4 +61,5 @@ public class Cliente extends Pessoa {
 
         return new Cliente(pessoa.getNome(), pessoa.getTelefone(), pessoa.getEmail(), cartaoCredito, pessoa.getEndereco(), new Pedido[0], usuario);
     }
+    */
 }

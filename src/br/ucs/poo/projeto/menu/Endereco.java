@@ -1,7 +1,5 @@
 package br.ucs.poo.projeto.menu;
 
-import java.util.Scanner;
-
 public class Endereco {
 	private String rua;
 	private String numero;
@@ -76,44 +74,21 @@ public class Endereco {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	public static Endereco criarEndereco(Scanner sc) {
-		try {			
-			System.out.println("Rua:");
-			String rua = sc.nextLine();
-			System.out.println("Número:");
-			String numero = sc.nextLine();
-			System.out.println("Complemento:");
-			String complemento = sc.nextLine();
-			System.out.println("Bairro:");
-			String bairro = sc.nextLine();
-			System.out.println("CEP:");
-			String cep = sc.nextLine();
-			System.out.println("Cidade:");
-			String cidade = sc.nextLine();
-			System.out.println("Estado:");
-			String estado = sc.nextLine();
-			
-			return new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
-		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar endereço: " + ex);
-			return null;
-		}
-    }
 
 	@Override
 	public String toString() {
-	    return "Endereço {" +
-	           "\n  Rua: " + rua +
-	           "\n  Número: " + numero +
-	           "\n  Complemento: " + complemento +
-	           "\n  Bairro: " + bairro +
-	           "\n  CEP: " + cep +
-	           "\n  Cidade: " + cidade +
-	           "\n  Estado: " + estado +
-	           "\n}";
+	    return "  Endereço {" +
+	           "Rua: " + rua +
+	           " Número: " + numero +
+	           " Complemento: " + complemento +
+	           " Bairro: " + bairro +
+	           " CEP: " + cep +
+	           " Cidade: " + cidade +
+	           " Estado: " + estado +
+	           "}";
 	}
 	
+	/*
 	public String toStringTxt() {
         return rua + "," + numero + "," + complemento + "," + bairro + "," + cep + "," + cidade + "," + estado;
     }
@@ -122,4 +97,5 @@ public class Endereco {
         String[] partes = texto.split(",");
         return new Endereco(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5], partes[6]);
     }
+    */
 }

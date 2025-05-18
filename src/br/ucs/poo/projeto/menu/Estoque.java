@@ -35,7 +35,7 @@ public class Estoque {
 	    
 	    return sb.toString();
 	}
-	
+	/*
 	public String toStringTxt() {
 	    return quantidade + ";" + preco;
 	}
@@ -46,5 +46,5 @@ public class Estoque {
 	    double preco = Double.parseDouble(partes[1]);
 	    return new Estoque(quantidade, preco);
 	}
-
+	*/
 }

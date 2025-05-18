@@ -33,13 +33,11 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				System.out.println("\n--- Cadastro de Fornecedor ---");
-				if(m.loja.cadastrarCliente(sc)) {
-					System.out.println("\nCliente cadastrado com sucesso!");
-				} else {
-					System.out.println("\nErro no cadastro do cliente!");
+				Cliente c = m.criarCliente(sc);
+				if(c != null) {
+					m.loja.cadastrarCliente(c);
 				}
-				break;
+    			break;
 			case "2":
 				m.realizarLogin(sc);
 				break;
@@ -76,14 +74,13 @@ public class Menu {
     		System.out.println(" 8 - Excluir produto");
     		System.out.println(" 9 - Consultar produtos por código/nome");
     		System.out.println("10 - Mostrar todos produtos");
-    		System.out.println("11 - Vincular produto a um fornecedor");
-    		System.out.println("12 - Editar estoque de produto");
+    		System.out.println("11 - Editar estoque de produto");
     		System.out.println("\n-- Clientes --");
-    		System.out.println("13 - Mostrar todos clientes");
+    		System.out.println("12 - Mostrar todos clientes");
     		System.out.println("\n-- Usuários Admin --");
-    		System.out.println("14 - Mostrar todos usuários");
-    		System.out.println("15 - Cadastrar usuário");
-    		System.out.println("16 - Excluir usuário");
+    		System.out.println("13 - Mostrar todos usuários");
+    		System.out.println("14 - Cadastrar usuário");
+    		System.out.println("15 - Excluir usuário");
     		System.out.println("\n99 - Facilitar testes");
     		System.out.println(" 0 - Voltar ao menu principal");
     		System.out.print("Opção: ");
@@ -95,6 +92,7 @@ public class Menu {
     			Fornecedor f = this.criarFornecedor(sc);
     			if(f != null) {
     				this.loja.cadastrarFornecedor(f);
+    				System.out.println("\nFornecedor Cadastrado com Sucesso!");
     			}
     			break;
     		case "2":
@@ -113,17 +111,20 @@ public class Menu {
     			break;
     		case "4":
     			Fornecedor[] fo = loja.consultarFornecedores(sc);
-    			loja.mostrarFornecedores(fo);
+    			loja.mostrarObjetos(fo);
     			break;
     		case "5":
     	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
-    			loja.mostrarFornecedores(loja.fornecedores);
+    			loja.mostrarObjetos(loja.fornecedores);
     			break;
     		case "6":
     			Estoque e = this.criarEstoque(sc);
     			Produto p = this.criarProduto(e, sc);
     			if(p != null) {
-    				this.loja.cadastrarProduto(p);
+    				this.loja.cadastrarProduto(p, sc);
+    				System.out.println("\nProduto Cadastrado com Sucesso!");
+    			} else {
+    				System.out.println("\nErro ao Cadastrar Produto!");
     			}
     			break;
     		case "7":
@@ -137,7 +138,7 @@ public class Menu {
     			if(loja.excluirProduto(sc)) {
     				System.out.println("\nProduto excluído com sucesso!");
     			} else {
-    				System.out.println("\nFalha ao excluir produto");
+    				System.out.println("\nProduto com código informado não encontrado.");
     			}
     			break;
     		case "9":
@@ -145,45 +146,38 @@ public class Menu {
     			if(listaProdutos == null) {
     				System.out.println("\nFalha ao consultar produtos");
     			} else {
-    				loja.mostrarProdutos(listaProdutos);
+    				loja.mostrarObjetos(listaProdutos);
     			}
     			break;
     		case "10":
     	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
-    			loja.mostrarProdutos(loja.produtos);
+    			loja.mostrarObjetos(loja.produtos);
     			break;
     		case "11":
-    			System.out.println("\n--- Vincular Produto a Fornecedor ---");
-    			if(loja.vincularProdutoAFornecedor(sc)) {
-    				System.out.println("\nProduto vinculado ao fornecedor com sucesso!");
-    			} else {
-    				System.out.println("\nErro ao vincular produto ao fornecedor");
-    			}
-    			break;
-    		case "12":
     			if(loja.editarEstoqueProduto(sc)) {
     				System.out.println("\nEstoque editado com sucesso");
     			} else {
     				System.out.println("\nErro ao editar o estoque do produto");
     			}
     			break;
-    		case "13":
+    		case "12":
     	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
-    			loja.mostrarClientes(loja.clientes);
+    			loja.mostrarObjetos(loja.clientes);
+    			break;
+    		case "13":
+    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
+    			loja.mostrarObjetos(loja.usuariosAdmin);
     			break;
     		case "14":
-    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
-    			loja.mostrarUsuariosAdmin(loja.usuariosAdmin);
-    			break;
-    		case "15":
+    			System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
     			if(loja.cadastrarUsuarioAdmin(sc)) {
-    				System.out.println("\nUsuário admin cadastrado com sucesso!");
+    				System.out.println("\nUsuário admin Cadastrado com Sucesso!");
     			}
     			else {
     				System.out.println("\nErro no cadastro de usuário admin");
     			}
     			break;
-    		case "16":
+    		case "15":
     			if(loja.excluirUsuarioAdmin(sc)) {
     				System.out.println("\nUsuário excluído com sucesso!");
     			} else {
@@ -203,7 +197,7 @@ public class Menu {
     			break;  
     		case "0":
     			continuar = false;
-    			System.out.println("\nSaindo do acesso de adminstrador...");
+    			System.out.println("\nSaindo do acesso de administrador...");
     			break;
     		default:
     			System.out.println("\nOpção inválida.");
@@ -227,11 +221,11 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				loja.mostrarProdutos(loja.produtos);
+				loja.mostrarObjetos(loja.produtos);
 				break;
 			case "2":
 				Produto[] listaProdutos = loja.consultarProdutos(sc);
-    			loja.mostrarProdutos(listaProdutos);
+    			loja.mostrarObjetos(listaProdutos);
     			break;
 			case "0":
 				continuar = false;
@@ -263,6 +257,7 @@ public class Menu {
     }
     
     public Fornecedor criarFornecedor(Scanner sc) {
+    	System.out.println("\n--- Cadastro de Fornecedor ---");
 		try {
 			System.out.println("Nome do fornecedor:");
 			String nome = sc.nextLine();
@@ -272,7 +267,7 @@ public class Menu {
 			String telefone = sc.nextLine();
 			System.out.println("Email:");
 			String email = sc.nextLine();
-			Endereco endereco = Endereco.criarEndereco(sc);
+			Endereco endereco = criarEndereco(sc);
 			
 			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
 		} catch(Exception ex) {
@@ -282,13 +277,20 @@ public class Menu {
     }
     
     public Produto criarProduto(Estoque estoque, Scanner sc) {
+    	System.out.println("\n--- Cadastro de Produto ---");
 		try {			
 			System.out.println("Nome do produto:");
 			String nome = sc.nextLine();
 			System.out.println("Descrição:");
 			String descricao = sc.nextLine();
 			
-			return new Produto(nome, descricao, estoque);
+			Produto p = new Produto(nome, descricao, estoque);
+			
+			if(!loja.vincularProdutoAFornecedor(p, sc)) {
+				return null;
+			}
+			
+            return p;
 		} catch(Exception ex) {
 			System.out.println("Erro ao cadastrar produto: " + ex);
 			return null;
@@ -296,6 +298,7 @@ public class Menu {
     }
     
     public Estoque criarEstoque(Scanner sc) {
+    	System.out.println("\n--- Cadastro de Estoque ---");
 		try {
 			System.out.println("Quantidade:");
 			int quantidade = sc.nextInt();
@@ -307,6 +310,72 @@ public class Menu {
 		} catch (Exception ex) {
 			System.out.println("Erro ao cadastrar estoque: " + ex);
 			sc.nextLine();
+			return null;
+		}
+    }
+    
+    public Cliente criarCliente(Scanner sc) {
+    	System.out.println("\n--- Cadastro de Cliente ---");
+		try {
+ 			System.out.println("Nome do cliente:");
+			String nome = sc.nextLine();
+			System.out.println("Telefone:");
+			String telefone = sc.nextLine();
+			System.out.println("Email:");
+			String email = sc.nextLine();
+			System.out.println("Cartão de Crédito:");
+			String cartaoCredito = sc.nextLine();
+			Endereco endereco = criarEndereco(sc);
+			Usuario usuario = criarUsuario(sc, TipoUsuario.CLIENTE);
+			
+			if(loja.clienteJaCadastrado(usuario)) {
+				System.out.println("Usuário já utilizado!");
+				return null;
+			}
+			
+			return new Cliente(nome, telefone, email, cartaoCredito, endereco, null, usuario);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar cliente: " + ex);
+			return null;
+		}
+    }
+    
+    public Endereco criarEndereco(Scanner sc) {
+    	System.out.println("\n--- Cadastro de Endereço ---");
+		try {			
+			System.out.println("Rua:");
+			String rua = sc.nextLine();
+			System.out.println("Número:");
+			String numero = sc.nextLine();
+			System.out.println("Complemento:");
+			String complemento = sc.nextLine();
+			System.out.println("Bairro:");
+			String bairro = sc.nextLine();
+			System.out.println("CEP:");
+			String cep = sc.nextLine();
+			System.out.println("Cidade:");
+			String cidade = sc.nextLine();
+			System.out.println("Estado:");
+			String estado = sc.nextLine();
+			
+			return new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar endereço: " + ex);
+			return null;
+		}
+    }
+    
+    public Usuario criarUsuario(Scanner sc, TipoUsuario tipo) {
+    	System.out.println("\n--- Cadastro de Usuário ---");
+		try {			
+			System.out.println("Usuário:");
+			String usuario = sc.nextLine();
+			System.out.println("Senha:");
+			String senha = sc.nextLine();
+			
+			return new Usuario(usuario, senha, tipo);
+		} catch(Exception ex) {
+			System.out.println("Erro ao cadastrar endereço: " + ex);
 			return null;
 		}
     }
