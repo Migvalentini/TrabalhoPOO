@@ -131,7 +131,9 @@ public class Loja {
 		        	break;
 		        }
 			}
-		} catch(Exception e) {}
+		} catch(Exception e) {
+			return null;
+		}
 		for(Fornecedor fornecedor : fornecedores) {
 			if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
 				listaFornecedores[cont++] = fornecedor;
@@ -249,7 +251,9 @@ public class Loja {
                 	listaProdutos[cont++] = produto;
                 }
             }
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        	return null;
+        }
 		for (Produto produto : produtos) {
 			if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
 				listaProdutos[cont++] = produto;

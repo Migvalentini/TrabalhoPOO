@@ -93,6 +93,8 @@ public class Menu {
     			if(f != null) {
     				this.loja.cadastrarFornecedor(f);
     				System.out.println("\nFornecedor Cadastrado com Sucesso!");
+    			} else {
+    				System.out.println("\nErro ao Cadastrar Fornecedor!");
     			}
     			break;
     		case "2":
@@ -271,7 +273,7 @@ public class Menu {
 			
 			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
 		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar fornecedor: " + ex);
+			System.out.println("\nErro ao cadastrar fornecedor" + ex);
 			return null;
 		}
     }
@@ -292,7 +294,6 @@ public class Menu {
 			
             return p;
 		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar produto: " + ex);
 			return null;
 		}
     }
