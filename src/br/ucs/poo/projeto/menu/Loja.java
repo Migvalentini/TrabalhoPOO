@@ -4,11 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	int totalUsuarios = 100;
-	int totalFornecedores = 100;
-	int totalProdutos = 100;
-	int totalEstoques = 100;
-	int totalClientes = 100;
+	int totalUsuarios = 1;
+	int totalFornecedores = 1;
+	int totalProdutos = 1;
+	int totalEstoques = 1;
+	int totalClientes = 1;
 	Usuario[] usuariosAdmin = new Usuario[totalUsuarios];
 	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	Produto[] produtos = new Produto[totalProdutos];
@@ -21,8 +21,14 @@ public class Loja {
 	
 	//FORNECEDOR
 	
-    public void cadastrarFornecedor(Fornecedor novoFornecedor) {
-    	fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
+    public boolean cadastrarFornecedor(Fornecedor novoFornecedor) {
+    	 try {    		 
+    		 fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
+    		 return true;
+    	 } catch(IndexOutOfBoundsException iobe) {
+    		 return false;
+    	 }
+    	
     }
     
     public boolean editarFornecedor(Scanner sc) {
@@ -147,9 +153,15 @@ public class Loja {
     
     //PRODUTO
     
-    public void cadastrarProduto(Produto novoProduto, Scanner sc) {
-    	produtos[posicaoVazia(produtos)] = novoProduto;
-    }
+    public boolean cadastrarProduto(Produto novoProduto, Scanner sc) {
+   	 try {    		 
+   		 produtos[posicaoVazia(produtos)] = novoProduto;
+   		 return true;
+   	 } catch(IndexOutOfBoundsException iobe) {
+   		 return false;
+   	 }
+   	
+   }
     
     public boolean editarProduto(Scanner sc) {
     	try {    		
@@ -307,8 +319,7 @@ public class Loja {
             usuariosAdmin[posicaoVazia(usuariosAdmin)] = new Usuario(login, senha, TipoUsuario.ADMIN);
             return true;
         } catch (Exception e) {
-            System.out.println("Erro ao cadastrar administrador: " + e.getMessage() + ". Tente novamente.");
-            return cadastrarUsuarioAdmin(sc);
+            return false;
         }
     }
     
@@ -353,11 +364,17 @@ public class Loja {
         }
     }
     
-    public void cadastrarCliente(Cliente novoCliente) {
-    	clientes[posicaoVazia(clientes)] = novoCliente;
-    }
+    public boolean cadastrarCliente(Cliente novoCliente) {
+   	 try {    		 
+   		 clientes[posicaoVazia(clientes)] = novoCliente;
+   		 return true;
+   	 } catch(IndexOutOfBoundsException iobe) {
+   		 return false;
+   	 }
+   	
+   }
     
-    public boolean clienteJaCadastrado(Usuario usuario) {
+    public boolean isClienteJaCadastrado(Usuario usuario) {
     	for (Cliente cliente : clientes) {
             if(cliente != null) {
             	Usuario usuarioCliente = cliente.getUsuario();

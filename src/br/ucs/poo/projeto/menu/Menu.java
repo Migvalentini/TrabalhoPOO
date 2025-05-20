@@ -34,8 +34,10 @@ public class Menu {
 			switch (resposta) {
 			case "1":
 				Cliente c = m.criarCliente(sc);
-				if(c != null) {
-					m.loja.cadastrarCliente(c);
+				if(c != null && m.loja.cadastrarCliente(c)) {
+					System.out.println("\nCliente cadastrado com sucesso!");
+				} else {
+					System.out.println("\nFalha ao cadastrar cliente!");
 				}
     			break;
 			case "2":
@@ -90,8 +92,7 @@ public class Menu {
     		switch (resposta) {
     		case "1":
     			Fornecedor f = this.criarFornecedor(sc);
-    			if(f != null) {
-    				this.loja.cadastrarFornecedor(f);
+    			if(f != null && this.loja.cadastrarFornecedor(f)) {
     				System.out.println("\nFornecedor Cadastrado com Sucesso!");
     			} else {
     				System.out.println("\nErro ao Cadastrar Fornecedor!");
@@ -122,8 +123,7 @@ public class Menu {
     		case "6":
     			Estoque e = this.criarEstoque(sc);
     			Produto p = this.criarProduto(e, sc);
-    			if(p != null) {
-    				this.loja.cadastrarProduto(p, sc);
+    			if(p != null && this.loja.cadastrarProduto(p, sc)) {
     				System.out.println("\nProduto Cadastrado com Sucesso!");
     			} else {
     				System.out.println("\nErro ao Cadastrar Produto!");
@@ -223,6 +223,7 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
+				System.out.println("\n-- Lista de Produtos Cadastrados --");
 				loja.mostrarObjetos(loja.produtos);
 				break;
 			case "2":
@@ -329,7 +330,7 @@ public class Menu {
 			Endereco endereco = criarEndereco(sc);
 			Usuario usuario = criarUsuario(sc, TipoUsuario.CLIENTE);
 			
-			if(loja.clienteJaCadastrado(usuario)) {
+			if(loja.isClienteJaCadastrado(usuario)) {
 				System.out.println("Usuário já utilizado!");
 				return null;
 			}
