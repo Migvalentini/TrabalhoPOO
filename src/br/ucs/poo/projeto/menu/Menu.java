@@ -122,6 +122,9 @@ public class Menu {
     			break;
     		case "6":
     			Estoque e = this.criarEstoque(sc);
+    			if(e == null) {
+    				break;
+    			}
     			Produto p = this.criarProduto(e, sc);
     			if(p != null && this.loja.cadastrarProduto(p, sc)) {
     				System.out.println("\nProduto Cadastrado com Sucesso!");
