@@ -4,11 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	int totalUsuarios = 1;
-	int totalFornecedores = 1;
-	int totalProdutos = 1;
-	int totalEstoques = 1;
-	int totalClientes = 1;
+	int totalUsuarios = 100;
+	int totalFornecedores = 100;
+	int totalProdutos = 100;
+	int totalEstoques = 100;
+	int totalClientes = 100;
 	Usuario[] usuariosAdmin = new Usuario[totalUsuarios];
 	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
 	Produto[] produtos = new Produto[totalProdutos];
