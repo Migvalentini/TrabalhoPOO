@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto.menu;
+package br.ucs.poo.projeto;
 
 //import java.io.File;
 //import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ public class Menu {
 			System.out.println("\n" + m.loja.linha() + "\n         Menu Principal\n" + m.loja.linha());
 			System.out.println(" 1 - Realizar Cadastro");
 			System.out.println(" 2 - Realizar Login");
-			System.out.println("99 - Facilitar testes");
+			//System.out.println("99 - Facilitar testes");
 			System.out.println(" 0 - Sair");
 			System.out.print("Opção: ");
 			
@@ -43,9 +43,9 @@ public class Menu {
 			case "2":
 				m.realizarLogin(sc);
 				break;
-			case "99":
+			/*case "99":
 				m.menuAdministrador(sc);
-				break;
+				break;*/
 			case "0":
 				continuar = false;
 				System.out.println("\nEncerrando sistema...");
@@ -77,13 +77,14 @@ public class Menu {
     		System.out.println(" 9 - Consultar produtos por código/nome");
     		System.out.println("10 - Mostrar todos produtos");
     		System.out.println("11 - Editar estoque de produto");
+    		System.out.println("12 - Alterar fornecedor do produto");
     		System.out.println("\n-- Clientes --");
-    		System.out.println("12 - Mostrar todos clientes");
+    		System.out.println("13 - Mostrar todos clientes");
     		System.out.println("\n-- Usuários Admin --");
-    		System.out.println("13 - Mostrar todos usuários");
     		System.out.println("14 - Cadastrar usuário");
-    		System.out.println("15 - Excluir usuário");
-    		System.out.println("\n99 - Facilitar testes");
+    		System.out.println("15 - Mostrar todos usuários");
+    		System.out.println("16 - Excluir usuário");
+    		//System.out.println("\n99 - Facilitar testes");
     		System.out.println(" 0 - Voltar ao menu principal");
     		System.out.print("Opção: ");
     		
@@ -166,12 +167,15 @@ public class Menu {
     			}
     			break;
     		case "12":
-    	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
-    			loja.mostrarObjetos(loja.clientes);
+    			if(loja.editarFornecedorProduto(sc)) {
+    				System.out.println("\nFornecedor do produto editado com sucesso");
+    			} else {
+    				System.out.println("\nErro ao editar o fornecedor do produto");
+    			}
     			break;
     		case "13":
-    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
-    			loja.mostrarObjetos(loja.usuariosAdmin);
+    	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
+    			loja.mostrarObjetos(loja.clientes);
     			break;
     		case "14":
     			System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
@@ -183,6 +187,10 @@ public class Menu {
     			}
     			break;
     		case "15":
+    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
+    			loja.mostrarObjetos(loja.usuariosAdmin);
+    			break;
+    		case "16":
     			if(loja.excluirUsuarioAdmin(sc)) {
     				System.out.println("\nUsuário excluído com sucesso!");
     			} else {
@@ -190,7 +198,7 @@ public class Menu {
     			}
     			
     			break;
-    		case "99":
+    		/*case "99":
     			Produto p1 = new Produto("nome1", "descrição", new Estoque(0, 0));
     			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
     			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
@@ -199,7 +207,7 @@ public class Menu {
     			loja.produtos[loja.posicaoVazia(loja.produtos)] = p2;
     			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone1", "email1", "cartao1", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE));
     			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone2", "email2", "cartao2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null, new Usuario("cliente2", "senha", TipoUsuario.CLIENTE));
-    			break;  
+    			break;*/
     		case "0":
     			continuar = false;
     			System.out.println("\nSaindo do acesso de administrador...");
@@ -216,7 +224,7 @@ public class Menu {
     	
     	while (continuar) {
 	    	System.out.println("\n" + loja.linha() + "\n     Menu de Cliente\n" + loja.linha());
-	    	System.out.println("\n-- Produtos --");
+	    	//System.out.println("\n-- Produtos --");
 			System.out.println(" 1 - Consultar todos produtos");
 			System.out.println(" 2 - Consultar produtos por código/nome");
 	    	System.out.println(" 0 - Voltar ao menu principal");

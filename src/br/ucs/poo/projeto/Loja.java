@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto.menu;
+package br.ucs.poo.projeto;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -104,6 +104,7 @@ public class Loja {
     
     public boolean excluirFornecedor(Scanner sc) {
     	try {
+    		mostrarObjetos(fornecedores);
             System.out.print("Digite o código do fornecedor a ser excluído: ");
             int codigo = sc.nextInt();
             sc.nextLine();
@@ -160,11 +161,11 @@ public class Loja {
    	 } catch(IndexOutOfBoundsException iobe) {
    		 return false;
    	 }
-   	
    }
     
     public boolean editarProduto(Scanner sc) {
-    	try {    		
+    	try {   
+    		mostrarObjetos(produtos);
     		Produto[] resultados = consultarProdutos(sc);
     	    if (resultados[0] == null) {
     	        return false;
@@ -205,6 +206,7 @@ public class Loja {
 
     public boolean editarEstoqueProduto(Scanner sc) {
     	try {
+    		mostrarObjetos(produtos);
             Produto[] resultados = consultarProdutos(sc);
             if (resultados[0] == null) {
                 return false;
@@ -231,17 +233,33 @@ public class Loja {
     
     public boolean excluirProduto(Scanner sc) {
     	try {
-            System.out.print("Digite o código do produto a ser excluído: ");
+    		mostrarObjetos(produtos);
+    		System.out.print("Digite o código do produto a ser excluído: ");
             int codigo = sc.nextInt();
             sc.nextLine();
 
+            Produto produtoRemovido = null;
+
             for (int i = 0; i < produtos.length; i++) {
                 if (produtos[i] != null && produtos[i].getCodigo() == codigo) {
+                    produtoRemovido = produtos[i];
                     produtos[i] = null;
-                    return true;
+                    break;
                 }
             }
-            return false;
+
+            if (produtoRemovido == null) {
+                return false;
+            }
+
+            for (Fornecedor fornecedor : fornecedores) {
+                if (fornecedor != null) {
+                    fornecedor.removerProduto(produtoRemovido);
+                }
+            }
+
+            return true;
+
         } catch (InputMismatchException e) {
             System.out.println("\nErro: Código inválido. Por favor, digite um número.");
             sc.nextLine();
@@ -298,6 +316,74 @@ public class Loja {
         return true;
     }
     
+    public boolean editarFornecedorProduto(Scanner sc) {
+        try {
+            System.out.println("\nProdutos disponíveis:");
+            mostrarObjetos(produtos);
+
+            Produto[] resultadosProdutos = consultarProdutos(sc);
+            if (resultadosProdutos == null || resultadosProdutos[0] == null) {
+                System.out.println("Produto não encontrado.");
+                return false;
+            }
+            Produto produtoSelecionado = resultadosProdutos[0];
+
+            Fornecedor fornecedorAtual = null;
+            for (Fornecedor f : fornecedores) {
+                if (f != null && f.getProdutos() != null) {
+                    for (Produto p : f.getProdutos()) {
+                        if (p != null && p.getCodigo() == produtoSelecionado.getCodigo()) {
+                            fornecedorAtual = f;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("\nFornecedor atual:");
+            if (fornecedorAtual != null) {
+                System.out.println(fornecedorAtual.toString());
+            } else {
+                System.out.println("Nenhum fornecedor associado a este produto.");
+            }
+
+            System.out.println("\nFornecedores disponíveis:");
+            mostrarObjetos(fornecedores);
+
+            System.out.print("Digite o código do novo fornecedor: ");
+            int codigoNovoFornecedor = sc.nextInt();
+            sc.nextLine();
+
+            Fornecedor novoFornecedor = null;
+            for (Fornecedor f : fornecedores) {
+                if (f != null && f.getCodigo() == codigoNovoFornecedor) {
+                    novoFornecedor = f;
+                    break;
+                }
+            }
+
+            if (novoFornecedor == null) {
+                System.out.println("Fornecedor não encontrado.");
+                return false;
+            }
+
+            if (fornecedorAtual != null) {
+                fornecedorAtual.removerProduto(produtoSelecionado);
+            }
+
+            novoFornecedor.adicionarProduto(produtoSelecionado);
+
+            return true;
+
+        } catch (InputMismatchException e) {
+            System.out.println("Erro ao editar fornecedor do produto: " + e.getMessage() + ". Tente novamente.");
+            sc.nextLine();
+            return editarFornecedorProduto(sc);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
     ////PRODUTO
     
     //USUARIO
@@ -347,6 +433,7 @@ public class Loja {
  
     public boolean excluirUsuarioAdmin(Scanner sc) {
     	try {
+    		mostrarObjetos(usuariosAdmin);
             System.out.print("Digite o usuário a ser excluído: ");
             String user = sc.nextLine();
 
@@ -356,7 +443,6 @@ public class Loja {
                     return true;
                 }
             }
-            System.out.println("Usuário " + user + " não encontrado ou não pode ser excluído.");
             return false;
         } catch (Exception e) {
             System.out.println("Erro ao excluir administrador: " + e.getMessage() + ". Tente novamente.");

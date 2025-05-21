@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto.menu;
+package br.ucs.poo.projeto;
 
 public class Fornecedor extends Pessoa {
 	private static int ultimoCodigo = 0;
@@ -44,6 +44,17 @@ public class Fornecedor extends Pessoa {
         for (int i = 0; i < produtos.length; i++) {
             if (produtos[i] == null) {
                 produtos[i] = produto;
+                break;
+            }
+        }
+    }
+    
+    public void removerProduto(Produto produto) {
+        if (produto == null || produtos == null) return;
+
+        for (int i = 0; i < produtos.length; i++) {
+            if (produtos[i] != null && produtos[i].getCodigo() == produto.getCodigo()) {
+                produtos[i] = null;
                 break;
             }
         }
