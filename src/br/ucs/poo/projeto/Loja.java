@@ -139,13 +139,12 @@ public class Loja {
 		        }
 			}
 		} catch(Exception e) {
-			return null;
+			for(Fornecedor fornecedor : fornecedores) {
+				if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
+					listaFornecedores[cont++] = fornecedor;
+				}
+			}	
 		}
-		for(Fornecedor fornecedor : fornecedores) {
-			if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
-				listaFornecedores[cont++] = fornecedor;
-			}
-		}	
     	
     	return listaFornecedores;
     }
@@ -282,13 +281,12 @@ public class Loja {
                 }
             }
         } catch (NumberFormatException e) {
-        	return null;
+        	for (Produto produto : produtos) {
+        		if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
+        			listaProdutos[cont++] = produto;
+        		}
+        	}
         }
-		for (Produto produto : produtos) {
-			if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
-				listaProdutos[cont++] = produto;
-			}
-		}
 		
 		return listaProdutos;
     }
