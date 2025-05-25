@@ -237,6 +237,7 @@ public class Menu {
     public void menuAdministradorClientes(Scanner sc) {
     	System.out.println("\n" + loja.linha() + "\n     Menu de Usuários\n" + loja.linha());
 		System.out.println("1 - Mostrar todos clientes");
+		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
 		
 		String resposta = sc.nextLine();
@@ -245,6 +246,8 @@ public class Menu {
 		case "1":
 	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
 			loja.mostrarObjetos(loja.clientes);
+			break;
+		case "0":
 			break;
 		default:
 			System.out.println("\nOpção inválida.");
@@ -257,6 +260,7 @@ public class Menu {
 		System.out.println("1 - Cadastrar usuário");
 		System.out.println("2 - Mostrar todos usuários");
 		System.out.println("3 - Excluir usuário");
+		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
 		
 		String resposta = sc.nextLine();
@@ -296,9 +300,7 @@ public class Menu {
     	
     	while (continuar) {
 	    	System.out.println("\n" + loja.linha() + "\n     Menu de Cliente\n" + loja.linha());
-	    	//System.out.println("\n-- Produtos --");
-			System.out.println(" 1 - Consultar todos produtos");
-			System.out.println(" 2 - Consultar produtos por código/nome");
+			System.out.println(" 1 - Menu de Produtos");
 	    	System.out.println(" 0 - Voltar ao menu principal");
 	    	System.out.print("Opção: ");
 	    	
@@ -306,22 +308,42 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				System.out.println("\n-- Lista de Produtos Cadastrados --");
-				loja.mostrarObjetos(loja.produtos);
+				menuClienteProdutos(sc);
 				break;
-			case "2":
-				Produto[] listaProdutos = loja.consultarProdutos(sc);
-    			loja.mostrarObjetos(listaProdutos);
-    			break;
 			case "0":
 				continuar = false;
-				System.out.println("\nSaindo do acesso de adminstrador...");
+				System.out.println("\nSaindo do acesso de cliente...");
 				break;
 			default:
 				System.out.println("\nOpção inválida.");
 			}
     	}
     }
+    
+    public void menuClienteProdutos(Scanner sc) {
+    	System.out.println("\n" + loja.linha() + "\n     Menu de Produtos\n" + loja.linha());
+		System.out.println(" 1 - Consultar todos produtos");
+		System.out.println(" 2 - Consultar produtos por código/nome");
+    	System.out.println(" 0 - Voltar ao menu principal");
+    	System.out.print("Opção: ");
+    	
+    	String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			System.out.println("\n-- Lista de Produtos Cadastrados --");
+			loja.mostrarObjetos(loja.produtos);
+			break;
+		case "2":
+			Produto[] listaProdutos = loja.consultarProdutos(sc);
+			loja.mostrarObjetos(listaProdutos);
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+	}
     
     public void realizarLogin(Scanner sc) {
         System.out.print("Login: ");
