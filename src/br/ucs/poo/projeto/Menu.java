@@ -25,7 +25,6 @@ public class Menu {
 			System.out.println("\n" + m.loja.linha() + "\n         Menu Principal\n" + m.loja.linha());
 			System.out.println(" 1 - Realizar Cadastro");
 			System.out.println(" 2 - Realizar Login");
-			//System.out.println("99 - Facilitar testes");
 			System.out.println(" 0 - Sair");
 			System.out.print("Opção: ");
 			
@@ -43,9 +42,9 @@ public class Menu {
 			case "2":
 				m.realizarLogin(sc);
 				break;
-			/*case "99":
+			case "99":
 				m.menuAdministrador(sc);
-				break;*/
+				break;
 			case "0":
 				continuar = false;
 				System.out.println("\nEncerrando sistema...");
@@ -64,141 +63,29 @@ public class Menu {
     	
     	while (continuar) {
     		System.out.println("\n" + loja.linha() + "\n     Menu de Administrador\n" + loja.linha());
-    		System.out.println("-- Fornecedores --");
-    		System.out.println(" 1 - Cadastrar fornecedor");
-    		System.out.println(" 2 - Editar fornecedor");
-    		System.out.println(" 3 - Excluir fornecedor");
-    		System.out.println(" 4 - Consultar fornecedores por código/nome");
-    		System.out.println(" 5 - Mostrar todos fornecedores");
-    		System.out.println("\n-- Produtos --");
-    		System.out.println(" 6 - Cadastrar produto");
-    		System.out.println(" 7 - Editar produto");
-    		System.out.println(" 8 - Excluir produto");
-    		System.out.println(" 9 - Consultar produtos por código/nome");
-    		System.out.println("10 - Mostrar todos produtos");
-    		System.out.println("11 - Editar estoque de produto");
-    		System.out.println("12 - Alterar fornecedor do produto");
-    		System.out.println("\n-- Clientes --");
-    		System.out.println("13 - Mostrar todos clientes");
-    		System.out.println("\n-- Usuários Admin --");
-    		System.out.println("14 - Cadastrar usuário");
-    		System.out.println("15 - Mostrar todos usuários");
-    		System.out.println("16 - Excluir usuário");
-    		//System.out.println("\n99 - Facilitar testes");
-    		System.out.println(" 0 - Voltar ao menu principal");
+    		System.out.println("1 - Menu Fornecedores");
+    		System.out.println("2 - Menu Produtos");
+    		System.out.println("3 - Menu Clientes");
+    		System.out.println("4 - Menu Usuários Admin");
+    		System.out.println("0 - Voltar ao menu principal");
     		System.out.print("Opção: ");
     		
     		String resposta = sc.nextLine();
     		
     		switch (resposta) {
     		case "1":
-    			Fornecedor f = this.criarFornecedor(sc);
-    			if(f != null && this.loja.cadastrarFornecedor(f)) {
-    				System.out.println("\nFornecedor Cadastrado com Sucesso!");
-    			} else {
-    				System.out.println("\nErro ao Cadastrar Fornecedor!");
-    			}
+    			menuAdministradorFornecedores(sc);
     			break;
     		case "2":
-    			if(loja.editarFornecedor(sc)) {
-    				System.out.println("\nFornecedor editado com sucesso!");
-    			} else {
-    				System.out.println("\nFalha ao editar fornecedor");
-    			}
+    			menuAdministradorProdutos(sc);
     			break;
     		case "3":
-    			if(loja.excluirFornecedor(sc)) {
-    				System.out.println("\nFornecedor excluído com sucesso!");
-    			} else {
-    				System.out.println("\nFalha ao excluir fornecedor");
-    			}
+    			menuAdministradorClientes(sc);
     			break;
     		case "4":
-    			Fornecedor[] fo = loja.consultarFornecedores(sc);
-    			loja.mostrarObjetos(fo);
+    			menuAdministradorUsuarios(sc);
     			break;
-    		case "5":
-    	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
-    			loja.mostrarObjetos(loja.fornecedores);
-    			break;
-    		case "6":
-    			Estoque e = this.criarEstoque(sc);
-    			if(e == null) {
-    				break;
-    			}
-    			Produto p = this.criarProduto(e, sc);
-    			if(p != null && this.loja.cadastrarProduto(p, sc)) {
-    				System.out.println("\nProduto Cadastrado com Sucesso!");
-    			} else {
-    				System.out.println("\nErro ao Cadastrar Produto!");
-    			}
-    			break;
-    		case "7":
-    			if(loja.editarProduto(sc)) {
-    				System.out.println("\nProduto editado com sucesso!");
-    			} else {
-    				System.out.println("\nFalha ao editar produto");
-    			}
-    			break;
-    		case "8":
-    			if(loja.excluirProduto(sc)) {
-    				System.out.println("\nProduto excluído com sucesso!");
-    			} else {
-    				System.out.println("\nProduto com código informado não encontrado.");
-    			}
-    			break;
-    		case "9":
-    			Produto[] listaProdutos = loja.consultarProdutos(sc);
-    			if(listaProdutos == null) {
-    				System.out.println("\nFalha ao consultar produtos");
-    			} else {
-    				loja.mostrarObjetos(listaProdutos);
-    			}
-    			break;
-    		case "10":
-    	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
-    			loja.mostrarObjetos(loja.produtos);
-    			break;
-    		case "11":
-    			if(loja.editarEstoqueProduto(sc)) {
-    				System.out.println("\nEstoque editado com sucesso");
-    			} else {
-    				System.out.println("\nErro ao editar o estoque do produto");
-    			}
-    			break;
-    		case "12":
-    			if(loja.editarFornecedorProduto(sc)) {
-    				System.out.println("\nFornecedor do produto editado com sucesso");
-    			} else {
-    				System.out.println("\nErro ao editar o fornecedor do produto");
-    			}
-    			break;
-    		case "13":
-    	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
-    			loja.mostrarObjetos(loja.clientes);
-    			break;
-    		case "14":
-    			System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
-    			if(loja.cadastrarUsuarioAdmin(sc)) {
-    				System.out.println("\nUsuário admin Cadastrado com Sucesso!");
-    			}
-    			else {
-    				System.out.println("\nErro no cadastro de usuário admin");
-    			}
-    			break;
-    		case "15":
-    	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
-    			loja.mostrarObjetos(loja.usuariosAdmin);
-    			break;
-    		case "16":
-    			if(loja.excluirUsuarioAdmin(sc)) {
-    				System.out.println("\nUsuário excluído com sucesso!");
-    			} else {
-    				System.out.println("\nFalha na exclusão do usuário");
-    			}
-    			
-    			break;
-    		/*case "99":
+    		case "99":
     			Produto p1 = new Produto("nome1", "descrição", new Estoque(0, 0));
     			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
     			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
@@ -207,7 +94,7 @@ public class Menu {
     			loja.produtos[loja.posicaoVazia(loja.produtos)] = p2;
     			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone1", "email1", "cartao1", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE));
     			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone2", "email2", "cartao2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null, new Usuario("cliente2", "senha", TipoUsuario.CLIENTE));
-    			break;*/
+    			break;
     		case "0":
     			continuar = false;
     			System.out.println("\nSaindo do acesso de administrador...");
@@ -216,6 +103,191 @@ public class Menu {
     			System.out.println("\nOpção inválida.");
     		}
     	}
+    }
+    
+    public void menuAdministradorFornecedores(Scanner sc) {
+		System.out.println("\n" + loja.linha() + "\n     Menu de Fornecedores\n" + loja.linha());
+		System.out.println("1 - Cadastrar fornecedor");
+		System.out.println("2 - Editar fornecedor");
+		System.out.println("3 - Excluir fornecedor");
+		System.out.println("4 - Consultar fornecedores por código/nome");
+		System.out.println("5 - Mostrar todos fornecedores");
+		System.out.println("0 - Voltar ao menu principal");
+		System.out.print("Opção: ");
+		
+		String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			Fornecedor f = this.criarFornecedor(sc);
+			if(f != null && this.loja.cadastrarFornecedor(f)) {
+				System.out.println("\nFornecedor Cadastrado com Sucesso!");
+			} else {
+				System.out.println("\nErro ao Cadastrar Fornecedor!");
+			}
+			break;
+		case "2":
+			if(loja.editarFornecedor(sc)) {
+				System.out.println("\nFornecedor editado com sucesso!");
+			} else {
+				System.out.println("\nFalha ao editar fornecedor");
+			}
+			break;
+		case "3":
+			if(loja.excluirFornecedor(sc)) {
+				System.out.println("\nFornecedor excluído com sucesso!");
+			} else {
+				System.out.println("\nFalha ao excluir fornecedor");
+			}
+			break;
+		case "4":
+			Fornecedor[] fo = loja.consultarFornecedores(sc);
+			loja.mostrarObjetos(fo);
+			break;
+		case "5":
+	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
+			loja.mostrarObjetos(loja.fornecedores);
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+    }
+    
+    public void menuAdministradorProdutos(Scanner sc) {
+		System.out.println("\n" + loja.linha() + "\n     Menu de Produtos\n" + loja.linha());
+		System.out.println("1 - Cadastrar produto");
+		System.out.println("2 - Editar produto");
+		System.out.println("3 - Excluir produto");
+		System.out.println("4 - Consultar produtos por código/nome");
+		System.out.println("5 - Mostrar todos produtos");
+		System.out.println("6 - Editar estoque de produto");
+		System.out.println("7 - Alterar fornecedor do produto");
+		System.out.println("0 - Voltar ao menu principal");
+		System.out.print("Opção: ");
+		
+		String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			Produto p = this.criarProduto(null, sc);
+			if (p == null) {
+				System.out.println("\nErro ao Cadastrar Produto!");
+				break;
+			}
+			Estoque e = this.criarEstoque(sc);
+			p.setEstoque(e);
+			if(e == null) {
+				break;
+			}
+			if(p != null && this.loja.cadastrarProduto(p, sc)) {
+				System.out.println("\nProduto Cadastrado com Sucesso!");
+			} else {
+				System.out.println("\nErro ao Cadastrar Produto!");
+			}
+			break;
+		case "2":
+			if(loja.editarProduto(sc)) {
+				System.out.println("\nProduto editado com sucesso!");
+			} else {
+				System.out.println("\nFalha ao editar produto");
+			}
+			break;
+		case "3":
+			if(loja.excluirProduto(sc)) {
+				System.out.println("\nProduto excluído com sucesso!");
+			} else {
+				System.out.println("\nProduto com código informado não encontrado.");
+			}
+			break;
+		case "4":
+			Produto[] listaProdutos = loja.consultarProdutos(sc);
+			if(listaProdutos == null) {
+				System.out.println("\nFalha ao consultar produtos");
+			} else {
+				loja.mostrarObjetos(listaProdutos);
+			}
+			break;
+		case "5":
+	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
+			loja.mostrarObjetos(loja.produtos);
+			break;
+		case "6":
+			if(loja.editarEstoqueProduto(sc)) {
+				System.out.println("\nEstoque editado com sucesso");
+			} else {
+				System.out.println("\nErro ao editar o estoque do produto");
+			}
+			break;
+		case "7":
+			if(loja.editarFornecedorProduto(sc)) {
+				System.out.println("\nFornecedor do produto editado com sucesso");
+			} else {
+				System.out.println("\nErro ao editar o fornecedor do produto");
+			}
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+    }
+    
+    public void menuAdministradorClientes(Scanner sc) {
+    	System.out.println("\n" + loja.linha() + "\n     Menu de Usuários\n" + loja.linha());
+		System.out.println("1 - Mostrar todos clientes");
+		System.out.print("Opção: ");
+		
+		String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
+			loja.mostrarObjetos(loja.clientes);
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+    	
+    }
+    
+    public void menuAdministradorUsuarios(Scanner sc) {
+    	System.out.println("\n" + loja.linha() + "\n     Menu de Usuários\n" + loja.linha());
+		System.out.println("1 - Cadastrar usuário");
+		System.out.println("2 - Mostrar todos usuários");
+		System.out.println("3 - Excluir usuário");
+		System.out.print("Opção: ");
+		
+		String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			System.out.println("\n--- Cadastro de Novo Usuário Administrador ---");
+			if(loja.cadastrarUsuarioAdmin(sc)) {
+				System.out.println("\nUsuário admin Cadastrado com Sucesso!");
+			}
+			else {
+				System.out.println("\nErro no cadastro de usuário admin");
+			}
+			break;
+		case "2":
+	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
+			loja.mostrarObjetos(loja.usuariosAdmin);
+			break;
+		case "3":
+			if(loja.excluirUsuarioAdmin(sc)) {
+				System.out.println("\nUsuário excluído com sucesso!");
+			} else {
+				System.out.println("\nFalha na exclusão do usuário");
+			}
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+    	
     }
 
     public void menuCliente(Usuario usuario, Scanner sc) {

@@ -111,8 +111,10 @@ public class Loja {
 
             for (int i = 0; i < fornecedores.length; i++) {
                 if (fornecedores[i] != null && fornecedores[i].getCodigo() == codigo) {
-                	fornecedores[i] = null;
-                    return true;
+                	if(fornecedores[i].getProdutos().length == 0) {                		
+                		fornecedores[i] = null;
+                		return true;
+                	}
                 }
             }
             return false;
