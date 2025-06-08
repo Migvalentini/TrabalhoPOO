@@ -1,15 +1,16 @@
 package br.ucs.poo.projeto;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String cartaoCredito;
-	private Pedido pedidos[];
+	private ArrayList<Pedido> pedidos = new ArrayList<>();
 	private Usuario usuario;
 	
-	public Cliente(String nome, String telefone, String email, String cartaoCredito, Endereco endereco, Pedido pedidos[], Usuario usuario) {
+	public Cliente(String nome, String telefone, String email, String cartaoCredito, Endereco endereco, ArrayList<Pedido> pedidos, Usuario usuario) {
         super(nome, telefone, email, endereco);
         this.codigo = ultimoCodigo++;
         this.cartaoCredito = cartaoCredito;
@@ -25,11 +26,11 @@ public class Cliente extends Pessoa {
 		this.cartaoCredito = cartaoCredito;
 	}
 
-	public Pedido[] getPedidos() {
+	public ArrayList<Pedido> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(Pedido[] pedidos) {
+	public void setPedidos(ArrayList<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
 
@@ -42,10 +43,10 @@ public class Cliente extends Pessoa {
 	}
 
 	@Override
-    public String toString() {
-        return "Cliente:\nCódigo=" + codigo + ", " + super.toString() + ", CartãoCrédito=" + cartaoCredito + ", Pedidos=" + Arrays.toString(pedidos) +
-                "\n" + usuario.toString();
-    }
+	public String toString() {
+		return "Cliente [codigo=" + codigo + ", cartaoCredito=" + cartaoCredito + ", pedidos=" + pedidos + ", usuario="
+				+ usuario + "]";
+	}
 	
 	/*
     @Override

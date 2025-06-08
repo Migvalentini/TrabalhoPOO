@@ -1,5 +1,7 @@
 package br.ucs.poo.projeto;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 //import java.io.File;
 //import java.io.FileNotFoundException;
 //import java.io.FileWriter;
@@ -88,12 +90,12 @@ public class Menu {
     		case "99":
     			Produto p1 = new Produto("nome1", "descrição", new Estoque(0, 0));
     			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
-    			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new Produto[] {p1, p2});
-    			loja.fornecedores[loja.posicaoVazia(loja.fornecedores)] = new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new Produto[] {p1});
-    			loja.produtos[loja.posicaoVazia(loja.produtos)] = p1;
-    			loja.produtos[loja.posicaoVazia(loja.produtos)] = p2;
-    			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone1", "email1", "cartao1", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE));
-    			loja.clientes[loja.posicaoVazia(loja.clientes)] = new Cliente("nome1", "telefone2", "email2", "cartao2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null, new Usuario("cliente2", "senha", TipoUsuario.CLIENTE));
+    			loja.fornecedores.add(new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new ArrayList<>(Arrays.asList(p1, p2))));
+    			loja.fornecedores.add(new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new ArrayList<>(Arrays.asList(p1, p2))));
+    			loja.produtos.add(p1);
+    			loja.produtos.add(p2);
+    			loja.clientes.add(new Cliente("nome1", "telefone1", "email1", "cartao1", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE)));
+    			loja.clientes.add(new Cliente("nome1", "telefone2", "email2", "cartao2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null, new Usuario("cliente2", "senha", TipoUsuario.CLIENTE)));
     			break;
     		case "0":
     			continuar = false;
@@ -141,7 +143,7 @@ public class Menu {
 			}
 			break;
 		case "4":
-			Fornecedor[] fo = loja.consultarFornecedores(sc);
+			ArrayList<Fornecedor> fo = loja.consultarFornecedores(sc);
 			loja.mostrarObjetos(fo);
 			break;
 		case "5":
@@ -202,7 +204,7 @@ public class Menu {
 			}
 			break;
 		case "4":
-			Produto[] listaProdutos = loja.consultarProdutos(sc);
+			ArrayList<Produto> listaProdutos = loja.consultarProdutos(sc);
 			if(listaProdutos == null) {
 				System.out.println("\nFalha ao consultar produtos");
 			} else {
@@ -335,7 +337,7 @@ public class Menu {
 			loja.mostrarObjetos(loja.produtos);
 			break;
 		case "2":
-			Produto[] listaProdutos = loja.consultarProdutos(sc);
+			ArrayList<Produto> listaProdutos = loja.consultarProdutos(sc);
 			loja.mostrarObjetos(listaProdutos);
 			break;
 		case "0":

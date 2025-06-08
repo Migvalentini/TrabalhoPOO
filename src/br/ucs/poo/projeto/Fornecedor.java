@@ -1,12 +1,15 @@
 package br.ucs.poo.projeto;
 
+import java.util.ArrayList;
+
 public class Fornecedor extends Pessoa {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String descricao;
-	private Produto produtos[];
+	private ArrayList<Produto> produtos = new ArrayList<>();
+
 	
-	public Fornecedor(String nome, String descricao, String telefone, String email, Endereco endereco, Produto produtos[]) {
+	public Fornecedor(String nome, String descricao, String telefone, String email, Endereco endereco, ArrayList<Produto> produtos) {
         super(nome, telefone, email, endereco);
         this.codigo = ultimoCodigo++;
         this.descricao = descricao;
@@ -29,35 +32,25 @@ public class Fornecedor extends Pessoa {
 		this.descricao = descricao;
 	}
 
-	public Produto[] getProdutos() {
+	public ArrayList<Produto> getProdutos() {
 		return produtos;
 	}
 
-	public void setProdutos(Produto produtos[]) {
+	public void setProdutos(ArrayList<Produto> produtos) {
 		this.produtos = produtos;
 	}
 	
     public void adicionarProduto(Produto produto) {
         if (this.produtos == null) {
-            this.produtos = new Produto[100];
+            this.produtos = new ArrayList<Produto>();
         }
-        for (int i = 0; i < produtos.length; i++) {
-            if (produtos[i] == null) {
-                produtos[i] = produto;
-                break;
-            }
-        }
+        produtos.add(produto);
     }
     
     public void removerProduto(Produto produto) {
         if (produto == null || produtos == null) return;
 
-        for (int i = 0; i < produtos.length; i++) {
-            if (produtos[i] != null && produtos[i].getCodigo() == produto.getCodigo()) {
-                produtos[i] = null;
-                break;
-            }
-        }
+        produtos.remove(produto);
     }
 	
 	@Override

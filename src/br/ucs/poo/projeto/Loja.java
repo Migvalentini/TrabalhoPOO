@@ -1,31 +1,27 @@
 package br.ucs.poo.projeto;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Loja {
-	int totalUsuarios = 100;
-	int totalFornecedores = 100;
-	int totalProdutos = 100;
-	int totalEstoques = 100;
-	int totalClientes = 100;
-	Usuario[] usuariosAdmin = new Usuario[totalUsuarios];
-	Fornecedor[] fornecedores = new Fornecedor[totalFornecedores];
-	Produto[] produtos = new Produto[totalProdutos];
-	Estoque[] estoques = new Estoque[totalEstoques];
-	Cliente[] clientes = new Cliente[totalClientes];
+	ArrayList<Usuario> usuariosAdmin = new ArrayList<Usuario>();
+	ArrayList<Fornecedor> fornecedores = new ArrayList<Fornecedor>();
+	ArrayList<Produto> produtos = new ArrayList<Produto>();
+	ArrayList<Estoque> estoques = new ArrayList<Estoque>();
+	ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	
 	public Loja() {
-		usuariosAdmin[0] = new Usuario("admin", "123", TipoUsuario.ADMIN);
+		usuariosAdmin.add(new Usuario("admin", "123", TipoUsuario.ADMIN));
 	}
 	
 	//FORNECEDOR
 	
     public boolean cadastrarFornecedor(Fornecedor novoFornecedor) {
     	 try {    		 
-    		 fornecedores[posicaoVazia(fornecedores)] = novoFornecedor;
+    		 fornecedores.add(novoFornecedor);
     		 return true;
-    	 } catch(IndexOutOfBoundsException iobe) {
+    	 } catch(Exception e) {
     		 return false;
     	 }
     	
@@ -46,7 +42,6 @@ public class Loja {
             }
 
             if (fornecedorEncontrado == null) {
-                System.out.println("\nFornecedor não encontrado com o código informado.");
                 return false;
             }
 
@@ -109,14 +104,15 @@ public class Loja {
             int codigo = sc.nextInt();
             sc.nextLine();
 
-            for (int i = 0; i < fornecedores.length; i++) {
-                if (fornecedores[i] != null && fornecedores[i].getCodigo() == codigo) {
-                	if(fornecedores[i].getProdutos().length == 0) {                		
-                		fornecedores[i] = null;
+            for (Fornecedor fornecedor : fornecedores) {
+            	if (fornecedor != null && fornecedor.getCodigo() == codigo) {
+                	if(fornecedor.getProdutos() != null) {                		
+                		fornecedores.remove(fornecedor);
                 		return true;
                 	}
                 }
-            }
+			}
+            
             return false;
         } catch (InputMismatchException e) {
             System.out.println("\nErro: Código inválido. Por favor, digite um número.");
@@ -125,9 +121,8 @@ public class Loja {
         }
     }
     
-    public Fornecedor[] consultarFornecedores(Scanner sc) {
-    	Fornecedor[] listaFornecedores = new Fornecedor[totalFornecedores];
-    	int cont=0;
+    public ArrayList<Fornecedor> consultarFornecedores(Scanner sc) {
+    	ArrayList<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
     	   		
 		System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
@@ -136,14 +131,14 @@ public class Loja {
 			int codigoBusca = Integer.parseInt(termoBusca);
 			for (Fornecedor fornecedor : fornecedores) {
 		        if (fornecedor != null && fornecedor.getCodigo() == codigoBusca) {
-		        	listaFornecedores[cont++] = fornecedor;
+		        	listaFornecedores.add(fornecedor);
 		        	break;
 		        }
 			}
 		} catch(Exception e) {
 			for(Fornecedor fornecedor : fornecedores) {
 				if(fornecedor!=null && (fornecedor.getNome().toLowerCase().contains(termoBusca))) {
-					listaFornecedores[cont++] = fornecedor;
+					listaFornecedores.add(fornecedor);
 				}
 			}	
 		}
@@ -157,7 +152,7 @@ public class Loja {
     
     public boolean cadastrarProduto(Produto novoProduto, Scanner sc) {
    	 try {    		 
-   		 produtos[posicaoVazia(produtos)] = novoProduto;
+   		 produtos.add(novoProduto);
    		 return true;
    	 } catch(IndexOutOfBoundsException iobe) {
    		 return false;
@@ -167,11 +162,11 @@ public class Loja {
     public boolean editarProduto(Scanner sc) {
     	try {   
     		mostrarObjetos(produtos);
-    		Produto[] resultados = consultarProdutos(sc);
-    	    if (resultados[0] == null) {
+    		ArrayList<Produto> resultados = consultarProdutos(sc);
+    	    if (resultados.size() == 0) {
     	        return false;
     	    }
-    	    Produto p = resultados[0];
+    	    Produto p = resultados.get(0);
     	    System.out.println(p.toString());
     	    
     	    System.out.println("Digite o novo nome do produto (ou deixe em branco para manter): ");
@@ -208,11 +203,11 @@ public class Loja {
     public boolean editarEstoqueProduto(Scanner sc) {
     	try {
     		mostrarObjetos(produtos);
-            Produto[] resultados = consultarProdutos(sc);
-            if (resultados[0] == null) {
+    		ArrayList<Produto> resultados = consultarProdutos(sc);
+            if (resultados.size() == 0) {
                 return false;
             }
-            Produto p = resultados[0];
+            Produto p = resultados.get(0);
 
             System.out.print("Digite a quantidade: ");
             int quantidade = sc.nextInt();
@@ -241,13 +236,13 @@ public class Loja {
 
             Produto produtoRemovido = null;
 
-            for (int i = 0; i < produtos.length; i++) {
-                if (produtos[i] != null && produtos[i].getCodigo() == codigo) {
-                    produtoRemovido = produtos[i];
-                    produtos[i] = null;
+            for (Produto produto : produtos) {
+            	if (produtos != null && produto.getCodigo() == codigo) {
+                    produtoRemovido = produto;
+                    produtos.remove(produto);
                     break;
                 }
-            }
+			}
 
             if (produtoRemovido == null) {
                 return false;
@@ -268,9 +263,8 @@ public class Loja {
         }
     }    
 
-    public Produto[] consultarProdutos(Scanner sc) {
-    	Produto[] listaProdutos = new Produto[totalProdutos];
-    	int cont=0;
+    public ArrayList<Produto> consultarProdutos(Scanner sc) {
+    	ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
     	    		
 		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 		String termoBusca = sc.nextLine().trim().toLowerCase();
@@ -279,13 +273,13 @@ public class Loja {
             int codigoBusca = Integer.parseInt(termoBusca);
             for (Produto produto : produtos) {
                 if (produto != null && produto.getCodigo() == codigoBusca) {
-                	listaProdutos[cont++] = produto;
+                	listaProdutos.add(produto);
                 }
             }
         } catch (NumberFormatException e) {
         	for (Produto produto : produtos) {
         		if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
-        			listaProdutos[cont++] = produto;
+        			listaProdutos.add(produto);
         		}
         	}
         }
@@ -321,12 +315,11 @@ public class Loja {
             System.out.println("\nProdutos disponíveis:");
             mostrarObjetos(produtos);
 
-            Produto[] resultadosProdutos = consultarProdutos(sc);
-            if (resultadosProdutos == null || resultadosProdutos[0] == null) {
-                System.out.println("Produto não encontrado.");
+            ArrayList<Produto> resultadosProdutos = consultarProdutos(sc);
+            if (resultadosProdutos == null || resultadosProdutos.get(0) == null) {
                 return false;
             }
-            Produto produtoSelecionado = resultadosProdutos[0];
+            Produto produtoSelecionado = resultadosProdutos.get(0);
 
             Fornecedor fornecedorAtual = null;
             for (Fornecedor f : fornecedores) {
@@ -402,7 +395,7 @@ public class Loja {
                 }
             }
 
-            usuariosAdmin[posicaoVazia(usuariosAdmin)] = new Usuario(login, senha, TipoUsuario.ADMIN);
+            usuariosAdmin.add(new Usuario(login, senha, TipoUsuario.ADMIN));
             return true;
         } catch (Exception e) {
             return false;
@@ -437,12 +430,12 @@ public class Loja {
             System.out.print("Digite o usuário a ser excluído: ");
             String user = sc.nextLine();
 
-            for (int i = 0; i < usuariosAdmin.length; i++) {
-            	if(usuariosAdmin[i] != null && usuariosAdmin[i].getUsuario().equals(user) && !"admin".equals(user)) {
-                	usuariosAdmin[i] = null;
+            for (Usuario usuarioAdmin : usuariosAdmin) {
+            	if(usuarioAdmin != null && usuarioAdmin.getUsuario().equals(user) && !"admin".equals(user)) {
+                	usuariosAdmin.remove(usuarioAdmin);
                     return true;
                 }
-            }
+			}
             return false;
         } catch (Exception e) {
             System.out.println("Erro ao excluir administrador: " + e.getMessage() + ". Tente novamente.");
@@ -452,7 +445,7 @@ public class Loja {
     
     public boolean cadastrarCliente(Cliente novoCliente) {
    	 try {    		 
-   		 clientes[posicaoVazia(clientes)] = novoCliente;
+   		 clientes.add(novoCliente);
    		 return true;
    	 } catch(IndexOutOfBoundsException iobe) {
    		 return false;
@@ -538,20 +531,14 @@ public class Loja {
     ////ARQUIVOS
 
 
-    public int posicaoVazia(Object[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                return i;
-            }
+    public <T> void mostrarObjetos(ArrayList<T> lista) {
+    	if (lista.isEmpty()) {
+            return;
         }
-        return -1; 
-    }
-    
-    public <T> void mostrarObjetos(T[] objetos) {
-        for (T obj : objetos) {
-            if (obj != null) {
-                System.out.println(obj.toString());
-                System.out.println(linha());
+    	
+        for (T item : lista) {
+            if (item != null) {
+                System.out.println(item.toString());
             }
         }
     }
