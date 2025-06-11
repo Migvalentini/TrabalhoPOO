@@ -122,11 +122,8 @@ public class Loja {
         }
     }
     
-    public ArrayList<Fornecedor> consultarFornecedores(Scanner sc) {
+    public ArrayList<Fornecedor> consultarFornecedores(String termoBusca) {
     	ArrayList<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
-    	   		
-		System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
-		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
 		try {
 			int codigoBusca = Integer.parseInt(termoBusca);
@@ -163,7 +160,11 @@ public class Loja {
     public boolean editarProduto(Scanner sc) {
     	try {   
     		mostrarObjetos(produtos);
-    		ArrayList<Produto> resultados = consultarProdutos(sc);
+    		
+    		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+			
+    		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
     	    if (resultados.size() == 0) {
     	        return false;
     	    }
@@ -204,7 +205,11 @@ public class Loja {
     public boolean editarEstoqueProduto(Scanner sc) {
     	try {
     		mostrarObjetos(produtos);
-    		ArrayList<Produto> resultados = consultarProdutos(sc);
+    		
+    		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+			
+    		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
             if (resultados.size() == 0) {
                 return false;
             }
@@ -264,11 +269,8 @@ public class Loja {
         }
     }    
 
-    public ArrayList<Produto> consultarProdutos(Scanner sc) {
+    public ArrayList<Produto> consultarProdutos(String termoBusca) {
     	ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
-    	    		
-		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
-		String termoBusca = sc.nextLine().trim().toLowerCase();
 		
 		try {
             int codigoBusca = Integer.parseInt(termoBusca);
@@ -315,8 +317,11 @@ public class Loja {
         try {
             System.out.println("\nProdutos disponíveis:");
             mostrarObjetos(produtos);
-
-            ArrayList<Produto> resultadosProdutos = consultarProdutos(sc);
+            
+            System.out.println("\nDigite o código/nome do produto a ser alterado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+            
+            ArrayList<Produto> resultadosProdutos = consultarProdutos(termoBusca);
             if (resultadosProdutos == null || resultadosProdutos.get(0) == null) {
                 return false;
             }

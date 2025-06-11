@@ -143,7 +143,9 @@ public class Menu {
 			}
 			break;
 		case "4":
-			ArrayList<Fornecedor> fo = loja.consultarFornecedores(sc);
+			System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+			ArrayList<Fornecedor> fo = loja.consultarFornecedores(termoBusca);
 			loja.mostrarObjetos(fo);
 			break;
 		case "5":
@@ -204,7 +206,9 @@ public class Menu {
 			}
 			break;
 		case "4":
-			ArrayList<Produto> listaProdutos = loja.consultarProdutos(sc);
+			System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+			ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca);
 			if(listaProdutos == null) {
 				System.out.println("\nFalha ao consultar produtos");
 			} else {
@@ -337,7 +341,9 @@ public class Menu {
 			loja.mostrarObjetos(loja.produtos);
 			break;
 		case "2":
-			ArrayList<Produto> listaProdutos = loja.consultarProdutos(sc);
+			System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+			String termoBusca = sc.nextLine().trim().toLowerCase();
+			ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca);
 			loja.mostrarObjetos(listaProdutos);
 			break;
 		case "0":
