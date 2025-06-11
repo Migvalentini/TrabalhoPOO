@@ -104,9 +104,10 @@ public class Loja {
             int codigo = sc.nextInt();
             sc.nextLine();
 
-            for (Fornecedor fornecedor : fornecedores) {
+            for (int i = 0; i < fornecedores.size(); i++) {
+            	Fornecedor fornecedor = fornecedores.get(i);
             	if (fornecedor != null && fornecedor.getCodigo() == codigo) {
-                	if(fornecedor.getProdutos() != null) {                		
+                	if(fornecedor.getProdutos() == null || fornecedor.getProdutos().isEmpty()) {                		
                 		fornecedores.remove(fornecedor);
                 		return true;
                 	}
