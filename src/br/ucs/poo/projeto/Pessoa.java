@@ -5,8 +5,12 @@ public class Pessoa {
     private String telefone;
     private String email;
     private Endereco endereco;
+    
+    public Pessoa() {
+    	
+	}
 
-    public Pessoa(String nome, String telefone, String email, Endereco endereco) {
+	public Pessoa(String nome, String telefone, String email, Endereco endereco) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;

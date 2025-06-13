@@ -7,6 +7,10 @@ public class Produto {
 	private String descricao;
 	private Estoque estoque;
 	
+	public Produto() {
+		this.codigo = ultimoCodigo++;
+	}
+	
 	public Produto(String nome, String descricao, Estoque estoque) {
 		this.codigo = ultimoCodigo++;
 		this.nome = nome;

@@ -1,8 +1,6 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Loja {
 	ArrayList<Usuario> usuariosAdmin = new ArrayList<Usuario>();
@@ -27,12 +25,8 @@ public class Loja {
     	
     }
     
-    public boolean editarFornecedor(Scanner sc) {
+    public boolean editarFornecedor(int codigo, Fornecedor fornecedorComNovosDados) {
         try {
-            System.out.print("Digite o código do fornecedor a ser editado: ");
-            int codigo = sc.nextInt();
-            sc.nextLine();
-
             Fornecedor fornecedorEncontrado = null;
             for (Fornecedor f : fornecedores) {
                 if (f != null && f.getCodigo() == codigo) {
@@ -45,65 +39,60 @@ public class Loja {
                 return false;
             }
 
-            System.out.println("\nFornecedor atual:");
-            System.out.println(fornecedorEncontrado.toString());
-            System.out.println("Digite o novo nome do fornecedor (ou deixe em branco para manter): ");
-            String nome = sc.nextLine();
-            if (!nome.isBlank()) fornecedorEncontrado.setNome(nome);
-            System.out.println("Digite a nova descrição do fornecedor (ou deixe em branco para manter): ");
-            String descricao = sc.nextLine();
-            if (!descricao.isBlank()) fornecedorEncontrado.setDescricao(descricao);
-            System.out.println("Digite o novo telefone do fornecedor (ou deixe em branco para manter): ");
-            String telefone = sc.nextLine();
-            if (!telefone.isBlank()) fornecedorEncontrado.setTelefone(telefone);
-            System.out.println("Digite o novo email do fornecedor (ou deixe em branco para manter): ");
-            String email = sc.nextLine();
-            if (!email.isBlank()) fornecedorEncontrado.setEmail(email);
-            System.out.print("\nDeseja alterar o endereço? (s/n): ");
-            String alterarEndereco = sc.nextLine();
-            if (alterarEndereco.equalsIgnoreCase("s")) {
-                System.out.print("Digite a nova rua (ou deixe em branco para manter): ");
-                String rua = sc.nextLine();
-                if (!rua.isBlank()) fornecedorEncontrado.getEndereco().setRua(rua);
-                System.out.print("Digite o novo número (ou deixe em branco para manter): ");
-                String numero = sc.nextLine();
-                if (!numero.isBlank()) fornecedorEncontrado.getEndereco().setNumero(numero);
-                System.out.print("Digite o novo complemento (ou deixe em branco para manter): ");
-                String complemento = sc.nextLine();
-                if (!complemento.isBlank()) fornecedorEncontrado.getEndereco().setComplemento(complemento);
-                System.out.print("Digite o novo bairro (ou deixe em branco para manter): ");
-                String bairro = sc.nextLine();
-                if (!bairro.isBlank()) fornecedorEncontrado.getEndereco().setBairro(bairro);
-                System.out.print("Digite o novo CEP (ou deixe em branco para manter): ");
-                String cep = sc.nextLine();
-                if (!cep.isBlank()) fornecedorEncontrado.getEndereco().setCep(cep);
-                System.out.print("Digite a nova cidade (ou deixe em branco para manter): ");
-                String cidade = sc.nextLine();
-                if (!cidade.isBlank()) fornecedorEncontrado.getEndereco().setCidade(cidade);
-                System.out.print("Digite o novo estado (ou deixe em branco para manter): ");
-                String estado = sc.nextLine();
-                if (!estado.isBlank()) fornecedorEncontrado.getEndereco().setEstado(estado);
+            if (fornecedorComNovosDados.getNome() != null && !fornecedorComNovosDados.getNome().isBlank()) {
+                fornecedorEncontrado.setNome(fornecedorComNovosDados.getNome());
+            }
+            if (fornecedorComNovosDados.getDescricao() != null && !fornecedorComNovosDados.getDescricao().isBlank()) {
+                fornecedorEncontrado.setDescricao(fornecedorComNovosDados.getDescricao());
+            }
+            if (fornecedorComNovosDados.getTelefone() != null && !fornecedorComNovosDados.getTelefone().isBlank()) {
+                fornecedorEncontrado.setTelefone(fornecedorComNovosDados.getTelefone());
+            }
+            if (fornecedorComNovosDados.getEmail() != null && !fornecedorComNovosDados.getEmail().isBlank()) {
+                fornecedorEncontrado.setEmail(fornecedorComNovosDados.getEmail());
+            }
+
+            if (fornecedorComNovosDados.getEndereco() != null) {
+                Endereco novoEndereco = fornecedorComNovosDados.getEndereco();
+                Endereco enderecoAtual = fornecedorEncontrado.getEndereco();
+
+                if (enderecoAtual == null) {
+                    enderecoAtual = new Endereco();
+                    fornecedorEncontrado.setEndereco(enderecoAtual);
+                }
+
+                if (novoEndereco.getRua() != null && !novoEndereco.getRua().isBlank()) {
+                    enderecoAtual.setRua(novoEndereco.getRua());
+                }
+                if (novoEndereco.getNumero() != null && !novoEndereco.getNumero().isBlank()) {
+                    enderecoAtual.setNumero(novoEndereco.getNumero());
+                }
+                if (novoEndereco.getComplemento() != null && !novoEndereco.getComplemento().isBlank()) {
+                    enderecoAtual.setComplemento(novoEndereco.getComplemento());
+                }
+                if (novoEndereco.getBairro() != null && !novoEndereco.getBairro().isBlank()) {
+                    enderecoAtual.setBairro(novoEndereco.getBairro());
+                }
+                if (novoEndereco.getCep() != null && !novoEndereco.getCep().isBlank()) {
+                    enderecoAtual.setCep(novoEndereco.getCep());
+                }
+                if (novoEndereco.getCidade() != null && !novoEndereco.getCidade().isBlank()) {
+                    enderecoAtual.setCidade(novoEndereco.getCidade());
+                }
+                if (novoEndereco.getEstado() != null && !novoEndereco.getEstado().isBlank()) {
+                    enderecoAtual.setEstado(novoEndereco.getEstado());
+                }
             }
 
             return true;
 
-        } catch (InputMismatchException e) {
-            System.out.println("\nErro: Código inválido. Por favor, digite um número.");
-            sc.nextLine();
-            return editarFornecedor(sc);
         } catch (Exception e) {
             return false;
         }
     }
 
-    
-    public boolean excluirFornecedor(Scanner sc) {
+    public boolean excluirFornecedor(int codigo) {
     	try {
-    		mostrarObjetos(fornecedores);
-            System.out.print("Digite o código do fornecedor a ser excluído: ");
-            int codigo = sc.nextInt();
-            sc.nextLine();
-
             for (int i = 0; i < fornecedores.size(); i++) {
             	Fornecedor fornecedor = fornecedores.get(i);
             	if (fornecedor != null && fornecedor.getCodigo() == codigo) {
@@ -115,10 +104,8 @@ public class Loja {
 			}
             
             return false;
-        } catch (InputMismatchException e) {
-            System.out.println("\nErro: Código inválido. Por favor, digite um número.");
-            sc.nextLine();
-            return excluirFornecedor(sc);
+        } catch (Exception e) {
+            return false;
         }
     }
     
@@ -148,98 +135,69 @@ public class Loja {
     
     //PRODUTO
     
-    public boolean cadastrarProduto(Produto novoProduto, Scanner sc) {
+    public boolean cadastrarProduto(Produto novoProduto) {
    	 try {    		 
    		 produtos.add(novoProduto);
    		 return true;
-   	 } catch(IndexOutOfBoundsException iobe) {
+   	 } catch(Exception e) {
    		 return false;
    	 }
    }
     
-    public boolean editarProduto(Scanner sc) {
+    public boolean editarProduto(String termoBusca, Produto produtoComNovosDados) {
     	try {   
-    		mostrarObjetos(produtos);
-    		
-    		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
-			String termoBusca = sc.nextLine().trim().toLowerCase();
-			
     		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
     	    if (resultados.size() == 0) {
     	        return false;
     	    }
-    	    Produto p = resultados.get(0);
-    	    System.out.println(p.toString());
+    	    Produto produtoEncontrado = resultados.get(0);
     	    
-    	    System.out.println("Digite o novo nome do produto (ou deixe em branco para manter): ");
-            String nome = sc.nextLine();
-            if (!nome.isEmpty()) p.setNome(nome);
-            System.out.println("Digite a nova descrição do produto (ou deixe em branco para manter): ");
-            String descricao = sc.nextLine();
-            if (!descricao.isEmpty()) p.setDescricao(descricao);
-
-            System.out.print("\nDeseja alterar o estoque? (s/n): ");
-            String alterarEstoque = sc.nextLine();
-            if (alterarEstoque.equalsIgnoreCase("s")) {
-                try {
-                    System.out.print("Digite a nova quantidade (ou deixe -1 para manter): ");
-                    int quantidade = sc.nextInt();
-                    if (quantidade != -1) p.getEstoque().setQuantidade(quantidade);
-                    System.out.print("Digite o novo preço (ou deixe -1 para manter): ");
-                    double preco = sc.nextDouble();
-                    if (preco != -1) p.getEstoque().setPreco(preco);
-                    sc.nextLine();
-                } catch (InputMismatchException e) {
-                    System.out.println("\nErro: Entrada inválida para quantidade ou preço. Tente novamente.");
-                    sc.nextLine();
-                    return editarProduto(sc);
-                }
+    	    if (produtoComNovosDados.getNome() != null && !produtoComNovosDados.getNome().isBlank()) {
+    	    	produtoEncontrado.setNome(produtoComNovosDados.getNome());
             }
+    	    if (produtoComNovosDados.getDescricao() != null && !produtoComNovosDados.getDescricao().isBlank()) {
+    	    	produtoEncontrado.setDescricao(produtoComNovosDados.getDescricao());
+            }
+    	    
+    	    if (produtoComNovosDados.getEstoque() != null) {
+                Estoque novoEstoque = produtoComNovosDados.getEstoque();
+                Estoque estoqueAtual = produtoEncontrado.getEstoque();
+
+                if (estoqueAtual == null) {
+                	estoqueAtual = new Estoque();
+                	produtoEncontrado.setEstoque(estoqueAtual);
+                }
+
+                estoqueAtual.setQuantidade(novoEstoque.getQuantidade());
+                estoqueAtual.setPreco(novoEstoque.getPreco());
+                
+            }
+    	    
             return true;
         } catch (Exception e) {
-            System.out.println("Erro ao editar produto: " + e.getMessage() + ". Tente novamente.");
-            return editarProduto(sc);
+            return false;
         }
     }
 
-    public boolean editarEstoqueProduto(Scanner sc) {
+    public boolean editarEstoqueProduto(String termoBusca, Estoque estoqueComNovosdados) {
     	try {
-    		mostrarObjetos(produtos);
-    		
-    		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
-			String termoBusca = sc.nextLine().trim().toLowerCase();
-			
     		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
             if (resultados.size() == 0) {
                 return false;
             }
-            Produto p = resultados.get(0);
+            Produto produtoSelecionado = resultados.get(0);
 
-            System.out.print("Digite a quantidade: ");
-            int quantidade = sc.nextInt();
-            p.getEstoque().setQuantidade(quantidade);
-            System.out.print("Digite o preço: ");
-            double preco = sc.nextDouble();
-            p.getEstoque().setPreco(preco);
-            sc.nextLine();
+            produtoSelecionado.getEstoque().setQuantidade(estoqueComNovosdados.getQuantidade());
+            produtoSelecionado.getEstoque().setPreco(estoqueComNovosdados.getPreco());
+            
             return true;
-        } catch (InputMismatchException e) {
-            System.out.println("\nErro: Entrada inválida para quantidade ou preço. Tente novamente.");
-            sc.nextLine();
-            return editarEstoqueProduto(sc);
         } catch (Exception e) {
-            System.out.println("Erro ao editar estoque do produto: " + e.getMessage() + ". Tente novamente.");
-            return editarEstoqueProduto(sc);
+            return false;
         }
     }
     
-    public boolean excluirProduto(Scanner sc) {
+    public boolean excluirProduto(int codigo) {
     	try {
-    		mostrarObjetos(produtos);
-    		System.out.print("Digite o código do produto a ser excluído: ");
-            int codigo = sc.nextInt();
-            sc.nextLine();
-
             Produto produtoRemovido = null;
 
             for (Produto produto : produtos) {
@@ -262,10 +220,8 @@ public class Loja {
 
             return true;
 
-        } catch (InputMismatchException e) {
-            System.out.println("\nErro: Código inválido. Por favor, digite um número.");
-            sc.nextLine();
-            return excluirProduto(sc);
+        } catch (Exception e) {
+            return false;
         }
     }    
 
@@ -290,14 +246,8 @@ public class Loja {
 		return listaProdutos;
     }
 
-    public boolean vincularProdutoAFornecedor(Produto p, Scanner sc) {
-    	mostrarObjetos(fornecedores);
-        
-        System.out.print("Digite o código do fornecedor: ");
-        int codigoFornecedor = sc.nextInt();
-        sc.nextLine();
-
-        Fornecedor fornecedorSelecionado = null;
+    public boolean vincularProdutoAFornecedor(Produto p, int codigoFornecedor) {
+    	Fornecedor fornecedorSelecionado = null;
         for (Fornecedor f : fornecedores) {
             if (f != null && f.getCodigo() == codigoFornecedor) {
                 fornecedorSelecionado = f;
@@ -313,14 +263,8 @@ public class Loja {
         return true;
     }
     
-    public boolean editarFornecedorProduto(Scanner sc) {
+    public boolean editarFornecedorProduto(String termoBusca, int codigoNovoFornecedor) {
         try {
-            System.out.println("\nProdutos disponíveis:");
-            mostrarObjetos(produtos);
-            
-            System.out.println("\nDigite o código/nome do produto a ser alterado: ");
-			String termoBusca = sc.nextLine().trim().toLowerCase();
-            
             ArrayList<Produto> resultadosProdutos = consultarProdutos(termoBusca);
             if (resultadosProdutos == null || resultadosProdutos.get(0) == null) {
                 return false;
@@ -339,20 +283,6 @@ public class Loja {
                 }
             }
 
-            System.out.println("\nFornecedor atual:");
-            if (fornecedorAtual != null) {
-                System.out.println(fornecedorAtual.toString());
-            } else {
-                System.out.println("Nenhum fornecedor associado a este produto.");
-            }
-
-            System.out.println("\nFornecedores disponíveis:");
-            mostrarObjetos(fornecedores);
-
-            System.out.print("Digite o código do novo fornecedor: ");
-            int codigoNovoFornecedor = sc.nextInt();
-            sc.nextLine();
-
             Fornecedor novoFornecedor = null;
             for (Fornecedor f : fornecedores) {
                 if (f != null && f.getCodigo() == codigoNovoFornecedor) {
@@ -362,7 +292,6 @@ public class Loja {
             }
 
             if (novoFornecedor == null) {
-                System.out.println("Fornecedor não encontrado.");
                 return false;
             }
 
@@ -374,10 +303,6 @@ public class Loja {
 
             return true;
 
-        } catch (InputMismatchException e) {
-            System.out.println("Erro ao editar fornecedor do produto: " + e.getMessage() + ". Tente novamente.");
-            sc.nextLine();
-            return editarFornecedorProduto(sc);
         } catch (Exception e) {
             return false;
         }
@@ -387,16 +312,10 @@ public class Loja {
     
     //USUARIO
     
-    public boolean cadastrarUsuarioAdmin(Scanner sc) {
+    public boolean cadastrarUsuarioAdmin(String login, String senha) {
         try {
-            System.out.print("Escolha um login: ");
-            String login = sc.nextLine();
-            System.out.print("Escolha uma senha: ");
-            String senha = sc.nextLine();
-
             for (Usuario usuario : usuariosAdmin) {
                 if (usuario != null && usuario.getUsuario().equals(login)) {
-                    System.out.println("Login já existe.");
                     return false;
                 }
             }
@@ -424,19 +343,15 @@ public class Loja {
     			}
     		}
     	} catch(Exception e) {
-    		System.out.println("Erro ao buscar usuário: " + e.getMessage());
+    		
     	}
     	
         return null;
     }
  
-    public boolean excluirUsuarioAdmin(Scanner sc) {
+    public boolean excluirUsuarioAdmin(String user) {
     	try {
-    		mostrarObjetos(usuariosAdmin);
-            System.out.print("Digite o usuário a ser excluído: ");
-            String user = sc.nextLine();
-
-            for (Usuario usuarioAdmin : usuariosAdmin) {
+    		for (Usuario usuarioAdmin : usuariosAdmin) {
             	if(usuarioAdmin != null && usuarioAdmin.getUsuario().equals(user) && !"admin".equals(user)) {
                 	usuariosAdmin.remove(usuarioAdmin);
                     return true;
@@ -444,8 +359,7 @@ public class Loja {
 			}
             return false;
         } catch (Exception e) {
-            System.out.println("Erro ao excluir administrador: " + e.getMessage() + ". Tente novamente.");
-            return excluirUsuarioAdmin(sc);
+            return false;
         }
     }
     
@@ -472,82 +386,6 @@ public class Loja {
     }
     
     //USUARIO
-        
-    ////ARQUIVOS
-    
-    /*public void abrirArquivos(String[] arquivos) {
-    	try {
-    		for(String arquivo : arquivos) {    			
-    			File myObj = new File(arquivo + ".txt");
-    			if (myObj.createNewFile()) {
-    				System.out.println("Criado arquivo: " + myObj.getName());
-    			} else {
-    				System.out.println("Arquivo já criado.\n");
-    			}
-    		}
-	    } catch (IOException e) {
-	    	System.out.println("Aconteceu algum erro na criação do arquivo.");
-	    	e.printStackTrace();
-	    }
-    }
-    
-    public void escreveNoArquivo(Object[] array, String nomeArquivo) {
-        try {
-            FileWriter myWriter = new FileWriter(nomeArquivo + ".txt");
-            
-            for (Object obj : array) {
-                if (obj != null) {
-                    String texto = (String) obj.getClass().getMethod("toStringTxt").invoke(obj);
-                    myWriter.write(texto + "\n");
-                }
-            }
-            
-            myWriter.close();
-            System.out.println("Arquivo escrito com sucesso.");
-        } catch (IOException | ReflectiveOperationException e) {
-            System.out.println("Erro na escrita do arquivo: " + e);
-        }
-    }
-    
-    public void leArquivo(Object[] array, String nomeArquivo, Class<?> classe) {
-        try {
-            File myObj = new File(nomeArquivo + ".txt"); 
-            Scanner myReader = new Scanner(myObj);
-            
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                System.out.println("Lendo linha: " + data);
-                
-                Object obj = classe.getMethod("fromString", String.class).invoke(null, data);
-                
-                array[posicaoVazia(array)] = obj;
-            }
-            
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Erro ao ler arquivo.");
-            e.printStackTrace();
-        } catch (ReflectiveOperationException e) {
-            System.out.println("Erro ao invocar o método fromString.");
-            e.printStackTrace();
-        }
-    }*/
-
-    
-    ////ARQUIVOS
-
-
-    public <T> void mostrarObjetos(ArrayList<T> lista) {
-    	if (lista.isEmpty()) {
-            return;
-        }
-    	
-        for (T item : lista) {
-            if (item != null) {
-                System.out.println(item.toString());
-            }
-        }
-    }
     
     public String linha() {
     	return "--------------------------------";

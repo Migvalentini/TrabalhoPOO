@@ -7,8 +7,11 @@ public class Fornecedor extends Pessoa {
 	private int codigo;
 	private String descricao;
 	private ArrayList<Produto> produtos = new ArrayList<>();
-
 	
+	public Fornecedor() {
+
+	}
+
 	public Fornecedor(String nome, String descricao, String telefone, String email, Endereco endereco, ArrayList<Produto> produtos) {
         super(nome, telefone, email, endereco);
         this.codigo = ultimoCodigo++;

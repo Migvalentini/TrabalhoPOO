@@ -4,6 +4,10 @@ public class Estoque {
 	private int quantidade;
 	private double preco;
 	
+	public Estoque() {
+
+	}
+	
 	public Estoque(int quantidade, double preco) {
 		this.quantidade = quantidade;
 		this.preco = preco;

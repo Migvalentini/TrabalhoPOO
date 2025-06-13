@@ -1,7 +1,6 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
