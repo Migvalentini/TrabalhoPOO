@@ -2,7 +2,7 @@ package br.ucs.poo.projeto;
 
 import java.util.Objects;
 
-public class Pessoa {
+public class Pessoa implements Comparable<Pessoa> {
     private String nome;
     private String telefone;
     private String email;
@@ -71,6 +71,25 @@ public class Pessoa {
 		Pessoa other = (Pessoa) obj;
 		return Objects.equals(nome, other.nome);
 	}
+	
+	public int compareTo(Pessoa o) {
+		Pessoa a= o;
+
+		return this.getNome().compareTo(a.getNome());
+	}
+	
+	
+	public int compareTo(Fornecedor o) {
+		Fornecedor a= o;
+		
+		return this.getNome().compareTo(a.getNome());
+	}
+
+	public int compareTo(Cliente o) {
+		return 0;
+	}
+	
+	
     /*
     public String toStringTxt() {
         return nome + ";" + telefone + ";" + email + ";" + (endereco != null ? endereco.toStringTxt() : "");
@@ -85,4 +104,7 @@ public class Pessoa {
         return new Pessoa(nome, telefone, email, endereco);
     }
     */
+
+
+	
 }

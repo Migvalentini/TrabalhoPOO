@@ -2,6 +2,8 @@ package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 //import java.io.File;
 //import java.io.FileNotFoundException;
 //import java.io.FileWriter;
@@ -181,7 +183,7 @@ public class Menu {
 			}
 			break;
 		case "3":
-			mostrarObjetos(loja.fornecedores);
+			mostrarObjetos(loja.fornecedores,null);
             System.out.print("Digite o código do fornecedor a ser excluído: ");
             int codigo2 = sc.nextInt();
             sc.nextLine();
@@ -195,11 +197,11 @@ public class Menu {
 			System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
 			String termoBusca = sc.nextLine().trim().toLowerCase();
 			ArrayList<Fornecedor> fo = loja.consultarFornecedores(termoBusca);
-			mostrarObjetos(fo);
+			mostrarObjetos(fo,null);
 			break;
 		case "5":
 	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
-			mostrarObjetos(loja.fornecedores);
+			mostrarObjetos(loja.fornecedores,null);
 			break;
 		case "0":
 			break;
@@ -241,7 +243,7 @@ public class Menu {
 			}
 			break;
 		case "2":
-			mostrarObjetos(loja.produtos);
+			mostrarObjetos(loja.produtos,null);
     		
     		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 			String termoBusca = sc.nextLine().trim().toLowerCase();
@@ -281,7 +283,7 @@ public class Menu {
 			}
 			break;
 		case "3":
-			mostrarObjetos(loja.produtos);
+			mostrarObjetos(loja.produtos,null);
     		System.out.print("Digite o código do produto a ser excluído: ");
             int codigo = sc.nextInt();
             sc.nextLine();
@@ -298,15 +300,15 @@ public class Menu {
 			if(listaProdutos == null) {
 				System.out.println("\nFalha ao consultar produtos");
 			} else {
-				mostrarObjetos(listaProdutos);
+				mostrarObjetos(listaProdutos,null);
 			}
 			break;
 		case "5":
 	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
-			mostrarObjetos(loja.produtos);
+			mostrarObjetos(loja.produtos,null);
 			break;
 		case "6":
-			mostrarObjetos(loja.produtos);
+			mostrarObjetos(loja.produtos,null);
     		
     		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 			String termoBusca4 = sc.nextLine().trim().toLowerCase();
@@ -329,7 +331,7 @@ public class Menu {
 			break;
 		case "7":
 			System.out.println("\nProdutos disponíveis:");
-            mostrarObjetos(loja.produtos);
+            mostrarObjetos(loja.produtos,null);
 			
 			System.out.println("\nDigite o código/nome do produto a ser alterado: ");
 			String termoBusca3 = sc.nextLine().trim().toLowerCase();
@@ -360,7 +362,7 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
-			mostrarObjetos(loja.clientes);
+			mostrarObjetos(loja.clientes,null);
 			break;
 		case "0":
 			break;
@@ -396,10 +398,10 @@ public class Menu {
 			break;
 		case "2":
 	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
-			mostrarObjetos(loja.usuariosAdmin);
+			mostrarObjetos(loja.usuariosAdmin,null);
 			break;
 		case "3":
-			mostrarObjetos(loja.usuariosAdmin);
+			mostrarObjetos(loja.usuariosAdmin,null);
 			
 			System.out.print("Digite o usuário a ser excluído: ");
             String user = sc.nextLine();
@@ -463,13 +465,13 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 			System.out.println("\n-- Lista de Produtos Cadastrados --");
-			mostrarObjetos(loja.produtos);
+			mostrarObjetos(loja.produtos,null);
 			break;
 		case "2":
 			System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 			String termoBusca = sc.nextLine().trim().toLowerCase();
 			ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca);
-			mostrarObjetos(listaProdutos);
+			mostrarObjetos(listaProdutos,null);
 			break;
 		case "0":
 			break;
@@ -585,7 +587,7 @@ public class Menu {
 			
 			Produto p = new Produto(nome, descricao, estoque);
 			
-			mostrarObjetos(loja.fornecedores);
+			mostrarObjetos(loja.fornecedores,null);
 			
 			System.out.print("Digite o código do fornecedor: ");
 	        int codigoFornecedor = sc.nextInt();
@@ -684,15 +686,21 @@ public class Menu {
 		}
     }
     
-    public <T> void mostrarObjetos(ArrayList<T> lista) {
-    	if (lista.isEmpty()) {
-            return;
+    public <T> void mostrarObjetos(ArrayList<T> lista, Comparator<? super T> comparator) {
+        if (lista.isEmpty()) {
+        	
+        	return;
         }
-    	
+
+        if (comparator != null) {
+            lista.sort(comparator); // ordena por Comparator
+        } else if (lista.get(0) instanceof Comparable) {
+            Collections.sort((ArrayList<? extends Comparable>) lista); // ordena por compareTo
+        }
+
         for (T item : lista) {
-            if (item != null) {
-                System.out.println(item.toString());
-            }
+            System.out.println(item);
+        }
         }
     }
-}
+

@@ -1,6 +1,7 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
@@ -46,6 +47,34 @@ public class Cliente extends Pessoa {
 		return "Cliente [codigo=" + codigo + ", cartaoCredito=" + cartaoCredito + ", pedidos=" + pedidos + ", usuario="
 				+ usuario + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(codigo);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		return codigo == other.codigo;
+	}
+
+	@Override
+	public int compareTo(Cliente o) {
+		Cliente a= o;
+		return this.codigo -a.codigo;
+	}
+	
+	
 	
 	/*
     @Override

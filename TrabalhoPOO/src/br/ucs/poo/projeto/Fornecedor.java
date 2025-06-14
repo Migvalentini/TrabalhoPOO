@@ -3,7 +3,7 @@ package br.ucs.poo.projeto;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Fornecedor extends Pessoa implements Comparable<Fornecedor> {
+public class Fornecedor extends Pessoa {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String descricao;
@@ -97,7 +97,8 @@ public class Fornecedor extends Pessoa implements Comparable<Fornecedor> {
 	@Override
 	public int compareTo(Fornecedor o) {
 		Fornecedor a= o;
-		return this.codigo -a.codigo;
+
+		return this.getNome().compareTo(a.getNome());
 	}
 
 
