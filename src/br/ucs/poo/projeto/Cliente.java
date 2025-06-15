@@ -1,6 +1,7 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
@@ -16,6 +17,10 @@ public class Cliente extends Pessoa {
         this.pedidos = pedidos;
         this.usuario = usuario;
     }
+	
+	public int getCodigo() {
+		return codigo;
+	}
 
 	public String getCartaoCredito() {
 		return cartaoCredito;
@@ -47,19 +52,27 @@ public class Cliente extends Pessoa {
 				+ usuario + "]";
 	}
 	
-	/*
-    @Override
-    public String toStringTxt() {
-        return super.toStringTxt() + ";" + cartaoCredito;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(codigo);
+		return result;
+	}
 
-    public static Cliente fromString(String linha) {
-        String[] partes = linha.split(";", 8);
-        Pessoa pessoa = Pessoa.fromString(partes[0] + ";" + partes[1] + ";" + partes[2] + ";" + partes[3]);
-        String cartaoCredito = partes[4];
-        Usuario usuario = Usuario.fromString(partes[5] + ";" + partes[6]);
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		return codigo == other.codigo;
+	}
 
-        return new Cliente(pessoa.getNome(), pessoa.getTelefone(), pessoa.getEmail(), cartaoCredito, pessoa.getEndereco(), new Pedido[0], usuario);
-    }
-    */
+	public int compareTo(Cliente o) {
+		return this.codigo -o.codigo;
+	}
 }

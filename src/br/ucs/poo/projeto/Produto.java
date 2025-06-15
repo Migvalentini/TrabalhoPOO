@@ -1,11 +1,15 @@
 package br.ucs.poo.projeto;
 
-public class Produto {
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class Produto implements Comparable<Produto> {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String nome;
 	private String descricao;
 	private Estoque estoque;
+	private ArrayList<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 	
 	public Produto() {
 		this.codigo = ultimoCodigo++;
@@ -17,6 +21,10 @@ public class Produto {
 		this.descricao = descricao;
 		this.estoque = estoque;
 	}
+	
+	public void adicionarItemPedido(ItemPedido item) {
+        itensPedido.add(item);
+    }
 
 	public int getCodigo() {
 		return codigo;
@@ -49,46 +57,43 @@ public class Produto {
 	public void setEstoque(Estoque estoque) {
 		this.estoque = estoque;
 	}
+	
+	public ArrayList<ItemPedido> getItensPedido() {
+		return itensPedido;
+	}
+
+	public void setItensPedido(ArrayList<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
+	}
 
 	@Override
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    
-	    sb.append("\nProduto:");
-	    sb.append("\n  Código: ").append(codigo);
-	    sb.append("\n  Nome: ").append(nome);
-	    sb.append("\n  Descrição: ").append(descricao);
-	    
-	    if (estoque != null) {
-	        sb.append("\n  Estoque: ").append(estoque.toString());
-	    } else {
-	        sb.append("\n  Estoque: Não informado");
-	    }
-	    
-	    return sb.toString();
+		return "Produto [codigo=" + codigo + ", nome=" + nome + ", descricao=" + descricao + ", estoque=" + estoque + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		return codigo == other.codigo && Objects.equals(nome, other.nome);
+	}
+
+	@Override
+	public int compareTo(Produto o) {
+		Produto a= o;
+
+		return this.nome.compareTo(a.nome);
+	}
+
 	
-	/*
-	public String toStringTxt() {
-	    String estoqueStr = (estoque != null) ? estoque.toStringTxt() : "null";
-	    return codigo + ";" + nome + ";" + descricao + ";" + estoqueStr;
-	}
-
-	public Produto fromString(String linha) {
-	    String[] partes = linha.split(";", 6); 
-
-	    int codigo = Integer.parseInt(partes[0]);
-	    String nome = partes[1];
-	    String descricao = partes[2];
-	    
-	    Estoque estoque = partes[3].equals("null") 
-	        ? null 
-	        : Estoque.fromString(partes[3] + ";" + partes[4] + ";" + partes[5]);
-
-	    Produto produto = new Produto(nome, descricao, estoque);
-	    produto.setCodigo(codigo);
-
-	    return produto;
-	}
-	*/
 }

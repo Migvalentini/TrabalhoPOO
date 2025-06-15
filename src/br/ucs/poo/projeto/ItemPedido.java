@@ -3,13 +3,23 @@ package br.ucs.poo.projeto;
 public class ItemPedido {
 	private static int ultimoCodigo = 0;
 	private int codigo;
+	private Produto produto;
 	private int quantidade;
 	private double preco;
 	
-	public ItemPedido(int quantidade, double preco) {
+	public ItemPedido(Produto produto, int quantidade, double preco) {
 		this.codigo = ultimoCodigo++;
+		this.produto = produto;
 		this.quantidade = quantidade;
 		this.preco = preco;
+	}
+	
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
 	public int getQuantidade() {
@@ -30,8 +40,7 @@ public class ItemPedido {
 
 	@Override
 	public String toString() {
-		return "ItemPedido:\nCódigo=" + codigo + " Quantidade=" + quantidade + " Preço=" + preco;
+		return "ItemPedido [codigo=" + codigo + ", produto=" + produto + ", quantidade=" + quantidade + ", preco="
+				+ preco + "]";
 	}
-	
-	
 }

@@ -1,6 +1,7 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Loja {
 	ArrayList<Usuario> usuariosAdmin = new ArrayList<Usuario>();
@@ -8,6 +9,7 @@ public class Loja {
 	ArrayList<Produto> produtos = new ArrayList<Produto>();
 	ArrayList<Estoque> estoques = new ArrayList<Estoque>();
 	ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+	ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 	
 	public Loja() {
 		usuariosAdmin.add(new Usuario("admin", "123", TipoUsuario.ADMIN));
@@ -136,13 +138,13 @@ public class Loja {
     //PRODUTO
     
     public boolean cadastrarProduto(Produto novoProduto) {
-   	 try {    		 
-   		 produtos.add(novoProduto);
-   		 return true;
-   	 } catch(Exception e) {
-   		 return false;
-   	 }
-   }
+		try {    		 
+			produtos.add(novoProduto);
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
+    }
     
     public boolean editarProduto(String termoBusca, Produto produtoComNovosDados) {
     	try {   
@@ -168,8 +170,8 @@ public class Loja {
                 	produtoEncontrado.setEstoque(estoqueAtual);
                 }
 
-                estoqueAtual.setQuantidade(novoEstoque.getQuantidade());
-                estoqueAtual.setPreco(novoEstoque.getPreco());
+                if(produtoComNovosDados.getEstoque().getQuantidade() >= 0) estoqueAtual.setQuantidade(novoEstoque.getQuantidade());
+                if(produtoComNovosDados.getEstoque().getPreco() >= 0) estoqueAtual.setPreco(novoEstoque.getPreco());
                 
             }
     	    
@@ -237,7 +239,7 @@ public class Loja {
             }
         } catch (NumberFormatException e) {
         	for (Produto produto : produtos) {
-        		if (produto != null && produto.getNome().toLowerCase().contains(termoBusca)) {
+        		if (produto != null && (produto.getNome().toLowerCase().contains(termoBusca) || produto.getDescricao().toLowerCase().contains(termoBusca))) {
         			listaProdutos.add(produto);
         		}
         	}
@@ -309,6 +311,37 @@ public class Loja {
     }
     
     ////PRODUTO
+   
+    //PEDIDO
+    
+    public double calcularTotalItem(ItemPedido itemPedido) {
+	    return itemPedido.getPreco() * itemPedido.getQuantidade();
+    }
+    
+    public boolean cadastrarPedido(Integer idCliente, ItemPedido itemPedido) {
+		try {    		 
+			Pedido novoPedido = new Pedido(idCliente, new Date(), new Date(), TipoPedido.NOVO, itemPedido);
+	        pedidos.add(novoPedido);
+	        return true;
+		} catch(Exception e) {
+			return false;
+		}
+    }
+    
+    public ArrayList<Pedido> consultarPedidos(int idCliente) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		for (Pedido pedido : pedidos) {
+        	if (pedido != null && pedido.getIdCliente() == idCliente) {
+            	listaPedidos.add(pedido);
+            }
+        }
+        
+		
+		return listaPedidos;
+    }
+    
+    ////PEDIDO
     
     //USUARIO
     
@@ -386,8 +419,4 @@ public class Loja {
     }
     
     //USUARIO
-    
-    public String linha() {
-    	return "--------------------------------";
-    }
 }

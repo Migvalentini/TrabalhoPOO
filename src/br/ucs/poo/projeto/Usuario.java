@@ -1,6 +1,7 @@
 package br.ucs.poo.projeto;
 
 public class Usuario {
+	private Cliente cliente;
 	private String usuario;
     private String senha;
     private TipoUsuario tipo;
@@ -27,19 +28,13 @@ public class Usuario {
 	public String toString() {
 		return "Usuário: " + usuario + " Senha: " + senha + " Tipo: " + tipo;
 	}
-	
-	/*
-	public String toStringTxt() {
-	    return usuario + ";" + senha + ";" + tipo + ";";
+
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public static Usuario fromString(String linha) {
-	    String[] partes = linha.split(";", 4);
-	    String usuario = partes[0];
-	    String senha = partes[1];
-	    TipoUsuario tipo = TipoUsuario.valueOf(partes[2]);
-	    
-	    return new Usuario(usuario, senha, tipo);
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
-	*/
+	
 }

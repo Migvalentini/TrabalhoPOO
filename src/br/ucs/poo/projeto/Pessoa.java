@@ -1,5 +1,7 @@
 package br.ucs.poo.projeto;
 
+import java.util.Objects;
+
 public class Pessoa {
     private String nome;
     private String telefone;
@@ -54,18 +56,20 @@ public class Pessoa {
         return " Nome=" + nome + ",\n  Telefone=" + telefone + ",\n  Email=" + email + ",\n  Endereco=" + endereco;
     }
 
-    /*
-    public String toStringTxt() {
-        return nome + ";" + telefone + ";" + email + ";" + (endereco != null ? endereco.toStringTxt() : "");
-    }
+    @Override
+	public int hashCode() {
+		return Objects.hash(nome);
+	}
 
-    public static Pessoa fromString(String linha) {
-        String[] partes = linha.split(";", 4);
-        String nome = partes[0];
-        String telefone = partes[1];
-        String email = partes[2];
-        Endereco endereco = Endereco.fromString(partes[3]);
-        return new Pessoa(nome, telefone, email, endereco);
-    }
-    */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pessoa other = (Pessoa) obj;
+		return Objects.equals(nome, other.nome);
+	}
 }

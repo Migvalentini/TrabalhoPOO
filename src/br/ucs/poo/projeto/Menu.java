@@ -24,7 +24,7 @@ public class Menu {
 		System.out.println("SEJA MUITO BEM-VINDO(A) AO SISTEMA DE COMPRAS DESENVOLVIDO PELOS ALUNOS MIGUEL VALENTINI, HENRY PECATTI TIBOLA E VINICIUS BAREA PARA A DISCIPLINA DE POO!");
 		
 		while (continuar) {
-			System.out.println("\n" + m.loja.linha() + "\n         Menu Principal\n" + m.loja.linha());
+			System.out.println("\n" + m.linha() + "\n         Menu Principal\n" + m.linha());
 			System.out.println(" 1 - Realizar Cadastro");
 			System.out.println(" 2 - Realizar Login");
 			System.out.println(" 0 - Sair");
@@ -43,6 +43,11 @@ public class Menu {
     			break;
 			case "2":
 				m.realizarLogin(sc);
+				break;
+			case "88":
+				Usuario u = new Usuario("cliente1", "senha", TipoUsuario.CLIENTE);
+				u.setCliente(new Cliente("Test Client", "111111111", "test@example.com", "1234-5678-9012-3456", new Endereco("Test St", "123", "", "Test B", "00000-000", "Test City", "TS"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE)));
+				m.menuCliente(u, sc);
 				break;
 			case "99":
 				m.menuAdministrador(sc);
@@ -64,7 +69,7 @@ public class Menu {
     	System.out.println("\nLogin como ADMINISTRADOR realizado com sucesso!");
     	
     	while (continuar) {
-    		System.out.println("\n" + loja.linha() + "\n     Menu de Administrador\n" + loja.linha());
+    		System.out.println("\n" + linha() + "\n     Menu de Administrador\n" + linha());
     		System.out.println("1 - Menu Fornecedores");
     		System.out.println("2 - Menu Produtos");
     		System.out.println("3 - Menu Clientes");
@@ -88,8 +93,8 @@ public class Menu {
     			menuAdministradorUsuarios(sc);
     			break;
     		case "99":
-    			Produto p1 = new Produto("nome1", "descrição", new Estoque(0, 0));
-    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(0, 0));
+    			Produto p1 = new Produto("nome1", "descrição", new Estoque(10, 20));
+    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(30, 40));
     			loja.fornecedores.add(new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.fornecedores.add(new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.produtos.add(p1);
@@ -108,7 +113,7 @@ public class Menu {
     }
     
     public void menuAdministradorFornecedores(Scanner sc) {
-		System.out.println("\n" + loja.linha() + "\n     Menu de Fornecedores\n" + loja.linha());
+		System.out.println("\n" + linha() + "\n     Menu de Fornecedores\n" + linha());
 		System.out.println("1 - Cadastrar fornecedor");
 		System.out.println("2 - Editar fornecedor");
 		System.out.println("3 - Excluir fornecedor");
@@ -198,7 +203,6 @@ public class Menu {
 			mostrarObjetos(fo);
 			break;
 		case "5":
-	    	System.out.println("\n-- Lista de Fornecedores Cadastrados --");
 			mostrarObjetos(loja.fornecedores);
 			break;
 		case "0":
@@ -209,7 +213,7 @@ public class Menu {
     }
     
     public void menuAdministradorProdutos(Scanner sc) {
-		System.out.println("\n" + loja.linha() + "\n     Menu de Produtos\n" + loja.linha());
+		System.out.println("\n" + linha() + "\n     Menu de Produtos\n" + linha());
 		System.out.println("1 - Cadastrar produto");
 		System.out.println("2 - Editar produto");
 		System.out.println("3 - Excluir produto");
@@ -302,7 +306,6 @@ public class Menu {
 			}
 			break;
 		case "5":
-	    	System.out.println("\n-- Lista de Produtos Cadastrados --");
 			mostrarObjetos(loja.produtos);
 			break;
 		case "6":
@@ -350,7 +353,7 @@ public class Menu {
     }
     
     public void menuAdministradorClientes(Scanner sc) {
-    	System.out.println("\n" + loja.linha() + "\n     Menu de Usuários\n" + loja.linha());
+    	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
 		System.out.println("1 - Mostrar todos clientes");
 		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
@@ -359,7 +362,6 @@ public class Menu {
 		
 		switch (resposta) {
 		case "1":
-	    	System.out.println("\n-- Lista de Clientes Cadastrados --");
 			mostrarObjetos(loja.clientes);
 			break;
 		case "0":
@@ -371,7 +373,7 @@ public class Menu {
     }
     
     public void menuAdministradorUsuarios(Scanner sc) {
-    	System.out.println("\n" + loja.linha() + "\n     Menu de Usuários\n" + loja.linha());
+    	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
 		System.out.println("1 - Cadastrar usuário");
 		System.out.println("2 - Mostrar todos usuários");
 		System.out.println("3 - Excluir usuário");
@@ -395,7 +397,6 @@ public class Menu {
 			}
 			break;
 		case "2":
-	    	System.out.println("\n-- Lista de Usuários Admin Cadastrados: --");
 			mostrarObjetos(loja.usuariosAdmin);
 			break;
 		case "3":
@@ -422,8 +423,9 @@ public class Menu {
     	System.out.println("\nLogin como CLIENTE realizado com sucesso!");
     	
     	while (continuar) {
-	    	System.out.println("\n" + loja.linha() + "\n     Menu de Cliente\n" + loja.linha());
+	    	System.out.println("\n" + linha() + "\n     Menu de Cliente\n" + linha());
 			System.out.println(" 1 - Menu de Produtos");
+			System.out.println(" 2 - Menu de Pedidos");
 	    	System.out.println(" 0 - Voltar ao menu principal");
 	    	System.out.print("Opção: ");
 	    	
@@ -431,7 +433,10 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				menuClienteProdutos(sc);
+				menuClienteProdutos(usuario, sc);
+				break;
+			case "2":
+				menuClientePedidos(usuario, sc);
 				break;
 			case "0":
 				continuar = false;
@@ -443,8 +448,8 @@ public class Menu {
     	}
     }
     
-    public void menuClienteProdutos(Scanner sc) {
-    	System.out.println("\n" + loja.linha() + "\n     Menu de Produtos\n" + loja.linha());
+    public void menuClienteProdutos(Usuario usuario, Scanner sc) {
+    	System.out.println("\n" + linha() + "\n     Menu de Produtos\n" + linha());
 		System.out.println(" 1 - Consultar todos produtos");
 		System.out.println(" 2 - Consultar produtos por código/nome");
     	System.out.println(" 0 - Voltar ao menu principal");
@@ -454,7 +459,6 @@ public class Menu {
 		
 		switch (resposta) {
 		case "1":
-			System.out.println("\n-- Lista de Produtos Cadastrados --");
 			mostrarObjetos(loja.produtos);
 			break;
 		case "2":
@@ -462,6 +466,60 @@ public class Menu {
 			String termoBusca = sc.nextLine().trim().toLowerCase();
 			ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca);
 			mostrarObjetos(listaProdutos);
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+	}
+    
+    public void menuClientePedidos(Usuario usuario, Scanner sc) {
+    	System.out.println("\n" + linha() + "\n     Menu de Produtos\n" + linha());
+		System.out.println("1 - Criar pedido");
+		System.out.println("2 - Visualizar pedidos");
+    	System.out.println("0 - Voltar ao menu principal");
+    	System.out.print("Opção: ");
+    	
+    	String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			String continuar = "n";
+			do {
+				System.out.println("Selecione um produto para adicionar ao carrinho: ");
+				mostrarObjetos(loja.produtos);
+				String termoBusca = sc.nextLine().trim().toLowerCase();
+				ArrayList<Produto> produtos = loja.consultarProdutos(termoBusca);
+				if (produtos.size() == 0) {
+					System.out.println("Produto Não Encontrado!");
+					break;
+				}
+				Produto produto = produtos.get(0);
+				System.out.println("Digite a quantidade que deseja comprar: ");
+				int quantidade = sc.nextInt();
+				sc.nextLine();
+				
+				System.out.println("Confirma a adição do item? O total será R$" + loja.calcularTotalItem(new ItemPedido(produto, quantidade, produto.getEstoque().getPreco())));
+				String confirma = sc.nextLine();
+				
+				if ("s".equals(confirma)) {				
+					loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+				}
+				
+				System.out.println("Deseja adicionar mais itens? (s)");
+				continuar = sc.nextLine();
+			} while("s".equals(continuar));
+			sc.nextLine();
+			break;
+		case "2":
+			try {
+				ArrayList<Pedido> listaPedidos = loja.consultarPedidos(usuario.getCliente().getCodigo());
+				mostrarObjetos(listaPedidos);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
 		case "0":
 			break;
@@ -571,7 +629,10 @@ public class Menu {
 				return null;
 			}
 			
-			return new Cliente(nome, telefone, email, cartaoCredito, endereco, null, usuario);
+			Cliente cliente = new Cliente(nome, telefone, email, cartaoCredito, endereco, null, usuario);
+			usuario.setCliente(cliente);
+			
+			return cliente;
 		} catch(Exception ex) {
 			System.out.println("Erro ao cadastrar cliente: " + ex);
 			return null;
@@ -623,10 +684,25 @@ public class Menu {
             return;
         }
     	
+    	System.out.println("\n-- Lista de " + pluralizarClasse(lista.get(0).getClass().getSimpleName()) + " Cadastrados --");
         for (T item : lista) {
             if (item != null) {
                 System.out.println(item.toString());
             }
         }
+    }
+    
+    public String pluralizarClasse(String nomeClasse) {
+        if (nomeClasse.endsWith("r") || nomeClasse.endsWith("z")) {
+            return nomeClasse + "es"; // Fornecedor → Fornecedores
+        } else if (nomeClasse.endsWith("m")) {
+            return nomeClasse.substring(0, nomeClasse.length() - 1) + "ns"; // Ex: Item → Itens
+        } else {
+            return nomeClasse + "s"; // Produto → Produtos
+        }
+    }
+
+    public String linha() {
+    	return "--------------------------------";
     }
 }

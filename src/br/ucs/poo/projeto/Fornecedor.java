@@ -1,8 +1,9 @@
 package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Fornecedor extends Pessoa {
+public class Fornecedor extends Pessoa implements Comparable<Fornecedor> {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String descricao;
@@ -77,17 +78,26 @@ public class Fornecedor extends Pessoa {
                 "\n  Produtos:" + produtosStr;
     }
 
-	/*
-    @Override
-    public String toStringTxt() {
-        return super.toStringTxt() + ";" + descricao;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
 
-    public static Fornecedor fromString(String texto) {
-        String[] partes = texto.split(";", 5);
-        Pessoa pessoa = Pessoa.fromString(partes[0] + ";" + partes[1] + ";" + partes[2] + ";" + partes[3]);
-        String descricao = partes[4];
-        return new Fornecedor(pessoa.getNome(), descricao, pessoa.getTelefone(), pessoa.getEmail(), pessoa.getEndereco(), null);
-    }
-    */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fornecedor other = (Fornecedor) obj;
+		return codigo == other.codigo;
+	}
+
+	@Override
+	public int compareTo(Fornecedor o) {
+		Fornecedor a= o;
+		return this.codigo -a.codigo;
+	}
 }
