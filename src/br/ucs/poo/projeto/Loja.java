@@ -318,10 +318,32 @@ public class Loja {
 	    return itemPedido.getPreco() * itemPedido.getQuantidade();
     }
     
+    public void atualizarEstoque(Produto p, int quantidade) {
+    	for (Produto produto : produtos) {
+            if (produto.equals(p)) {
+            	Estoque estoque = new Estoque(produto.getEstoque().getQuantidade() - quantidade, produto.getEstoque().getPreco());
+            	produto.setEstoque(estoque);
+            }
+        }
+    }
+    
     public boolean cadastrarPedido(Integer idCliente, ItemPedido itemPedido) {
 		try {    		 
 			Pedido novoPedido = new Pedido(idCliente, new Date(), new Date(), TipoPedido.NOVO, itemPedido);
 	        pedidos.add(novoPedido);
+	        return true;
+		} catch(Exception e) {
+			return false;
+		}
+    }
+    
+    public boolean addProdutoPedido(Integer idCliente, ItemPedido itemPedido) {
+		try {    		 
+			for (Pedido pedido : pedidos) {
+	        	if (pedido != null && pedido.getIdCliente() == idCliente) {
+	        		pedido.addItensPedido(itemPedido);
+	            }
+	        }
 	        return true;
 		} catch(Exception e) {
 			return false;

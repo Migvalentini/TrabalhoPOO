@@ -486,9 +486,10 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 			String continuar = "n";
+			int flag = 1;
 			do {
-				System.out.println("Selecione um produto para adicionar ao carrinho: ");
 				mostrarObjetos(loja.produtos);
+				System.out.println("Selecione um produto para adicionar ao carrinho: ");
 				String termoBusca = sc.nextLine().trim().toLowerCase();
 				ArrayList<Produto> produtos = loja.consultarProdutos(termoBusca);
 				if (produtos.size() == 0) {
@@ -500,14 +501,28 @@ public class Menu {
 				int quantidade = sc.nextInt();
 				sc.nextLine();
 				
-				System.out.println("Confirma a adição do item? O total será R$" + loja.calcularTotalItem(new ItemPedido(produto, quantidade, produto.getEstoque().getPreco())));
+				if (produto.getEstoque().getQuantidade() == 0) {
+					System.out.println("\nProduto em falta no estoque");
+					break;
+				} else if (quantidade > produto.getEstoque().getQuantidade()) {
+					quantidade = produto.getEstoque().getQuantidade();
+				}
+				
+				System.out.println("Confirma a adição do item? O total será " + quantidade + ", R$" + loja.calcularTotalItem(new ItemPedido(produto, quantidade, produto.getEstoque().getPreco())) + " (s/n)");
 				String confirma = sc.nextLine();
 				
 				if ("s".equals(confirma)) {				
-					loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+					if(flag == 1) {
+						loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+						flag = 0;
+					} else {
+						loja.addProdutoPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+					}
 				}
 				
-				System.out.println("Deseja adicionar mais itens? (s)");
+				loja.atualizarEstoque(produto, quantidade);
+				
+				System.out.println("Deseja adicionar mais itens? (s/n)");
 				continuar = sc.nextLine();
 			} while("s".equals(continuar));
 			sc.nextLine();
@@ -525,7 +540,7 @@ public class Menu {
 			break;
 		default:
 			System.out.println("\nOpção inválida.");
-		}
+		}	
 	}
     
     public void realizarLogin(Scanner sc) {

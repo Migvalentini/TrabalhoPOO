@@ -11,7 +11,7 @@ public class Pedido {
 	private Date dataPedido;
 	private Date dataEntrega;
 	private TipoPedido situacao;
-	private ArrayList<ItemPedido> itensPedidos = new ArrayList<ItemPedido>();
+	private ArrayList<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 	
 	public Pedido(int idCliente, Date dataPedido, Date dataEntrega, TipoPedido situacao, ItemPedido itemPedido) {
 		this.codigo = ultimoCodigo++;
@@ -19,11 +19,11 @@ public class Pedido {
 		this.dataPedido = dataPedido;
 		this.dataEntrega = dataEntrega;
 		this.situacao = situacao;
-		this.itensPedidos = new ArrayList<>(Arrays.asList(itemPedido));
+		this.itensPedido = new ArrayList<>(Arrays.asList(itemPedido));
 	}
 
 	public void adicionarItem(ItemPedido itemPedido) {
-		itensPedidos.add(itemPedido);
+		itensPedido.add(itemPedido);
     }
 
 	public int getIdCliente() {
@@ -59,17 +59,21 @@ public class Pedido {
 	}
 	
 	public ArrayList<ItemPedido> getItensPedido() {
-		return itensPedidos;
+		return itensPedido;
 	}
 
 	public void setItensPedido(ArrayList<ItemPedido> itensPedidos) {
-		this.itensPedidos = itensPedidos;
+		this.itensPedido = itensPedidos;
 	}
-
+	
+	public void addItensPedido(ItemPedido item) {
+		this.itensPedido.add(item);
+	} 
+	
 	@Override
 	public String toString() {
 		return "Pedido [codigo=" + codigo + ", idCliente=" + idCliente + ", dataPedido=" + dataPedido + ", dataEntrega="
-				+ dataEntrega + ", situacao=" + situacao + ", itensPedidos=" + itensPedidos + "]";
+				+ dataEntrega + ", situacao=" + situacao + ", itensPedidos=" + itensPedido + "]";
 	}
 
 }

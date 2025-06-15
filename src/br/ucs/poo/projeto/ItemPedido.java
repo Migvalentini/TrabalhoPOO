@@ -1,14 +1,12 @@
 package br.ucs.poo.projeto;
 
 public class ItemPedido {
-	private static int ultimoCodigo = 0;
 	private int codigo;
 	private Produto produto;
 	private int quantidade;
 	private double preco;
 	
 	public ItemPedido(Produto produto, int quantidade, double preco) {
-		this.codigo = ultimoCodigo++;
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.preco = preco;
