@@ -94,7 +94,7 @@ public class Menu {
     			break;
     		case "99":
     			Produto p1 = new Produto("nome1", "descrição", new Estoque(10, 20));
-    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(30, 40));
+    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(5, 40));
     			loja.fornecedores.add(new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.fornecedores.add(new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.produtos.add(p1);
@@ -696,6 +696,7 @@ public class Menu {
     
     public <T> void mostrarObjetos(ArrayList<T> lista) {
     	if (lista.isEmpty()) {
+    		System.out.println("\nNão há nenhum registro cadastrado.");
             return;
         }
     	
