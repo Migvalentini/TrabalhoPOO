@@ -26,6 +26,14 @@ public class Pedido {
 		itensPedido.add(itemPedido);
     }
 
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
 	public int getIdCliente() {
 		return idCliente;
 	}

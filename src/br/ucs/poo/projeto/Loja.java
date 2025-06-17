@@ -1,5 +1,7 @@
 package br.ucs.poo.projeto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -313,6 +315,37 @@ public class Loja {
     ////PRODUTO
    
     //PEDIDO
+    
+    public ArrayList<Pedido> consultarPedidos(Integer idCliente, Integer codigo, String dataInicialFormatada, String dataFinalFormatada) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	for (Pedido pedido : pedidos) {
+            if (pedido != null && pedido.getCodigo() == codigo && pedido.getIdCliente() == idCliente) {
+                listaPedidos.add(pedido);
+            }
+        }
+
+        if (listaPedidos.isEmpty()) {
+            try {
+                Date dataInicial = sdf.parse(dataInicialFormatada);
+                Date dataFinal = sdf.parse(dataFinalFormatada);
+
+                for (Pedido pedido : pedidos) {
+                    if (pedido != null) {
+                        Date dataPedido = pedido.getDataPedido();
+                        if (dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0 && pedido.getIdCliente() == idCliente) {
+                            listaPedidos.add(pedido);
+                        }
+                    }
+                }
+            } catch (ParseException ex) {
+                System.out.println("Erro ao converter datas. Use o formato dd/MM/yyyy.");
+            }
+        }
+        
+		return listaPedidos;
+    }
     
     public double calcularTotalItem(ItemPedido itemPedido) {
 	    return itemPedido.getPreco() * itemPedido.getQuantidade();

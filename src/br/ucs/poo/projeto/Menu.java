@@ -513,10 +513,10 @@ public class Menu {
 				
 				if ("s".equals(confirma)) {				
 					if(flag == 1) {
-						loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+						loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade));
 						flag = 0;
 					} else {
-						loja.addProdutoPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco()));
+						loja.addProdutoPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade));
 					}
 				}
 				
@@ -528,14 +528,17 @@ public class Menu {
 			sc.nextLine();
 			break;
 		case "2":
-			try {
-				ArrayList<Pedido> listaPedidos = loja.consultarPedidos(usuario.getCliente().getCodigo());
-				mostrarObjetos(listaPedidos);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
+			System.out.println("Digite o código do pedido a ser pesquisado: ");
+            Integer codigo = sc.nextInt();
+
+            System.out.print("Digite a data inicial (yyyy-MM-dd): ");
+            String dataInicial = sc.nextLine();
+            System.out.print("Digite a data final (yyyy-MM-dd): ");
+            String dataFinal = sc.nextLine();
+
+            ArrayList<Pedido> listaPedidos = loja.consultarPedidos(usuario.getCliente().getCodigo(), codigo, dataInicial, dataFinal);
+            mostrarObjetos(listaPedidos);
+            break;
 		case "0":
 			break;
 		default:
