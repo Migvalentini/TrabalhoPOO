@@ -347,6 +347,19 @@ public class Loja {
 		return listaPedidos;
     }
     
+    public ArrayList<Pedido> consultarPedidos(int idCliente) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		for (Pedido pedido : pedidos) {
+        	if (pedido != null && pedido.getIdCliente() == idCliente) {
+            	listaPedidos.add(pedido);
+            }
+        }
+        
+		
+		return listaPedidos;
+    }
+    
     public double calcularTotalItem(ItemPedido itemPedido) {
 	    return itemPedido.getPreco() * itemPedido.getQuantidade();
     }
@@ -383,17 +396,22 @@ public class Loja {
 		}
     }
     
-    public ArrayList<Pedido> consultarPedidos(int idCliente) {
-    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
-		
-		for (Pedido pedido : pedidos) {
-        	if (pedido != null && pedido.getIdCliente() == idCliente) {
-            	listaPedidos.add(pedido);
+    public void alterarPedidoEntregue(Integer idCliente, Integer codigoPedido) {
+    	
+    	for (Pedido pedido : pedidos) {
+        	if (pedido.getCodigo() == codigoPedido && pedido.getIdCliente() == idCliente) {
+        		pedido.setSituacao(TipoPedido.ENTREGUE);
             }
         }
-        
-		
-		return listaPedidos;
+    }
+    
+    public void alterarPedidoCancelado(Integer idCliente, Integer codigoPedido) {
+    	
+    	for (Pedido pedido : pedidos) {
+        	if (pedido.getCodigo() == codigoPedido && pedido.getIdCliente() == idCliente) {
+        		pedido.setSituacao(TipoPedido.CANCELADO);
+            }
+        }
     }
     
     ////PEDIDO

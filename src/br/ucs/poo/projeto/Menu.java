@@ -2,6 +2,7 @@ package br.ucs.poo.projeto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 //import java.io.File;
 //import java.io.FileNotFoundException;
 //import java.io.FileWriter;
@@ -355,6 +356,8 @@ public class Menu {
     public void menuAdministradorClientes(Scanner sc) {
     	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
 		System.out.println("1 - Mostrar todos clientes");
+		System.out.println("2 - Consultar pedidos de um cliente");
+		System.out.println("3 - Alterar pedido de um cliente");
 		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
 		
@@ -363,6 +366,44 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 			mostrarObjetos(loja.clientes);
+			break;
+		case "2":
+			try {
+				System.out.println("\nDigite o código do cliente");
+				int codigoCliente2 = sc.nextInt();
+				sc.nextLine();
+				ArrayList <Pedido> listaPedidosCliente = loja.consultarPedidos(codigoCliente2);
+				mostrarObjetos(listaPedidosCliente);
+			} catch(InputMismatchException e) {
+				System.out.println("\nCódigo inválido");
+			}
+			break;
+		case "3":
+			try {
+				System.out.println("\nDigite o código do cliente");
+				int codigoCliente = sc.nextInt();
+				sc.nextLine();
+				System.out.println("\nDigite o código do pedido");
+				int codigoPedido = sc.nextInt();
+				sc.nextLine();
+				System.out.println("\nDigite a opção desejada:");
+				System.out.println("1 - Tornar pedido como entregue.");
+				System.out.println("2 - cancelar pedido.");
+				int pedido = sc.nextInt();
+				sc.nextLine();
+				switch(pedido) {
+				case 1:
+					loja.alterarPedidoEntregue(codigoCliente, codigoPedido);
+					break;
+				case 2:
+					loja.alterarPedidoCancelado(codigoCliente, codigoPedido);
+					break;
+				default:
+					System.out.println("\nOpção Inválida");
+				}
+			} catch(InputMismatchException e) {
+				System.out.println("\nCódigo inválido");
+			}
 			break;
 		case "0":
 			break;
@@ -477,7 +518,8 @@ public class Menu {
     public void menuClientePedidos(Usuario usuario, Scanner sc) {
     	System.out.println("\n" + linha() + "\n     Menu de Produtos\n" + linha());
 		System.out.println("1 - Criar pedido");
-		System.out.println("2 - Visualizar pedidos");
+		System.out.println("2 - Consultar pedidos por código/data");
+		System.out.println("3 - Consultar todos os meus pedidos");
     	System.out.println("0 - Voltar ao menu principal");
     	System.out.print("Opção: ");
     	
@@ -530,15 +572,19 @@ public class Menu {
 		case "2":
 			System.out.println("Digite o código do pedido a ser pesquisado: ");
             Integer codigo = sc.nextInt();
+            sc.nextLine();
 
             System.out.print("Digite a data inicial (yyyy-MM-dd): ");
             String dataInicial = sc.nextLine();
             System.out.print("Digite a data final (yyyy-MM-dd): ");
             String dataFinal = sc.nextLine();
-
+            
             ArrayList<Pedido> listaPedidos = loja.consultarPedidos(usuario.getCliente().getCodigo(), codigo, dataInicial, dataFinal);
             mostrarObjetos(listaPedidos);
             break;
+		case "3":
+			ArrayList<Pedido> listaPedidos2 = loja.consultarPedidos(usuario.getCliente().getCodigo());
+			mostrarObjetos(listaPedidos2);
 		case "0":
 			break;
 		default:
