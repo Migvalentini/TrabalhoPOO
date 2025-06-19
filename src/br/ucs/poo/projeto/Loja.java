@@ -360,6 +360,30 @@ public class Loja {
 		return listaPedidos;
     }
     
+    public ArrayList<Pedido> consultarPedidos(int idCliente, TipoPedido tipo) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		for (Pedido pedido : pedidos) {
+        	if (pedido != null && pedido.getIdCliente() == idCliente && pedido.getSituacao() == tipo) {
+            	listaPedidos.add(pedido);
+            }
+        }
+		
+		return listaPedidos;
+    }
+    
+    public ArrayList<Pedido> consultarPedidos(TipoPedido tipo) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		for (Pedido pedido : pedidos) {
+        	if (pedido != null && pedido.getSituacao() != tipo) {
+            	listaPedidos.add(pedido);
+            }
+        }
+		
+		return listaPedidos;
+    }
+    
     public double calcularTotalItem(ItemPedido itemPedido) {
 	    return itemPedido.getPreco() * itemPedido.getQuantidade();
     }
@@ -373,21 +397,22 @@ public class Loja {
         }
     }
     
-    public boolean cadastrarPedido(Integer idCliente, ItemPedido itemPedido) {
+    public int cadastrarPedido(Integer idCliente, ItemPedido itemPedido) {
 		try {    		 
-			Pedido novoPedido = new Pedido(idCliente, new Date(), new Date(), TipoPedido.NOVO, itemPedido);
+			Pedido novoPedido = new Pedido(idCliente, new Date(), null, null, null, TipoPedido.NOVO, itemPedido, itemPedido.getPreco());
 	        pedidos.add(novoPedido);
-	        return true;
+	        return novoPedido.getCodigo();
 		} catch(Exception e) {
-			return false;
+			return -1;
 		}
     }
     
-    public boolean addProdutoPedido(Integer idCliente, ItemPedido itemPedido) {
+    public boolean addProdutoPedido(Integer codigo, ItemPedido itemPedido) {
 		try {    		 
 			for (Pedido pedido : pedidos) {
-	        	if (pedido != null && pedido.getIdCliente() == idCliente) {
+	        	if (pedido != null && pedido.getCodigo() == codigo) {
 	        		pedido.addItensPedido(itemPedido);
+	        		pedido.adicionarTotalPedido(itemPedido.getPreco());
 	            }
 	        }
 	        return true;
@@ -396,20 +421,44 @@ public class Loja {
 		}
     }
     
-    public void alterarPedidoEntregue(Integer idCliente, Integer codigoPedido) {
-    	
+    public boolean calcularICMSPedido(Integer codigo) {
+		try {    		 
+			for (Pedido pedido : pedidos) {
+	        	if (pedido != null && pedido.getCodigo() == codigo) {
+	        		pedido.adicionarICMS();
+	            }
+	        }
+	        return true;
+		} catch(Exception e) {
+			return false;
+		}
+    }
+    
+    public double mostrarTotalPedido(Integer codigo) {
+		try {    		 
+			for (Pedido pedido : pedidos) {
+	        	if (pedido != null && pedido.getCodigo() == codigo) {
+	        		return pedido.getTotalPedido();
+	            }
+	        }
+			return 0;
+		} catch(Exception e) {
+			return 0;
+		}
+    }
+    
+    public void alterarPedido(int codigoPedido, TipoPedido tipo) {
     	for (Pedido pedido : pedidos) {
-        	if (pedido.getCodigo() == codigoPedido && pedido.getIdCliente() == idCliente) {
-        		pedido.setSituacao(TipoPedido.ENTREGUE);
+        	if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
+        		pedido.setSituacao(tipo);
             }
         }
     }
     
-    public void alterarPedidoCancelado(Integer idCliente, Integer codigoPedido) {
-    	
+    public void alterarPedido(int idCliente, int codigoPedido, TipoPedido tipo) {
     	for (Pedido pedido : pedidos) {
-        	if (pedido.getCodigo() == codigoPedido && pedido.getIdCliente() == idCliente) {
-        		pedido.setSituacao(TipoPedido.CANCELADO);
+        	if (pedido.getIdCliente() == idCliente && pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
+        		pedido.setSituacao(tipo);
             }
         }
     }

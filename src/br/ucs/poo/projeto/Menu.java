@@ -74,7 +74,8 @@ public class Menu {
     		System.out.println("1 - Menu Fornecedores");
     		System.out.println("2 - Menu Produtos");
     		System.out.println("3 - Menu Clientes");
-    		System.out.println("4 - Menu Usuários Admin");
+    		System.out.println("4 - Menu Pedidos");
+    		System.out.println("5 - Menu Usuários Admin");
     		System.out.println("0 - Voltar ao menu principal");
     		System.out.print("Opção: ");
     		
@@ -91,11 +92,14 @@ public class Menu {
     			menuAdministradorClientes(sc);
     			break;
     		case "4":
+    			menuAdministradorPedidos(sc);
+    			break;
+    		case "5":
     			menuAdministradorUsuarios(sc);
     			break;
     		case "99":
-    			Produto p1 = new Produto("nome1", "descrição", new Estoque(10, 20));
-    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(5, 40));
+    			Produto p1 = new Produto("nome1", "descrição", new Estoque(10, 10));
+    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(5, 50));
     			loja.fornecedores.add(new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.fornecedores.add(new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new ArrayList<>(Arrays.asList(p1, p2))));
     			loja.produtos.add(p1);
@@ -356,8 +360,6 @@ public class Menu {
     public void menuAdministradorClientes(Scanner sc) {
     	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
 		System.out.println("1 - Mostrar todos clientes");
-		System.out.println("2 - Consultar pedidos de um cliente");
-		System.out.println("3 - Alterar pedido de um cliente");
 		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
 		
@@ -366,6 +368,29 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 			mostrarObjetos(loja.clientes);
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("\nOpção inválida.");
+		}
+    	
+    }
+    
+    public void menuAdministradorPedidos(Scanner sc) {
+    	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
+		System.out.println("1 - Consultar pedidos");
+		System.out.println("2 - Consultar pedidos de um cliente");
+		System.out.println("3 - Enviar pedidos");
+		System.out.println("4 - Cancelar pedidos");
+		System.out.println("0 - Voltar ao menu principal");
+		System.out.print("Opção: ");
+		
+		String resposta = sc.nextLine();
+		
+		switch (resposta) {
+		case "1":
+			mostrarObjetos(loja.pedidos);
 			break;
 		case "2":
 			try {
@@ -380,27 +405,30 @@ public class Menu {
 			break;
 		case "3":
 			try {
-				System.out.println("\nDigite o código do cliente");
-				int codigoCliente = sc.nextInt();
-				sc.nextLine();
+				ArrayList <Pedido> listaPedidosNaoEntregues = loja.consultarPedidos(TipoPedido.ENTREGUE);
+				mostrarObjetos(listaPedidosNaoEntregues);
+				
 				System.out.println("\nDigite o código do pedido");
 				int codigoPedido = sc.nextInt();
 				sc.nextLine();
-				System.out.println("\nDigite a opção desejada:");
-				System.out.println("1 - Tornar pedido como entregue.");
-				System.out.println("2 - cancelar pedido.");
-				int pedido = sc.nextInt();
+
+				loja.alterarPedido(codigoPedido, TipoPedido.ENTREGUE);
+				break;
+			} catch(InputMismatchException e) {
+				System.out.println("\nCódigo inválido");
+			}
+			break;
+		case "4":
+			try {
+				ArrayList <Pedido> listaPedidosNaoCancelados = loja.consultarPedidos(TipoPedido.CANCELADO);
+				mostrarObjetos(listaPedidosNaoCancelados);
+				
+				System.out.println("\nDigite o código do pedido");
+				int codigoPedido = sc.nextInt();
 				sc.nextLine();
-				switch(pedido) {
-				case 1:
-					loja.alterarPedidoEntregue(codigoCliente, codigoPedido);
-					break;
-				case 2:
-					loja.alterarPedidoCancelado(codigoCliente, codigoPedido);
-					break;
-				default:
-					System.out.println("\nOpção Inválida");
-				}
+
+				loja.alterarPedido(codigoPedido, TipoPedido.CANCELADO);
+				break;
 			} catch(InputMismatchException e) {
 				System.out.println("\nCódigo inválido");
 			}
@@ -520,15 +548,19 @@ public class Menu {
 		System.out.println("1 - Criar pedido");
 		System.out.println("2 - Consultar pedidos por código/data");
 		System.out.println("3 - Consultar todos os meus pedidos");
+		System.out.println("4 - Receber pedidos");
     	System.out.println("0 - Voltar ao menu principal");
     	System.out.print("Opção: ");
     	
     	String resposta = sc.nextLine();
+    	
+    	int idCliente = usuario.getCliente().getCodigo(); 
 		
 		switch (resposta) {
 		case "1":
 			String continuar = "n";
 			int flag = 1;
+			int codigoPedido = 0;
 			do {
 				mostrarObjetos(loja.produtos);
 				System.out.println("Selecione um produto para adicionar ao carrinho: ");
@@ -545,29 +577,34 @@ public class Menu {
 				
 				if (produto.getEstoque().getQuantidade() == 0) {
 					System.out.println("\nProduto em falta no estoque");
-					break;
-				} else if (quantidade > produto.getEstoque().getQuantidade()) {
-					quantidade = produto.getEstoque().getQuantidade();
-				}
-				
-				System.out.println("Confirma a adição do item? O total será " + quantidade + ", R$" + loja.calcularTotalItem(new ItemPedido(produto, quantidade, produto.getEstoque().getPreco())) + " (s/n)");
-				String confirma = sc.nextLine();
-				
-				if ("s".equals(confirma)) {				
-					if(flag == 1) {
-						loja.cadastrarPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade));
-						flag = 0;
-					} else {
-						loja.addProdutoPedido(usuario.getCliente().getCodigo(), new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade));
+				} else {
+					if (quantidade > produto.getEstoque().getQuantidade()) {
+						quantidade = produto.getEstoque().getQuantidade();
 					}
+					System.out.println("Confirma a adição do item? A quantidade será " + quantidade + ", R$" + loja.calcularTotalItem(new ItemPedido(produto, quantidade, produto.getEstoque().getPreco())) + " (s/n)");
+					String confirma = sc.nextLine();
+					
+					if ("s".equals(confirma)) {				
+						if(flag == 1) {
+							codigoPedido = loja.cadastrarPedido(idCliente, new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade));
+							flag = 0;
+						} else {
+							if (loja.addProdutoPedido(codigoPedido, new ItemPedido(produto, quantidade, produto.getEstoque().getPreco() * quantidade))) {
+								System.out.println("\nItem adicionado com sucesso!");
+							}
+						}
+						System.out.println("\nTotal Pedido: R$" + loja.mostrarTotalPedido(codigoPedido));
+					}
+					
+					loja.atualizarEstoque(produto, quantidade);
+					
 				}
-				
-				loja.atualizarEstoque(produto, quantidade);
-				
 				System.out.println("Deseja adicionar mais itens? (s/n)");
 				continuar = sc.nextLine();
+				if (!"s".equals(continuar)) {
+					loja.calcularICMSPedido(codigoPedido);
+				}
 			} while("s".equals(continuar));
-			sc.nextLine();
 			break;
 		case "2":
 			System.out.println("Digite o código do pedido a ser pesquisado: ");
@@ -579,12 +616,27 @@ public class Menu {
             System.out.print("Digite a data final (yyyy-MM-dd): ");
             String dataFinal = sc.nextLine();
             
-            ArrayList<Pedido> listaPedidos = loja.consultarPedidos(usuario.getCliente().getCodigo(), codigo, dataInicial, dataFinal);
+            ArrayList<Pedido> listaPedidos = loja.consultarPedidos(idCliente, codigo, dataInicial, dataFinal);
             mostrarObjetos(listaPedidos);
             break;
 		case "3":
-			ArrayList<Pedido> listaPedidos2 = loja.consultarPedidos(usuario.getCliente().getCodigo());
+			ArrayList<Pedido> listaPedidos2 = loja.consultarPedidos(idCliente);
 			mostrarObjetos(listaPedidos2);
+		case "4":
+			try {
+				ArrayList <Pedido> listaPedidosNovos = loja.consultarPedidos(idCliente, TipoPedido.NOVO);
+				mostrarObjetos(listaPedidosNovos);
+				
+				System.out.println("\nDigite o código do pedido");
+				int codigoPedido2 = sc.nextInt();
+				sc.nextLine();
+
+				loja.alterarPedido(idCliente, codigoPedido2, TipoPedido.ENTREGUE);
+				break;
+			} catch(InputMismatchException e) {
+				System.out.println("\nCódigo inválido");
+			}
+			break;
 		case "0":
 			break;
 		default:
