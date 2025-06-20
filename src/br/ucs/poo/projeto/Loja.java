@@ -1,9 +1,11 @@
 package br.ucs.poo.projeto;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import br.ucs.poo.projeto.excecoes.RegistroNaoEncontradoException;
+import br.ucs.poo.projeto.excecoes.UsuarioJaCadastradoException;
 
 public class Loja {
 	ArrayList<Usuario> usuariosAdmin = new ArrayList<Usuario>();
@@ -19,17 +21,15 @@ public class Loja {
 	
 	//FORNECEDOR
 	
-    public boolean cadastrarFornecedor(Fornecedor novoFornecedor) {
+    public void cadastrarFornecedor(Fornecedor novoFornecedor) throws Exception {
     	 try {    		 
     		 fornecedores.add(novoFornecedor);
-    		 return true;
     	 } catch(Exception e) {
-    		 return false;
+    		 throw new Exception(e.getMessage(), e);
     	 }
-    	
     }
     
-    public boolean editarFornecedor(int codigo, Fornecedor fornecedorComNovosDados) {
+    public void editarFornecedor(int codigo, Fornecedor fornecedorComNovosDados) throws RegistroNaoEncontradoException, Exception {
         try {
             Fornecedor fornecedorEncontrado = null;
             for (Fornecedor f : fornecedores) {
@@ -40,7 +40,7 @@ public class Loja {
             }
 
             if (fornecedorEncontrado == null) {
-                return false;
+                throw new RegistroNaoEncontradoException("Fornecedor");
             }
 
             if (fornecedorComNovosDados.getNome() != null && !fornecedorComNovosDados.getNome().isBlank()) {
@@ -87,29 +87,25 @@ public class Loja {
                     enderecoAtual.setEstado(novoEndereco.getEstado());
                 }
             }
-
-            return true;
-
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage(), e);
         }
     }
 
-    public boolean excluirFornecedor(int codigo) {
+    public void excluirFornecedor(int codigo) throws RegistroNaoEncontradoException, Exception {
     	try {
             for (int i = 0; i < fornecedores.size(); i++) {
             	Fornecedor fornecedor = fornecedores.get(i);
             	if (fornecedor != null && fornecedor.getCodigo() == codigo) {
                 	if(fornecedor.getProdutos() == null || fornecedor.getProdutos().isEmpty()) {                		
                 		fornecedores.remove(fornecedor);
-                		return true;
+                		return;
                 	}
                 }
 			}
-            
-            return false;
+            throw new RegistroNaoEncontradoException("Fornecedor");
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage());
         }
     }
     
@@ -139,20 +135,19 @@ public class Loja {
     
     //PRODUTO
     
-    public boolean cadastrarProduto(Produto novoProduto) {
+    public void cadastrarProduto(Produto novoProduto) throws Exception {
 		try {    		 
 			produtos.add(novoProduto);
-			return true;
 		} catch(Exception e) {
-			return false;
-		}
+			throw new Exception(e.getMessage(), e);
+	   	 }
     }
     
-    public boolean editarProduto(String termoBusca, Produto produtoComNovosDados) {
+    public void editarProduto(String termoBusca, Produto produtoComNovosDados) throws RegistroNaoEncontradoException, Exception {
     	try {   
     		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
     	    if (resultados.size() == 0) {
-    	        return false;
+    	        throw new RegistroNaoEncontradoException("Produto");
     	    }
     	    Produto produtoEncontrado = resultados.get(0);
     	    
@@ -176,31 +171,27 @@ public class Loja {
                 if(produtoComNovosDados.getEstoque().getPreco() >= 0) estoqueAtual.setPreco(novoEstoque.getPreco());
                 
             }
-    	    
-            return true;
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage(), e);
         }
     }
 
-    public boolean editarEstoqueProduto(String termoBusca, Estoque estoqueComNovosdados) {
+    public void editarEstoqueProduto(String termoBusca, Estoque estoqueComNovosdados) throws RegistroNaoEncontradoException, Exception {
     	try {
     		ArrayList<Produto> resultados = consultarProdutos(termoBusca);
             if (resultados.size() == 0) {
-                return false;
+                throw new RegistroNaoEncontradoException("Produto");
             }
             Produto produtoSelecionado = resultados.get(0);
 
             produtoSelecionado.getEstoque().setQuantidade(estoqueComNovosdados.getQuantidade());
             produtoSelecionado.getEstoque().setPreco(estoqueComNovosdados.getPreco());
-            
-            return true;
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage(), e);
         }
     }
     
-    public boolean excluirProduto(int codigo) {
+    public void excluirProduto(int codigo) throws RegistroNaoEncontradoException, Exception {
     	try {
             Produto produtoRemovido = null;
 
@@ -213,7 +204,7 @@ public class Loja {
 			}
 
             if (produtoRemovido == null) {
-                return false;
+                throw new RegistroNaoEncontradoException("Produto");
             }
 
             for (Fornecedor fornecedor : fornecedores) {
@@ -222,10 +213,8 @@ public class Loja {
                 }
             }
 
-            return true;
-
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage(), e);
         }
     }    
 
@@ -250,28 +239,31 @@ public class Loja {
 		return listaProdutos;
     }
 
-    public boolean vincularProdutoAFornecedor(Produto p, int codigoFornecedor) {
-    	Fornecedor fornecedorSelecionado = null;
-        for (Fornecedor f : fornecedores) {
-            if (f != null && f.getCodigo() == codigoFornecedor) {
-                fornecedorSelecionado = f;
-                break;
-            }
-        }
-
-        if (fornecedorSelecionado == null) {
-            return false;
-        }
-
-        fornecedorSelecionado.adicionarProduto(p);
-        return true;
+    public void vincularProdutoAFornecedor(Produto p, int codigoFornecedor) throws RegistroNaoEncontradoException, Exception {
+    	try {			
+    		Fornecedor fornecedorSelecionado = null;
+    		for (Fornecedor f : fornecedores) {
+    			if (f != null && f.getCodigo() == codigoFornecedor) {
+    				fornecedorSelecionado = f;
+    				break;
+    			}
+    		}
+    		
+    		if (fornecedorSelecionado == null) {
+    			throw new RegistroNaoEncontradoException("Fornecedor");
+    		}
+    		
+    		fornecedorSelecionado.adicionarProduto(p);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
     }
     
-    public boolean editarFornecedorProduto(String termoBusca, int codigoNovoFornecedor) {
+    public void editarFornecedorProduto(String termoBusca, int codigoNovoFornecedor) throws RegistroNaoEncontradoException, Exception {
         try {
             ArrayList<Produto> resultadosProdutos = consultarProdutos(termoBusca);
             if (resultadosProdutos == null || resultadosProdutos.get(0) == null) {
-                return false;
+                throw new RegistroNaoEncontradoException("Produto");
             }
             Produto produtoSelecionado = resultadosProdutos.get(0);
 
@@ -296,7 +288,7 @@ public class Loja {
             }
 
             if (novoFornecedor == null) {
-                return false;
+            	throw new RegistroNaoEncontradoException("Fornecedor");
             }
 
             if (fornecedorAtual != null) {
@@ -305,10 +297,8 @@ public class Loja {
 
             novoFornecedor.adicionarProduto(produtoSelecionado);
 
-            return true;
-
         } catch (Exception e) {
-            return false;
+        	throw new Exception(e.getMessage(), e);
         }
     }
     
@@ -339,9 +329,32 @@ public class Loja {
                         }
                     }
                 }
-            } catch (ParseException ex) {
-                System.out.println("Erro ao converter datas. Use o formato dd/MM/yyyy.");
+            } catch (Exception e) {
+            	
             }
+        }
+        
+		return listaPedidos;
+    }
+    
+    public ArrayList<Pedido> consultarPedidos(String dataInicialFormatada, String dataFinalFormatada) {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            Date dataInicial = sdf.parse(dataInicialFormatada);
+            Date dataFinal = sdf.parse(dataFinalFormatada);
+
+            for (Pedido pedido : pedidos) {
+                if (pedido != null) {
+                    Date dataPedido = pedido.getDataPedido();
+                    if (dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0) {
+                        listaPedidos.add(pedido);
+                    }
+                }
+            }
+        } catch (Exception e) {
+
         }
         
 		return listaPedidos;
@@ -384,57 +397,69 @@ public class Loja {
 		return listaPedidos;
     }
     
-    public double calcularTotalItem(ItemPedido itemPedido) {
-	    return itemPedido.getPreco() * itemPedido.getQuantidade();
+    public double calcularTotalItem(ItemPedido itemPedido) throws Exception {
+    	try {
+    		return itemPedido.getPreco() * itemPedido.getQuantidade();			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
     }
     
-    public void atualizarEstoque(Produto p, int quantidade) {
-    	for (Produto produto : produtos) {
-            if (produto.equals(p)) {
-            	Estoque estoque = new Estoque(produto.getEstoque().getQuantidade() - quantidade, produto.getEstoque().getPreco());
-            	produto.setEstoque(estoque);
-            }
-        }
+    public void atualizarEstoque(Produto p, int quantidade) throws Exception {
+    	try {			
+    		for (Produto produto : produtos) {
+    			if (produto.equals(p)) {
+    				Estoque estoque = new Estoque(produto.getEstoque().getQuantidade() - quantidade, produto.getEstoque().getPreco());
+    				produto.setEstoque(estoque);
+    				return;
+    			}
+    		}
+    		throw new RegistroNaoEncontradoException("Produto");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
     }
     
-    public int cadastrarPedido(Integer idCliente, ItemPedido itemPedido) {
+    public int cadastrarPedido(Integer idCliente, ItemPedido itemPedido) throws Exception {
 		try {    		 
 			Pedido novoPedido = new Pedido(idCliente, new Date(), null, null, null, TipoPedido.NOVO, itemPedido, itemPedido.getPreco());
 	        pedidos.add(novoPedido);
 	        return novoPedido.getCodigo();
 		} catch(Exception e) {
-			return -1;
+			throw new Exception(e.getMessage(), e);
 		}
     }
     
-    public boolean addProdutoPedido(Integer codigo, ItemPedido itemPedido) {
+    public void addProdutoPedido(Integer codigo, ItemPedido itemPedido) throws RegistroNaoEncontradoException, Exception {
 		try {    		 
 			for (Pedido pedido : pedidos) {
 	        	if (pedido != null && pedido.getCodigo() == codigo) {
 	        		pedido.addItensPedido(itemPedido);
 	        		pedido.adicionarTotalPedido(itemPedido.getPreco());
+	        		return;
 	            }
 	        }
-	        return true;
+			throw new RegistroNaoEncontradoException("Pedido");
 		} catch(Exception e) {
-			return false;
+			throw new Exception(e.getMessage(), e);
 		}
     }
     
-    public boolean calcularICMSPedido(Integer codigo) {
+    public void calcularICMSPedido(Integer codigo) throws RegistroNaoEncontradoException, Exception {
 		try {    		 
 			for (Pedido pedido : pedidos) {
 	        	if (pedido != null && pedido.getCodigo() == codigo) {
 	        		pedido.adicionarICMS();
+	        		return;
 	            }
 	        }
-	        return true;
+			throw new RegistroNaoEncontradoException("Pedido");
 		} catch(Exception e) {
-			return false;
+			throw new Exception(e.getMessage(), e);
 		}
     }
     
-    public double mostrarTotalPedido(Integer codigo) {
+    public double mostrarTotalPedido(Integer codigo) throws Exception {
 		try {    		 
 			for (Pedido pedido : pedidos) {
 	        	if (pedido != null && pedido.getCodigo() == codigo) {
@@ -443,46 +468,74 @@ public class Loja {
 	        }
 			return 0;
 		} catch(Exception e) {
-			return 0;
+			throw new Exception(e.getMessage(), e);
 		}
     }
     
-    public void alterarPedido(int codigoPedido, TipoPedido tipo) {
-    	for (Pedido pedido : pedidos) {
-        	if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
-        		pedido.setSituacao(tipo);
-            }
-        }
+    public void alterarPedido(int codigoPedido, TipoPedido tipo) throws RegistroNaoEncontradoException, Exception {
+    	try {
+    		for (Pedido pedido : pedidos) {
+    			if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
+    				pedido.setSituacao(tipo);
+    			}
+    		}			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
     }
     
-    public void alterarPedido(int idCliente, int codigoPedido, TipoPedido tipo) {
-    	for (Pedido pedido : pedidos) {
-        	if (pedido.getIdCliente() == idCliente && pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
-        		pedido.setSituacao(tipo);
-            }
-        }
+    public void retomarEstoque(int codigoPedido) throws RegistroNaoEncontradoException, Exception {
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido.getCodigo() == codigoPedido ) {
+    				ArrayList<ItemPedido> itensPedidos = pedido.getItensPedido();
+    				for (ItemPedido itemPedido : itensPedidos) {
+    					int quantidade = itemPedido.getQuantidade();
+                        Estoque estoque = itemPedido.getProduto().getEstoque();
+                        estoque.setQuantidade(estoque.getQuantidade() + quantidade);
+    				}
+    				return;
+    			}
+    		}
+    		throw new RegistroNaoEncontradoException("Pedido");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
+    }
+    
+    public void alterarPedido(int idCliente, int codigoPedido, TipoPedido tipo) throws RegistroNaoEncontradoException, Exception {
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido.getIdCliente() == idCliente && pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
+    				pedido.setSituacao(tipo);
+    				return;
+    			}
+    		}
+    		throw new RegistroNaoEncontradoException("Pedido");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
     }
     
     ////PEDIDO
     
     //USUARIO
     
-    public boolean cadastrarUsuarioAdmin(String login, String senha) {
+    public void cadastrarUsuarioAdmin(String login, String senha) throws UsuarioJaCadastradoException, Exception {
         try {
             for (Usuario usuario : usuariosAdmin) {
                 if (usuario != null && usuario.getUsuario().equals(login)) {
-                    return false;
+                    throw new UsuarioJaCadastradoException();
                 }
             }
 
             usuariosAdmin.add(new Usuario(login, senha, TipoUsuario.ADMIN));
-            return true;
         } catch (Exception e) {
-            return false;
+            throw new Exception(e.getMessage(), e);
         }
     }
     
-    public Usuario buscarUsuario(String login, String senha) {
+    public Usuario buscarUsuario(String login, String senha) throws Exception {
     	try {    		
     		for (Cliente cliente : clientes) {
     			if(cliente != null) {    				
@@ -498,34 +551,32 @@ public class Loja {
     			}
     		}
     	} catch(Exception e) {
-    		
+    		throw new Exception(e.getMessage(), e);
     	}
     	
         return null;
     }
  
-    public boolean excluirUsuarioAdmin(String user) {
+    public void excluirUsuarioAdmin(String user) throws RegistroNaoEncontradoException, Exception {
     	try {
     		for (Usuario usuarioAdmin : usuariosAdmin) {
             	if(usuarioAdmin != null && usuarioAdmin.getUsuario().equals(user) && !"admin".equals(user)) {
                 	usuariosAdmin.remove(usuarioAdmin);
-                    return true;
+                    return;
                 }
 			}
-            return false;
+    		throw new RegistroNaoEncontradoException();
         } catch (Exception e) {
-            return false;
+            throw new Exception(e.getMessage(), e);
         }
     }
     
-    public boolean cadastrarCliente(Cliente novoCliente) {
-   	 try {    		 
-   		 clientes.add(novoCliente);
-   		 return true;
-   	 } catch(IndexOutOfBoundsException iobe) {
-   		 return false;
-   	 }
-   	
+    public void cadastrarCliente(Cliente novoCliente) throws RegistroNaoEncontradoException, Exception {
+    	try {    		 
+    		clientes.add(novoCliente);
+    	} catch(Exception e) {
+    		throw new Exception(e.getMessage(), e);
+    	}
    }
     
     public boolean isClienteJaCadastrado(Usuario usuario) {
