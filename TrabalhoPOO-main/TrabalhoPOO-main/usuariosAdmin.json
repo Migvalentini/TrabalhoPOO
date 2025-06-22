@@ -1,0 +1,7 @@
+[ {
+  "@id" : 1,
+  "cliente" : null,
+  "usuario" : "admin",
+  "senha" : "123",
+  "tipo" : "ADMIN"
+} ]

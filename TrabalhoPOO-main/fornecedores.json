@@ -1,0 +1,97 @@
+[ {
+  "@id" : 1,
+  "nome" : "b",
+  "telefone" : "b",
+  "email" : "b",
+  "endereco" : {
+    "rua" : "b",
+    "numero" : "b",
+    "complemento" : "b",
+    "bairro" : "b",
+    "cep" : "b",
+    "cidade" : "b",
+    "estado" : "b"
+  },
+  "codigo" : 0,
+  "descricao" : "b",
+  "produtos" : [ {
+    "codigo" : 7,
+    "nome" : "f",
+    "descricao" : "f",
+    "estoque" : {
+      "quantidade" : 27,
+      "preco" : 1.0
+    },
+    "itensPedido" : [ ]
+  } ]
+}, {
+  "@id" : 2,
+  "nome" : "c",
+  "telefone" : "c",
+  "email" : "c",
+  "endereco" : {
+    "rua" : "c",
+    "numero" : "c",
+    "complemento" : "c",
+    "bairro" : "c",
+    "cep" : "c",
+    "cidade" : "c",
+    "estado" : "c"
+  },
+  "codigo" : 1,
+  "descricao" : "c",
+  "produtos" : [ {
+    "codigo" : 2,
+    "nome" : "b",
+    "descricao" : "b",
+    "estoque" : {
+      "quantidade" : 15,
+      "preco" : 4.0
+    },
+    "itensPedido" : [ ]
+  }, {
+    "codigo" : 3,
+    "nome" : "c",
+    "descricao" : "c",
+    "estoque" : {
+      "quantidade" : 20,
+      "preco" : 2.0
+    },
+    "itensPedido" : [ ]
+  } ]
+}, {
+  "@id" : 3,
+  "nome" : "d",
+  "telefone" : "d",
+  "email" : "d",
+  "endereco" : {
+    "rua" : "d",
+    "numero" : "d",
+    "complemento" : "d",
+    "bairro" : "d",
+    "cep" : "d",
+    "cidade" : "d",
+    "estado" : "d"
+  },
+  "codigo" : 2,
+  "descricao" : "d",
+  "produtos" : [ {
+    "codigo" : 0,
+    "nome" : "a",
+    "descricao" : "a",
+    "estoque" : {
+      "quantidade" : 12,
+      "preco" : 10.0
+    },
+    "itensPedido" : [ ]
+  }, {
+    "codigo" : 8,
+    "nome" : "g",
+    "descricao" : "g",
+    "estoque" : {
+      "quantidade" : 13,
+      "preco" : 23.0
+    },
+    "itensPedido" : [ ]
+  } ]
+} ]

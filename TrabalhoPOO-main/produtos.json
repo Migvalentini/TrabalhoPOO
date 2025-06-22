@@ -1,0 +1,46 @@
+[ {
+  "codigo" : 0,
+  "nome" : "a",
+  "descricao" : "a",
+  "estoque" : {
+    "quantidade" : 10,
+    "preco" : 10.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 2,
+  "nome" : "b",
+  "descricao" : "b",
+  "estoque" : {
+    "quantidade" : 9,
+    "preco" : 4.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 3,
+  "nome" : "c",
+  "descricao" : "c",
+  "estoque" : {
+    "quantidade" : 11,
+    "preco" : 2.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 7,
+  "nome" : "f",
+  "descricao" : "f",
+  "estoque" : {
+    "quantidade" : 24,
+    "preco" : 1.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 8,
+  "nome" : "g",
+  "descricao" : "g",
+  "estoque" : {
+    "quantidade" : 6,
+    "preco" : 23.0
+  },
+  "itensPedido" : [ ]
+} ]
