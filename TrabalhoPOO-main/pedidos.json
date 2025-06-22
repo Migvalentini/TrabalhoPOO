@@ -1,0 +1,24 @@
+[ {
+  "codigo" : 0,
+  "idCliente" : 0,
+  "dataPedido" : 1750628469468,
+  "dataEntrega" : null,
+  "dataEnvio" : null,
+  "dataCancelamento" : null,
+  "situacao" : "NOVO",
+  "itensPedido" : [ {
+    "produto" : {
+      "codigo" : 7,
+      "nome" : "f",
+      "descricao" : "f",
+      "estoque" : {
+        "quantidade" : 24,
+        "preco" : 1.0
+      },
+      "itensPedido" : [ ]
+    },
+    "quantidade" : 3,
+    "preco" : 3.0
+  } ],
+  "totalPedido" : 3.51
+} ]
