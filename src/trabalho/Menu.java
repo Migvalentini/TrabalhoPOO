@@ -1,7 +1,6 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,13 +11,23 @@ public class Menu {
 		this.loja  = new Loja();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Menu m = new Menu();
 		
 		Scanner sc = new Scanner(System.in);
 		boolean continuar = true;
 
 		System.out.println("SEJA MUITO BEM-VINDO(A) AO SISTEMA DE COMPRAS DESENVOLVIDO PELOS ALUNOS MIGUEL VALENTINI, HENRY PECATTI TIBOLA E VINICIUS BAREA PARA A DISCIPLINA DE POO!");
+		
+		try {			
+			m.loja.carregarProdutos("produtos.json");
+			m.loja.carregarFornecedores("fornecedores.json");
+			m.loja.carregarClientes("clientes.json");
+			m.loja.carregarPedidos("pedidos.json");
+			m.loja.carregarUsuariosAdmin("usuariosAdmin.json");
+		} catch (Exception e) {
+			System.out.println("\nErro: " + e.getMessage());
+		}
 		
 		while (continuar) {
 			System.out.println("\n" + m.linha() + "\n         Menu Principal\n" + m.linha());
@@ -31,8 +40,8 @@ public class Menu {
 			
 			switch (resposta) {
 			case "1":
-				Cliente c = m.criarCliente(sc);
 				try {
+					Cliente c = m.criarCliente(sc);
 					m.loja.cadastrarCliente(c);					
 					System.out.println("\nCliente cadastrado com sucesso!");
 				} catch (Exception e) {
@@ -40,7 +49,11 @@ public class Menu {
 				}
     			break;
 			case "2":
-				m.realizarLogin(sc);
+				try {
+					m.realizarLogin(sc);					
+				} catch (Exception e) {
+					System.out.println("\nErro: " + e.getMessage());
+				}
 				break;
 			case "88":
 				Usuario u = new Usuario("cliente1", "senha", TipoUsuario.CLIENTE);
@@ -53,6 +66,15 @@ public class Menu {
 			case "0":
 				continuar = false;
 				System.out.println("\nEncerrando sistema...");
+				try {					
+					m.loja.gravarListaJSON("produtos.json", m.loja.produtos);
+					m.loja.gravarListaJSON("usuariosAdmin.json", m.loja.usuariosAdmin);
+					m.loja.gravarListaJSON("fornecedores.json", m.loja.fornecedores);
+					m.loja.gravarListaJSON("clientes.json", m.loja.clientes);
+					m.loja.gravarListaJSON("pedidos.json", m.loja.pedidos);
+				} catch (Exception e) {
+					System.out.println("\nErro: " + e.getMessage());
+				}
 				break;
 			default:
 				System.out.println("\nOpção inválida!");
@@ -93,16 +115,6 @@ public class Menu {
     			break;
     		case "5":
     			menuAdministradorUsuarios(sc);
-    			break;
-    		case "99":
-    			Produto p1 = new Produto("nome1", "descrição", new Estoque(10, 10));
-    			Produto p2 = new Produto("nome2", "descrição2", new Estoque(5, 50));
-    			loja.fornecedores.add(new Fornecedor("nome1", "descricao", "telefone", "email", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), new ArrayList<>(Arrays.asList(p1, p2))));
-    			loja.fornecedores.add(new Fornecedor("nome2", "descricao2", "telefone2", "email2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), new ArrayList<>(Arrays.asList(p1, p2))));
-    			loja.produtos.add(p1);
-    			loja.produtos.add(p2);
-    			loja.clientes.add(new Cliente("nome1", "telefone1", "email1", "cartao1", new Endereco("rua", "numero", "complemento", "bairro", "cep", "cidade", "estado"), null, new Usuario("cliente1", "senha", TipoUsuario.CLIENTE)));
-    			loja.clientes.add(new Cliente("nome1", "telefone2", "email2", "cartao2", new Endereco("rua2", "numero2", "complemento2", "bairro2", "cep2", "cidade2", "estado2"), null, new Usuario("cliente2", "senha", TipoUsuario.CLIENTE)));
     			break;
     		case "0":
     			continuar = false;
@@ -182,12 +194,9 @@ public class Menu {
 					String estado = sc.nextLine();
 					if (!estado.isBlank()) fornecedor.getEndereco().setEstado(estado);
 				}
-				try {
-					loja.editarFornecedor(codigo, fornecedor);
-					System.out.println("\nFornecedor editado com sucesso!");            	
-				} catch (Exception e) {
-					System.out.println("\nErro: " + e.getMessage());
-				}
+
+				loja.editarFornecedor(codigo, fornecedor);
+				System.out.println("\nFornecedor editado com sucesso!");            	
 			} catch (Exception e) {
 				System.out.println("\nErro: " + e.getMessage());
 			}
@@ -198,24 +207,30 @@ public class Menu {
 				System.out.print("Digite o código do fornecedor a ser excluído: ");
 				int codigo2 = sc.nextInt();
 				sc.nextLine();
-				try {
-					loja.excluirFornecedor(codigo2);
-					System.out.println("\nFornecedor excluído com sucesso!");
-				} catch (Exception e) {
-					System.out.println("\nErro: " + e.getMessage());
-				}
+
+				loja.excluirFornecedor(codigo2);
+				System.out.println("\nFornecedor excluído com sucesso!");
+				
 			} catch (Exception e) {
 				System.out.println("\nErro: " + e.getMessage());
 			}
 			break;
 		case "4":
-			System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
-			String termoBusca = sc.nextLine().trim().toLowerCase();
-			ArrayList<Fornecedor> fo = loja.consultarFornecedores(termoBusca);
-			mostrarObjetos(fo);
+			try {								
+				System.out.println("Digite o código/nome do fornecedor a ser pesquisado: ");
+				String termoBusca = sc.nextLine().trim().toLowerCase();
+				ArrayList<Fornecedor> fo = loja.consultarFornecedores(termoBusca);
+				mostrarObjetos(fo);
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
+			}
 			break;
 		case "5":
-			mostrarObjetos(loja.fornecedores);
+			try {								
+				mostrarObjetos(loja.fornecedores);
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
+			}
 			break;
 		case "0":
 			break;
@@ -240,61 +255,58 @@ public class Menu {
 		
 		switch (resposta) {
 		case "1":
-			Produto p = this.criarProduto(null, sc);
-			if (p == null) {
-				System.out.println("\nErro ao Cadastrar Produto!");
-				break;
-			}
-			Estoque e = this.criarEstoque(sc);
-			p.setEstoque(e);
-			if(e == null) {
-				break;
-			}
 			try {
+				Produto p = this.criarProduto(null, sc);
+				if (p == null) {
+					System.out.println("\nErro ao Cadastrar Produto!");
+					break;
+				}
+				Estoque e = this.criarEstoque(sc);
+				p.setEstoque(e);
+				
 				this.loja.cadastrarProduto(p);
 				System.out.println("\nProduto Cadastrado com Sucesso!");
-			} catch (Exception e2) {
-				System.out.println("\nErro: " + e2.getMessage());
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
 			}
 			break;
 		case "2":
-			mostrarObjetos(loja.produtos);
-    		
-    		System.out.println("Digite o código/nome do produto a ser pesquisado: ");
-			String termoBusca = sc.nextLine().trim().toLowerCase();
-			
-			Produto produto = new Produto();
-			
-			System.out.println("Digite o novo nome do produto (ou deixe em branco para manter): ");
-            String nome = sc.nextLine();
-            if (!nome.isEmpty()) produto.setNome(nome);
-            System.out.println("Digite a nova descrição do produto (ou deixe em branco para manter): ");
-            String descricao = sc.nextLine();
-            if (!descricao.isEmpty()) produto.setDescricao(descricao);
+			try {				
+				mostrarObjetos(loja.produtos);
+				
+				System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+				String termoBusca = sc.nextLine().trim().toLowerCase();
+				
+				Produto produto = new Produto();
+				
+				System.out.println("Digite o novo nome do produto (ou deixe em branco para manter): ");
+				String nome = sc.nextLine();
+				if (!nome.isEmpty()) produto.setNome(nome);
+				System.out.println("Digite a nova descrição do produto (ou deixe em branco para manter): ");
+				String descricao = sc.nextLine();
+				if (!descricao.isEmpty()) produto.setDescricao(descricao);
+				
+				System.out.print("\nDeseja alterar o estoque? (s/n): ");
+				produto.setEstoque(new Estoque());
+				String alterarEstoque = sc.nextLine();
+				if (alterarEstoque.equalsIgnoreCase("s")) {
+					System.out.print("Digite a nova quantidade (ou deixe -1 para manter): ");
+					int quantidade = sc.nextInt();
+					if (quantidade != -1) produto.getEstoque().setQuantidade(quantidade);
+					sc.nextLine();
+					System.out.print("Digite o novo preço (ou deixe -1 para manter): ");
+					double preco = sc.nextDouble();
+					if (preco != -1) produto.getEstoque().setPreco(preco);
+					sc.nextLine();
+				}
 
-            System.out.print("\nDeseja alterar o estoque? (s/n): ");
-            produto.setEstoque(new Estoque());
-            String alterarEstoque = sc.nextLine();
-            if (alterarEstoque.equalsIgnoreCase("s")) {
-                try {
-                    System.out.print("Digite a nova quantidade (ou deixe -1 para manter): ");
-                    int quantidade = sc.nextInt();
-                    if (quantidade != -1) produto.getEstoque().setQuantidade(quantidade);
-                    sc.nextLine();
-                    System.out.print("Digite o novo preço (ou deixe -1 para manter): ");
-                    double preco = sc.nextDouble();
-                    if (preco != -1) produto.getEstoque().setPreco(preco);
-                    sc.nextLine();
-                } catch (Exception e2) {
-                    System.out.println("Erro ao inserir quantidade/preço: " + e2);
-                    break;
-                }
-            }
-			try {
 				loja.editarProduto(termoBusca, produto);				
 				System.out.println("\nProduto editado com sucesso!");
-			} catch (Exception e2) {
-				System.out.println("\nErro: " + e2.getMessage());
+			} catch (InputMismatchException e) {
+				sc.nextLine();
+				System.out.println("\nErro: Quantidade ou Preço Inválidos");
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
 			}
 			break;
 		case "3":
@@ -310,17 +322,25 @@ public class Menu {
 			}
 			break;
 		case "4":
-			System.out.println("Digite o código/nome do produto a ser pesquisado: ");
-			String termoBusca2 = sc.nextLine().trim().toLowerCase();
-			ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca2);
-			if(listaProdutos == null) {
-				System.out.println("\nFalha ao consultar produtos");
-			} else {
-				mostrarObjetos(listaProdutos);
+			try {				
+				System.out.println("Digite o código/nome do produto a ser pesquisado: ");
+				String termoBusca2 = sc.nextLine().trim().toLowerCase();
+				ArrayList<Produto> listaProdutos = loja.consultarProdutos(termoBusca2);
+				if(listaProdutos == null) {
+					System.out.println("\nFalha ao consultar produtos");
+				} else {
+					mostrarObjetos(listaProdutos);
+				}
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
 			}
 			break;
 		case "5":
-			mostrarObjetos(loja.produtos);
+			try {				
+				mostrarObjetos(loja.produtos);
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
+			}
 			break;
 		case "6":
 			try {				
@@ -369,7 +389,7 @@ public class Menu {
     }
     
     public void menuAdministradorClientes(Scanner sc) {
-    	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
+    	System.out.println("\n" + linha() + "\n     Menu de Clientes\n" + linha());
 		System.out.println("1 - Mostrar todos clientes");
 		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
@@ -389,7 +409,7 @@ public class Menu {
     }
     
     public void menuAdministradorPedidos(Scanner sc) {
-    	System.out.println("\n" + linha() + "\n     Menu de Usuários\n" + linha());
+    	System.out.println("\n" + linha() + "\n     Menu de Pedidos\n" + linha());
 		System.out.println("1 - Consultar pedidos");
 		System.out.println("2 - Consultar pedidos de um cliente");
 		System.out.println("3 - Consultar pedidos por data");
@@ -677,14 +697,15 @@ public class Menu {
 		}	
 	}
     
-    public void realizarLogin(Scanner sc) {
-        System.out.print("Login: ");
-        String login = sc.nextLine();
-        System.out.print("Senha: ");
-        String senha = sc.nextLine();
-
+    public void realizarLogin(Scanner sc) throws Exception {
         try {
+        	System.out.print("Login: ");
+        	String login = sc.nextLine();
+        	System.out.print("Senha: ");
+        	String senha = sc.nextLine();
+        	
         	Usuario usuario = loja.buscarUsuario(login, senha);			
+        	
         	if (usuario != null) {
         		if (usuario.getTipo().equals(TipoUsuario.ADMIN)) {
         			menuAdministrador(sc);
@@ -692,14 +713,14 @@ public class Menu {
         			menuCliente(usuario, sc);
         		}
         	} else {
-        		System.out.println("\nErro: Login ou senha incorretos ou não encontrados");
+        		throw new Exception("\nErro: Login ou senha incorretos ou não encontrados");
         	}
 		} catch (Exception e) {
-			System.out.println("\nErro: " + e.getMessage());
+			throw new Exception(e.getMessage());
 		}
     }
     
-    public Fornecedor criarFornecedor(Scanner sc) {
+    public Fornecedor criarFornecedor(Scanner sc) throws Exception {
     	System.out.println("\n--- Cadastro de Fornecedor ---");
 		try {
 			System.out.println("Nome do fornecedor:");
@@ -714,12 +735,11 @@ public class Menu {
 			
 			return new Fornecedor(nome, descricao, telefone, email, endereco, null);
 		} catch(Exception ex) {
-			System.out.println("\nErro ao cadastrar fornecedor: " + ex);
-			return null;
+			throw new Exception(ex.getMessage());
 		}
     }
     
-    public Produto criarProduto(Estoque estoque, Scanner sc) {
+    public Produto criarProduto(Estoque estoque, Scanner sc) throws Exception {
     	System.out.println("\n--- Cadastro de Produto ---");
 		try {			
 			System.out.println("Nome do produto:");
@@ -735,19 +755,15 @@ public class Menu {
 	        int codigoFornecedor = sc.nextInt();
 	        sc.nextLine();
 			
-	        try {
-	        	loja.vincularProdutoAFornecedor(p, codigoFornecedor);
-			} catch (Exception e) {
-				return null;
-			}
+	        loja.vincularProdutoAFornecedor(p, codigoFornecedor);
 			
             return p;
 		} catch(Exception ex) {
-			return null;
+			throw new Exception(ex.getMessage());
 		}
     }
     
-    public Estoque criarEstoque(Scanner sc) {
+    public Estoque criarEstoque(Scanner sc) throws Exception {
     	System.out.println("\n--- Cadastro de Estoque ---");
 		try {
 			System.out.println("Quantidade:");
@@ -757,13 +773,16 @@ public class Menu {
 			sc.nextLine();
 
 			return new Estoque(quantidade, preco);
+		} catch (InputMismatchException ime) {
+			sc.nextLine();
+			throw new InputMismatchException("Dados inválidos para quantidade ou preço");
 		} catch (Exception ex) {
-			System.out.println("Erro ao cadastrar estoque: " + ex);
-			return null;
+			System.out.println(ex.getMessage());
+			throw new Exception(ex.getMessage());
 		}
     }
     
-    public Cliente criarCliente(Scanner sc) {
+    public Cliente criarCliente(Scanner sc) throws Exception {
     	System.out.println("\n--- Cadastro de Cliente ---");
 		try {
  			System.out.println("Nome do cliente:");
@@ -777,22 +796,18 @@ public class Menu {
 			Endereco endereco = criarEndereco(sc);
 			Usuario usuario = criarUsuario(sc, TipoUsuario.CLIENTE);
 			
-			if(loja.isClienteJaCadastrado(usuario)) {
-				System.out.println("Usuário já utilizado!");
-				return null;
-			}
+			loja.isClienteJaCadastrado(usuario);
 			
 			Cliente cliente = new Cliente(nome, telefone, email, cartaoCredito, endereco, null, usuario);
 			usuario.setCliente(cliente);
 			
 			return cliente;
 		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar cliente: " + ex);
-			return null;
+			throw new Exception(ex.getMessage());
 		}
     }
     
-    public Endereco criarEndereco(Scanner sc) {
+    public Endereco criarEndereco(Scanner sc) throws Exception {
     	System.out.println("\n--- Cadastro de Endereço ---");
 		try {			
 			System.out.println("Rua:");
@@ -812,12 +827,11 @@ public class Menu {
 			
 			return new Endereco(rua, numero, complemento, bairro, cep, cidade, estado);
 		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar endereço: " + ex);
-			return null;
+			throw new Exception(ex.getMessage());
 		}
     }
     
-    public Usuario criarUsuario(Scanner sc, TipoUsuario tipo) {
+    public Usuario criarUsuario(Scanner sc, TipoUsuario tipo) throws Exception {
     	System.out.println("\n--- Cadastro de Usuário ---");
 		try {			
 			System.out.println("Usuário:");
@@ -827,8 +841,7 @@ public class Menu {
 			
 			return new Usuario(usuario, senha, tipo);
 		} catch(Exception ex) {
-			System.out.println("Erro ao cadastrar endereço: " + ex);
-			return null;
+			throw new Exception(ex.getMessage());
 		}
     }
     

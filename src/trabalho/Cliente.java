@@ -1,14 +1,22 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Cliente extends Pessoa {
 	private static int ultimoCodigo = 0;
 	private int codigo;
 	private String cartaoCredito;
 	private ArrayList<Pedido> pedidos = new ArrayList<>();
 	private Usuario usuario;
+	
+	public Cliente() {
+		
+	}
 	
 	public Cliente(String nome, String telefone, String email, String cartaoCredito, Endereco endereco, ArrayList<Pedido> pedidos, Usuario usuario) {
         super(nome, telefone, email, endereco);

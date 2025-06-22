@@ -1,11 +1,19 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Usuario {
 	private Cliente cliente;
 	private String usuario;
     private String senha;
     private TipoUsuario tipo;
 
+    public Usuario() {
+    	
+    }
+    
     public Usuario(String usuario, String senha, TipoUsuario tipo) {
         this.usuario = usuario;
         this.senha = senha;

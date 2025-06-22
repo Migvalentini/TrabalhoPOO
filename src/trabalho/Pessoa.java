@@ -1,7 +1,11 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Pessoa {
     private String nome;
     private String telefone;
@@ -11,6 +15,10 @@ public class Pessoa {
     public Pessoa() {
     	
 	}
+    
+    public Pessoa(String nome) {
+        this.nome = nome;
+    }
 
 	public Pessoa(String nome, String telefone, String email, Endereco endereco) {
         this.nome = nome;

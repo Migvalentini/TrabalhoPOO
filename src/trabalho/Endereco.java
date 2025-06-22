@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
 public class Endereco {
 	private String rua;

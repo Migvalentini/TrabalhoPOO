@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto.excecoes;
+package trabalho.excecoes;
 
 public class UsuarioJaCadastradoException extends Exception {
 public static final String MESSAGE = "Erro: Usuário Já Cadastrado!";

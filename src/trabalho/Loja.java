@@ -1,22 +1,31 @@
-package br.ucs.poo.projeto;
+package trabalho;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import br.ucs.poo.projeto.excecoes.RegistroNaoEncontradoException;
-import br.ucs.poo.projeto.excecoes.UsuarioJaCadastradoException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import trabalho.excecoes.RegistroNaoEncontradoException;
+import trabalho.excecoes.UsuarioJaCadastradoException;
 
 public class Loja {
+	private ObjectMapper mapper;
 	ArrayList<Usuario> usuariosAdmin = new ArrayList<Usuario>();
 	ArrayList<Fornecedor> fornecedores = new ArrayList<Fornecedor>();
 	ArrayList<Produto> produtos = new ArrayList<Produto>();
-	ArrayList<Estoque> estoques = new ArrayList<Estoque>();
 	ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 	
 	public Loja() {
 		usuariosAdmin.add(new Usuario("admin", "123", TipoUsuario.ADMIN));
+		this.mapper = new ObjectMapper();
 	}
 	
 	//FORNECEDOR
@@ -25,7 +34,7 @@ public class Loja {
     	 try {    		 
     		 fornecedores.add(novoFornecedor);
     	 } catch(Exception e) {
-    		 throw new Exception(e.getMessage(), e);
+    		 throw new Exception(e.getMessage());
     	 }
     }
     
@@ -88,7 +97,7 @@ public class Loja {
                 }
             }
         } catch (Exception e) {
-        	throw new Exception(e.getMessage(), e);
+        	throw new Exception(e.getMessage());
         }
     }
 
@@ -139,7 +148,7 @@ public class Loja {
 		try {    		 
 			produtos.add(novoProduto);
 		} catch(Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 	   	 }
     }
     
@@ -172,7 +181,7 @@ public class Loja {
                 
             }
         } catch (Exception e) {
-        	throw new Exception(e.getMessage(), e);
+        	throw new Exception(e.getMessage());
         }
     }
 
@@ -187,7 +196,7 @@ public class Loja {
             produtoSelecionado.getEstoque().setQuantidade(estoqueComNovosdados.getQuantidade());
             produtoSelecionado.getEstoque().setPreco(estoqueComNovosdados.getPreco());
         } catch (Exception e) {
-        	throw new Exception(e.getMessage(), e);
+        	throw new Exception(e.getMessage());
         }
     }
     
@@ -214,7 +223,7 @@ public class Loja {
             }
 
         } catch (Exception e) {
-        	throw new Exception(e.getMessage(), e);
+        	throw new Exception(e.getMessage());
         }
     }    
 
@@ -255,7 +264,7 @@ public class Loja {
     		
     		fornecedorSelecionado.adicionarProduto(p);
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -298,7 +307,7 @@ public class Loja {
             novoFornecedor.adicionarProduto(produtoSelecionado);
 
         } catch (Exception e) {
-        	throw new Exception(e.getMessage(), e);
+        	throw new Exception(e.getMessage());
         }
     }
     
@@ -401,7 +410,7 @@ public class Loja {
     	try {
     		return itemPedido.getPreco() * itemPedido.getQuantidade();			
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -416,7 +425,7 @@ public class Loja {
     		}
     		throw new RegistroNaoEncontradoException("Produto");
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -426,7 +435,7 @@ public class Loja {
 	        pedidos.add(novoPedido);
 	        return novoPedido.getCodigo();
 		} catch(Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -441,7 +450,7 @@ public class Loja {
 	        }
 			throw new RegistroNaoEncontradoException("Pedido");
 		} catch(Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -455,7 +464,7 @@ public class Loja {
 	        }
 			throw new RegistroNaoEncontradoException("Pedido");
 		} catch(Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -468,7 +477,7 @@ public class Loja {
 	        }
 			return 0;
 		} catch(Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -477,10 +486,12 @@ public class Loja {
     		for (Pedido pedido : pedidos) {
     			if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
     				pedido.setSituacao(tipo);
+    				return;
     			}
-    		}			
+    		}
+    		throw new RegistroNaoEncontradoException("Pedido");
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -499,7 +510,7 @@ public class Loja {
     		}
     		throw new RegistroNaoEncontradoException("Pedido");
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -513,7 +524,7 @@ public class Loja {
     		}
     		throw new RegistroNaoEncontradoException("Pedido");
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e);
+			throw new Exception(e.getMessage());
 		}
     }
     
@@ -531,7 +542,7 @@ public class Loja {
 
             usuariosAdmin.add(new Usuario(login, senha, TipoUsuario.ADMIN));
         } catch (Exception e) {
-            throw new Exception(e.getMessage(), e);
+            throw new Exception(e.getMessage());
         }
     }
     
@@ -551,7 +562,7 @@ public class Loja {
     			}
     		}
     	} catch(Exception e) {
-    		throw new Exception(e.getMessage(), e);
+    		throw new Exception(e.getMessage());
     	}
     	
         return null;
@@ -567,29 +578,102 @@ public class Loja {
 			}
     		throw new RegistroNaoEncontradoException();
         } catch (Exception e) {
-            throw new Exception(e.getMessage(), e);
+            throw new Exception(e.getMessage());
         }
     }
     
-    public void cadastrarCliente(Cliente novoCliente) throws RegistroNaoEncontradoException, Exception {
+    public void cadastrarCliente(Cliente novoCliente) throws Exception {
     	try {    		 
     		clientes.add(novoCliente);
     	} catch(Exception e) {
-    		throw new Exception(e.getMessage(), e);
+    		throw new Exception(e.getMessage());
     	}
    }
     
-    public boolean isClienteJaCadastrado(Usuario usuario) {
+    public void isClienteJaCadastrado(Usuario usuario) throws UsuarioJaCadastradoException {
     	for (Cliente cliente : clientes) {
             if(cliente != null) {
             	Usuario usuarioCliente = cliente.getUsuario();
             	if(usuarioCliente != null && (usuarioCliente.getUsuario().equals(usuario.getUsuario()))) {
-            		return true;
+            		throw new UsuarioJaCadastradoException();
             	}
             }
         }
-    	return false;
     }
     
     //USUARIO
+    
+    //ARQUIVOS
+    
+    private void gravaArquivo(String nomeArquivo, String texto) throws IOException {
+    	FileWriter fw = new FileWriter(nomeArquivo);
+    	fw.write(texto);
+    	fw.close();
+    }
+    
+    private String leArquivo(String nomeArquivo) throws IOException {
+    	StringBuilder sb = new StringBuilder();
+    	FileInputStream fis = new FileInputStream(nomeArquivo);
+    	InputStreamReader isr = new InputStreamReader(fis);
+    	BufferedReader br = new BufferedReader(isr);
+    	String linha;
+    	while((linha = br.readLine()) != null) {
+    		sb.append(linha);
+    		sb.append("\n");
+    	}
+    	fis.close();
+    	return sb.toString();
+    }
+    
+    public <T> void gravarListaJSON(String nomeArquivo, ArrayList<T> lista) throws IOException {
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(lista);
+        gravaArquivo(nomeArquivo, json);
+    }
+	
+	public <T> ArrayList<T> lerJson(String nomeArquivo, TypeReference<ArrayList<T>> typeReference) throws IOException {
+        String json = leArquivo(nomeArquivo);
+        return mapper.readValue(json, typeReference);
+    }
+
+	public void carregarProdutos(String nomeArquivo) throws IOException {
+        try {
+            this.produtos = lerJson(nomeArquivo, new TypeReference<ArrayList<Produto>>() {});
+        } catch (IOException e) {
+            this.produtos = new ArrayList<>();
+        }
+    }
+
+    public void carregarFornecedores(String nomeArquivo) throws IOException {
+        try {
+            this.fornecedores = lerJson(nomeArquivo, new TypeReference<ArrayList<Fornecedor>>() {});
+        } catch (IOException e) {
+            this.fornecedores = new ArrayList<>();
+        }
+    }
+
+    public void carregarClientes(String nomeArquivo) throws IOException {
+        try {
+            this.clientes = lerJson(nomeArquivo, new TypeReference<ArrayList<Cliente>>() {});
+        } catch (IOException e) {
+            this.clientes = new ArrayList<>();
+        }
+    }
+    
+    public void carregarPedidos(String nomeArquivo) throws IOException {
+        try {
+            this.pedidos = lerJson(nomeArquivo, new TypeReference<ArrayList<Pedido>>() {});
+        } catch (IOException e) {
+            this.pedidos = new ArrayList<>();
+        }
+    }
+    
+    public void carregarUsuariosAdmin(String nomeArquivo) throws IOException {
+        try {
+            this.usuariosAdmin = lerJson(nomeArquivo, new TypeReference<ArrayList<Usuario>>() {});
+        } catch (IOException e) {
+            this.usuariosAdmin = new ArrayList<>();
+        }
+    }
+    
+    ////ARQUIVOS
 }

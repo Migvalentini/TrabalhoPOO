@@ -1,4 +1,4 @@
-package br.ucs.poo.projeto.excecoes;
+package trabalho.excecoes;
 
 @SuppressWarnings("serial")
 public class RegistroNaoEncontradoException extends Exception {
