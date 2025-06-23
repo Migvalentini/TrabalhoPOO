@@ -18,6 +18,10 @@ public class Pedido {
 	private ArrayList<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 	private double totalPedido;
 
+	public Pedido() {
+		
+	}
+	
 	public Pedido(int idCliente, Date dataPedido, Date dataEntrega, Date dataEnvio, Date dataCancelamento, TipoPedido situacao, ItemPedido itemPedido, double totalPedido) {
 		this.codigo = ultimoCodigo++;
 		this.idCliente = idCliente;
@@ -29,6 +33,10 @@ public class Pedido {
 		this.itensPedido = new ArrayList<>(Arrays.asList(itemPedido));
 		this.totalPedido = totalPedido;
 	}
+	
+	public static void setUltimoCodigo(int ultimoCodigo) {
+        Pedido.ultimoCodigo = ultimoCodigo;
+    }
 
 	public void adicionarItem(ItemPedido itemPedido) {
 		itensPedido.add(itemPedido);

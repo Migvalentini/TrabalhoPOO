@@ -1,1 +1,19 @@
-[ ]
+[ {
+  "codigo" : 0,
+  "nome" : "nomeproduto",
+  "descricao" : "desc",
+  "estoque" : {
+    "quantidade" : 4,
+    "preco" : 3.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 0,
+  "nome" : "2",
+  "descricao" : "2",
+  "estoque" : {
+    "quantidade" : 2,
+    "preco" : 2.0
+  },
+  "itensPedido" : [ ]
+} ]

@@ -6,6 +6,10 @@ public class ItemPedido {
 	private int quantidade;
 	private double preco;
 	
+	public ItemPedido() {
+
+	}
+	
 	public ItemPedido(Produto produto, int quantidade, double preco) {
 		this.produto = produto;
 		this.quantidade = quantidade;

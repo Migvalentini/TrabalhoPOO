@@ -12,7 +12,7 @@ public class Produto implements Comparable<Produto> {
 	private ArrayList<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 	
 	public Produto() {
-		this.codigo = ultimoCodigo++;
+		
 	}
 	
 	public Produto(String nome, String descricao, Estoque estoque) {
@@ -21,6 +21,10 @@ public class Produto implements Comparable<Produto> {
 		this.descricao = descricao;
 		this.estoque = estoque;
 	}
+	
+	public static void setUltimoCodigo(int ultimoCodigo) {
+        Produto.ultimoCodigo = ultimoCodigo;
+    }
 	
 	public void adicionarItemPedido(ItemPedido item) {
         itensPedido.add(item);

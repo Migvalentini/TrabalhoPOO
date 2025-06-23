@@ -1,1 +1,97 @@
-[ ]
+[ {
+  "@id" : 1,
+  "nome" : "1",
+  "telefone" : "1",
+  "email" : "1",
+  "endereco" : {
+    "rua" : "1",
+    "numero" : "1",
+    "complemento" : "1",
+    "bairro" : "1",
+    "cep" : "1",
+    "cidade" : "1",
+    "estado" : "1"
+  },
+  "codigo" : 0,
+  "cartaoCredito" : "1",
+  "pedidos" : null,
+  "usuario" : {
+    "@id" : 2,
+    "cliente" : 1,
+    "usuario" : "1",
+    "senha" : "1",
+    "tipo" : "CLIENTE"
+  }
+}, {
+  "@id" : 3,
+  "nome" : "2",
+  "telefone" : "2",
+  "email" : "2",
+  "endereco" : {
+    "rua" : "2",
+    "numero" : "2",
+    "complemento" : "2",
+    "bairro" : "2",
+    "cep" : "2",
+    "cidade" : "2",
+    "estado" : "2"
+  },
+  "codigo" : 1,
+  "cartaoCredito" : "2",
+  "pedidos" : null,
+  "usuario" : {
+    "@id" : 4,
+    "cliente" : 3,
+    "usuario" : "2",
+    "senha" : "2",
+    "tipo" : "CLIENTE"
+  }
+}, {
+  "@id" : 5,
+  "nome" : "3",
+  "telefone" : "3",
+  "email" : "3",
+  "endereco" : {
+    "rua" : "3",
+    "numero" : "3",
+    "complemento" : "3",
+    "bairro" : "3",
+    "cep" : "3",
+    "cidade" : "3",
+    "estado" : "3"
+  },
+  "codigo" : 2,
+  "cartaoCredito" : "3",
+  "pedidos" : null,
+  "usuario" : {
+    "@id" : 6,
+    "cliente" : 5,
+    "usuario" : "3",
+    "senha" : "3",
+    "tipo" : "CLIENTE"
+  }
+}, {
+  "@id" : 7,
+  "nome" : "4",
+  "telefone" : "4",
+  "email" : "4",
+  "endereco" : {
+    "rua" : "4",
+    "numero" : "4",
+    "complemento" : "4",
+    "bairro" : "4",
+    "cep" : "4",
+    "cidade" : "4",
+    "estado" : "4"
+  },
+  "codigo" : 3,
+  "cartaoCredito" : "4",
+  "pedidos" : null,
+  "usuario" : {
+    "@id" : 8,
+    "cliente" : 7,
+    "usuario" : "4",
+    "senha" : "4",
+    "tipo" : "CLIENTE"
+  }
+} ]

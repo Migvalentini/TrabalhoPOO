@@ -21,9 +21,13 @@ public class Menu {
 		
 		try {			
 			m.loja.carregarProdutos("produtos.json");
+			m.loja.corrigirCodigoProdutos();
 			m.loja.carregarFornecedores("fornecedores.json");
+			m.loja.corrigirCodigoFornecedores();
 			m.loja.carregarClientes("clientes.json");
+			m.loja.corrigirCodigoClientes();
 			m.loja.carregarPedidos("pedidos.json");
+			m.loja.corrigirCodigoPedidos();
 			m.loja.carregarUsuariosAdmin("usuariosAdmin.json");
 		} catch (Exception e) {
 			System.out.println("\nErro: " + e.getMessage());

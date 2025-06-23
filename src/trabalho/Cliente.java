@@ -26,6 +26,10 @@ public class Cliente extends Pessoa {
         this.usuario = usuario;
     }
 	
+	public static void setUltimoCodigo(int ultimoCodigo) {
+        Cliente.ultimoCodigo = ultimoCodigo;
+    }
+
 	public int getCodigo() {
 		return codigo;
 	}

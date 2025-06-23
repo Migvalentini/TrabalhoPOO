@@ -3,7 +3,6 @@ package trabalho;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -138,6 +137,16 @@ public class Loja {
 		}
     	
     	return listaFornecedores;
+    }
+    
+    public void corrigirCodigoFornecedores() {
+        int maxCodigo = 0;
+        for (Fornecedor f : fornecedores) {
+            if (f.getCodigo() > maxCodigo) {
+                maxCodigo = f.getCodigo();
+            }
+        }
+		Fornecedor.setUltimoCodigo(maxCodigo+1);
     }
     
     ////FORNECEDOR
@@ -309,6 +318,16 @@ public class Loja {
         } catch (Exception e) {
         	throw new Exception(e.getMessage());
         }
+    }
+    
+    public void corrigirCodigoProdutos() {
+        int maxCodigo = 0;
+        for (Produto p : produtos) {
+            if (p.getCodigo() > maxCodigo) {
+                maxCodigo = p.getCodigo();
+            }
+        }
+		Produto.setUltimoCodigo(maxCodigo+1);
     }
     
     ////PRODUTO
@@ -528,6 +547,16 @@ public class Loja {
 		}
     }
     
+    public void corrigirCodigoPedidos() {
+        int maxCodigo = 0;
+        for (Pedido p : pedidos) {
+            if (p.getCodigo() > maxCodigo) {
+                maxCodigo = p.getCodigo();
+            }
+        }
+		Pedido.setUltimoCodigo(maxCodigo+1);
+    }
+    
     ////PEDIDO
     
     //CLIENTE
@@ -544,6 +573,16 @@ public class Loja {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+    
+    public void corrigirCodigoClientes() {
+        int maxCodigo = 0;
+        for (Cliente c : clientes) {
+            if (c.getCodigo() > maxCodigo) {
+                maxCodigo = c.getCodigo();
+            }
+        }
+		Cliente.setUltimoCodigo(maxCodigo+1);
     }
     
     ////CLIENTE
@@ -623,73 +662,94 @@ public class Loja {
     
     //ARQUIVOS
     
-    private void gravaArquivo(String nomeArquivo, String texto) throws IOException {
-    	FileWriter fw = new FileWriter(nomeArquivo);
-    	fw.write(texto);
-    	fw.close();
+    private void gravaArquivo(String nomeArquivo, String texto) throws Exception {
+    	try {			
+    		FileWriter fw = new FileWriter(nomeArquivo);
+    		fw.write(texto);
+    		fw.close();
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
     }
     
-    private String leArquivo(String nomeArquivo) throws IOException {
-    	StringBuilder sb = new StringBuilder();
-    	FileInputStream fis = new FileInputStream(nomeArquivo);
-    	InputStreamReader isr = new InputStreamReader(fis);
-    	BufferedReader br = new BufferedReader(isr);
-    	String linha;
-    	while((linha = br.readLine()) != null) {
-    		sb.append(linha);
-    		sb.append("\n");
-    	}
-    	fis.close();
-    	return sb.toString();
+    private String leArquivo(String nomeArquivo) throws Exception {
+    	try {			
+    		StringBuilder sb = new StringBuilder();
+    		FileInputStream fis = new FileInputStream(nomeArquivo);
+    		InputStreamReader isr = new InputStreamReader(fis);
+    		BufferedReader br = new BufferedReader(isr);
+    		String linha;
+    		while((linha = br.readLine()) != null) {
+    			sb.append(linha);
+    			sb.append("\n");
+    		}
+    		fis.close();
+    		return sb.toString();
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
     }
     
-    public <T> void gravarListaJSON(String nomeArquivo, ArrayList<T> lista) throws IOException {
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(lista);
-        gravaArquivo(nomeArquivo, json);
+    public <T> void gravarListaJSON(String nomeArquivo, ArrayList<T> lista) throws Exception {
+    	try {			
+    		String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(lista);
+    		gravaArquivo(nomeArquivo, json);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
     }
 	
-	public <T> ArrayList<T> lerJson(String nomeArquivo, TypeReference<ArrayList<T>> typeReference) throws IOException {
-        String json = leArquivo(nomeArquivo);
-        return mapper.readValue(json, typeReference);
+	public <T> ArrayList<T> lerJson(String nomeArquivo, TypeReference<ArrayList<T>> typeReference) throws Exception {
+		try {			
+			String json = leArquivo(nomeArquivo);
+			return mapper.readValue(json, typeReference);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
     }
 
-	public void carregarProdutos(String nomeArquivo) throws IOException {
+	public void carregarProdutos(String nomeArquivo) throws Exception {
         try {
             this.produtos = lerJson(nomeArquivo, new TypeReference<ArrayList<Produto>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.produtos = new ArrayList<>();
+            throw new Exception(e.getMessage());
         }
     }
 
-    public void carregarFornecedores(String nomeArquivo) throws IOException {
+    public void carregarFornecedores(String nomeArquivo) throws Exception {
         try {
             this.fornecedores = lerJson(nomeArquivo, new TypeReference<ArrayList<Fornecedor>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.fornecedores = new ArrayList<>();
+            throw new Exception(e.getMessage());
         }
     }
 
-    public void carregarClientes(String nomeArquivo) throws IOException {
+    public void carregarClientes(String nomeArquivo) throws Exception {
         try {
             this.clientes = lerJson(nomeArquivo, new TypeReference<ArrayList<Cliente>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.clientes = new ArrayList<>();
+            throw new Exception(e.getMessage());
         }
     }
     
-    public void carregarPedidos(String nomeArquivo) throws IOException {
+    public void carregarPedidos(String nomeArquivo) throws Exception {
         try {
             this.pedidos = lerJson(nomeArquivo, new TypeReference<ArrayList<Pedido>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.pedidos = new ArrayList<>();
+            throw new Exception(e.getMessage());
         }
     }
     
-    public void carregarUsuariosAdmin(String nomeArquivo) throws IOException {
+    public void carregarUsuariosAdmin(String nomeArquivo) throws Exception {
         try {
             this.usuariosAdmin = lerJson(nomeArquivo, new TypeReference<ArrayList<Usuario>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.usuariosAdmin = new ArrayList<>();
+            throw new Exception(e.getMessage());
         }
     }
     

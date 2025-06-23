@@ -19,6 +19,10 @@ public class Fornecedor extends Pessoa implements Comparable<Fornecedor> {
         this.descricao = descricao;
         this.produtos = produtos;
     }
+	
+	public static void setUltimoCodigo(int ultimoCodigo) {
+        Fornecedor.ultimoCodigo = ultimoCodigo;
+    }
 
 	public int getCodigo() {
 		return codigo;
