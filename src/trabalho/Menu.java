@@ -391,6 +391,7 @@ public class Menu {
     public void menuAdministradorClientes(Scanner sc) {
     	System.out.println("\n" + linha() + "\n     Menu de Clientes\n" + linha());
 		System.out.println("1 - Mostrar todos clientes");
+		System.out.println("2 - Excluir um cliente");
 		System.out.println("0 - Voltar ao menu principal");
 		System.out.print("Opção: ");
 		
@@ -399,6 +400,18 @@ public class Menu {
 		switch (resposta) {
 		case "1":
 			mostrarObjetos(loja.clientes);
+			break;
+		case "2":
+			try {				
+				mostrarObjetos(loja.clientes);
+				
+				System.out.print("Digite o usuário a ser excluído: ");
+				String user = sc.nextLine();
+				loja.excluirCliente(user);
+				System.out.println("\nUsuário excluído com sucesso!");
+			} catch (Exception e) {
+				System.out.println("\nErro: " + e.getMessage());
+			}
 			break;
 		case "0":
 			break;

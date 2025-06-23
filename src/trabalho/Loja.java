@@ -530,6 +530,24 @@ public class Loja {
     
     ////PEDIDO
     
+    //CLIENTE
+    
+    public void excluirCliente(String nome) throws RegistroNaoEncontradoException, Exception {
+    	try {
+    		for (Cliente c : clientes) {
+            	if(c != null && c.getNome().equals(nome) && !"admin".equals(nome)) {
+                	clientes.remove(c);
+                    return;
+                }
+			}
+    		throw new RegistroNaoEncontradoException();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+    
+    ////CLIENTE
+    
     //USUARIO
     
     public void cadastrarUsuarioAdmin(String login, String senha) throws UsuarioJaCadastradoException, Exception {
