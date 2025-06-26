@@ -31,24 +31,8 @@ public class Estoque {
 
 	@Override
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    
-	    sb.append("Estoque:");
-	    sb.append("\n    Quantidade: ").append(quantidade);
-	    sb.append("\n    Preço: R$ ").append(String.format("%.2f", preco));
-	    
-	    return sb.toString();
-	}
-	/*
-	public String toStringTxt() {
-	    return quantidade + ";" + preco;
+	    return "Quantidade: " + quantidade + 
+	           ", Preço: R$ " + String.format("%.2f", preco);
 	}
 
-	public static Estoque fromString(String linha) {
-	    String[] partes = linha.split(";");
-	    int quantidade = Integer.parseInt(partes[0]);
-	    double preco = Double.parseDouble(partes[1]);
-	    return new Estoque(quantidade, preco);
-	}
-	*/
 }

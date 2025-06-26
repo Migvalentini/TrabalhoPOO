@@ -1,19 +1,19 @@
 [ {
-  "codigo" : 0,
-  "nome" : "nomeproduto",
-  "descricao" : "desc",
+  "codigo" : 1,
+  "nome" : "banana",
+  "descricao" : "caturra",
   "estoque" : {
-    "quantidade" : 4,
-    "preco" : 3.0
+    "quantidade" : 5,
+    "preco" : 2.0
   },
   "itensPedido" : [ ]
 }, {
-  "codigo" : 0,
-  "nome" : "2",
-  "descricao" : "2",
+  "codigo" : 2,
+  "nome" : "maça",
+  "descricao" : "desc",
   "estoque" : {
-    "quantidade" : 2,
-    "preco" : 2.0
+    "quantidade" : 40,
+    "preco" : 5.0
   },
   "itensPedido" : [ ]
 } ]

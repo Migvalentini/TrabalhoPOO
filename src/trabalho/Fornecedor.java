@@ -61,25 +61,12 @@ public class Fornecedor extends Pessoa implements Comparable<Fornecedor> {
         produtos.remove(produto);
     }
 	
-	@Override
+    @Override
     public String toString() {
-        StringBuilder produtosStr = new StringBuilder();
-
-        if (produtos != null) {
-            for (Produto p : produtos) {
-                if (p != null) {
-                    produtosStr.append("\n    - ").append(p.toString());
-                }
-            }
-        } else {
-            produtosStr.append("\n    Nenhum produto cadastrado.");
-        }
-
-        return "\nFornecedor:" +
-                "\n  Código: " + codigo +
-                "\n " + super.toString() +
-                "\n  Descrição: " + descricao +
-                "\n  Produtos:" + produtosStr;
+        return "Fornecedor #" + codigo + 
+               " | " + super.toString() + 
+               ", Descrição: " + descricao + 
+               "\n - Produtos: " + (produtos == null ? " Não há produtos cadastrados" : produtos);
     }
 
 	@Override

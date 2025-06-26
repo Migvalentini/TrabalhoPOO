@@ -1,5 +1,6 @@
 package trabalho;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -29,7 +30,7 @@ public class Menu {
 			m.loja.carregarPedidos("pedidos.json");
 			m.loja.corrigirCodigoPedidos();
 			m.loja.carregarUsuariosAdmin("usuariosAdmin.json");
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("\nErro: " + e.getMessage());
 		}
 		
@@ -158,6 +159,8 @@ public class Menu {
 				int codigo = sc.nextInt();
 				sc.nextLine();
 				
+				loja.existeFornecedor(codigo);
+				
 				Fornecedor fornecedor = new Fornecedor();
 				
 				System.out.println("Digite o novo nome do fornecedor (ou deixe em branco para manter): ");
@@ -280,6 +283,8 @@ public class Menu {
 				
 				System.out.println("Digite o código/nome do produto a ser pesquisado: ");
 				String termoBusca = sc.nextLine().trim().toLowerCase();
+				
+				loja.existeProduto(termoBusca);
 				
 				Produto produto = new Produto();
 				

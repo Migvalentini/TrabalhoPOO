@@ -1,51 +1,51 @@
 [ {
   "@id" : 1,
-  "nome" : "Fornecedor",
+  "nome" : "Pedro",
   "telefone" : "telefone",
-  "email" : "email",
+  "email" : "pedro@gmail.com",
   "endereco" : {
-    "rua" : "rua",
-    "numero" : "nuemro",
-    "complemento" : "complemento",
-    "bairro" : "bairro",
-    "cep" : "cep",
-    "cidade" : "cidade",
-    "estado" : "estado"
+    "rua" : "Paulista",
+    "numero" : "123",
+    "complemento" : "casa",
+    "bairro" : "Centro",
+    "cep" : "123123123",
+    "cidade" : "São Paulo",
+    "estado" : "SP"
   },
   "codigo" : 1,
-  "descricao" : "desc",
+  "descricao" : "trabalhador",
   "produtos" : [ {
-    "codigo" : 0,
-    "nome" : "nomeproduto",
+    "codigo" : 2,
+    "nome" : "maça",
     "descricao" : "desc",
     "estoque" : {
-      "quantidade" : 5,
-      "preco" : 3.0
+      "quantidade" : 40,
+      "preco" : 5.0
     },
     "itensPedido" : [ ]
   } ]
 }, {
   "@id" : 2,
-  "nome" : "2",
-  "telefone" : "2",
-  "email" : "2",
+  "nome" : "Claudio",
+  "telefone" : "tel",
+  "email" : "email",
   "endereco" : {
-    "rua" : "2",
-    "numero" : "2",
-    "complemento" : "2",
-    "bairro" : "2",
-    "cep" : "2",
-    "cidade" : "2",
-    "estado" : "2"
+    "rua" : "rua",
+    "numero" : "numero",
+    "complemento" : "compl",
+    "bairro" : "bairro",
+    "cep" : "cep",
+    "cidade" : "cidae",
+    "estado" : "estado"
   },
   "codigo" : 2,
-  "descricao" : "2",
+  "descricao" : "desc",
   "produtos" : [ {
-    "codigo" : 0,
-    "nome" : "2",
-    "descricao" : "2",
+    "codigo" : 1,
+    "nome" : "banana",
+    "descricao" : "caturra",
     "estoque" : {
-      "quantidade" : 2,
+      "quantidade" : 5,
       "preco" : 2.0
     },
     "itensPedido" : [ ]

@@ -72,8 +72,12 @@ public class Produto implements Comparable<Produto> {
 
 	@Override
 	public String toString() {
-		return "Produto " + (estoque.getQuantidade() == 0 ? "[Indisponível]" : "") + " [codigo=" + codigo + ", nome=" + nome + ", descricao=" + descricao + ", estoque=" + estoque + "]";
+	    return "\nProduto #" + codigo + 
+	           " | Nome: " + nome + 
+	           ", Descrição: " + descricao + 
+	           ", Estoque: [" + (estoque != null ? estoque : "sem estoque") + "]";
 	}
+
 
 	@Override
 	public int hashCode() {

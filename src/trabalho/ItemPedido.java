@@ -42,7 +42,10 @@ public class ItemPedido {
 
 	@Override
 	public String toString() {
-		return "ItemPedido [codigo=" + codigo + ", produto=" + produto + ", quantidade=" + quantidade + ", preco="
-				+ preco + "]";
+	    return "ItemPedido #" + codigo + 
+	           " | Produto: " + (produto != null ? produto.getNome() : "sem produto") +
+	           ", Quantidade: " + quantidade + 
+	           ", Preço unitário: R$ " + String.format("%.2f", preco);
 	}
+
 }

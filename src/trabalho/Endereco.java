@@ -81,25 +81,18 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-	    return "  Endereço {" +
-	           "Rua: " + rua +
-	           " Número: " + numero +
-	           " Complemento: " + complemento +
-	           " Bairro: " + bairro +
-	           " CEP: " + cep +
-	           " Cidade: " + cidade +
-	           " Estado: " + estado +
-	           "}";
-	}
-	
-	/*
-	public String toStringTxt() {
-        return rua + "," + numero + "," + complemento + "," + bairro + "," + cep + "," + cidade + "," + estado;
-    }
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(rua).append(", ").append(numero);
 
-	public static Endereco fromString(String texto) {
-        String[] partes = texto.split(",");
-        return new Endereco(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5], partes[6]);
-    }
-    */
+	    if (complemento != null && !complemento.trim().isEmpty()) {
+	        sb.append(" (").append(complemento).append(")");
+	    }
+
+	    sb.append(" - ").append(bairro)
+	      .append(", ").append(cidade)
+	      .append(" - ").append(estado)
+	      .append(" | CEP: ").append(cep);
+
+	    return sb.toString();
+	}
 }

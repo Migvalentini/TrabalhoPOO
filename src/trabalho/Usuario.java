@@ -32,10 +32,11 @@ public class Usuario {
     	return tipo; 
     }
 
-	@Override
-	public String toString() {
-		return "Usuário: " + usuario + " Senha: " + senha + " Tipo: " + tipo;
-	}
+    @Override
+    public String toString() {
+        return "Usuário: " + usuario + 
+               ", Tipo: " + tipo;
+    }
 
 	public Cliente getCliente() {
 		return cliente;

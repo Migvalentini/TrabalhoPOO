@@ -61,7 +61,10 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return " Nome=" + nome + ",\n  Telefone=" + telefone + ",\n  Email=" + email + ",\n  Endereco=" + endereco;
+        return "Nome: " + nome + 
+               ", Telefone: " + telefone + 
+               ", Email: " + email + 
+               ", Endereço: [" + endereco + "]";
     }
 
     @Override

@@ -1,7 +1,5 @@
 package trabalho;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -128,11 +126,14 @@ public class Pedido {
 
 	@Override
 	public String toString() {
-		BigDecimal bd = new BigDecimal(totalPedido);
-		bd = bd.setScale(2, RoundingMode.HALF_UP);
-		return "Pedido [codigo=" + codigo + ", idCliente=" + idCliente + ", dataPedido=" + dataPedido + ", dataEntrega="
-				+ dataEntrega + ", situacao=" + situacao + ", itensPedido=" + itensPedido + ", totalPedido="
-				+ bd + "]";
-	} 
-
+	    return "Pedido #" + codigo + 
+	           " | Cliente ID: " + idCliente + 
+	           ", Data do Pedido: " + dataPedido + 
+	           ", Entrega: " + (dataEntrega != null ? dataEntrega : "não entregue") +
+	           ", Envio: " + (dataEnvio != null ? dataEnvio : "não enviado") +
+	           ", Cancelamento: " + (dataCancelamento != null ? dataCancelamento : "não cancelado") +
+	           ", Situação: " + situacao +
+	           ", Total: R$ " + String.format("%.2f", totalPedido) + 
+	           ", Itens:\n" + itensPedido;
+	}
 }

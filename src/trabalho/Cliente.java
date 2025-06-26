@@ -60,8 +60,12 @@ public class Cliente extends Pessoa {
 
 	@Override
 	public String toString() {
-		return "Cliente [codigo=" + codigo + ", cartaoCredito=" + cartaoCredito + ", pedidos=" + pedidos + ", usuario="
-				+ usuario + "]";
+	    return "Cliente #" + codigo + 
+	           " | " + super.toString() + 
+	           ", Cartão de Crédito: " + cartaoCredito + 
+	           ", Usuário: " + (usuario != null ? usuario.getUsuario() : "não definido") +
+	           (pedidos.isEmpty() ? "\nNenhum pedido cadastrado." : 
+	               "\nPedidos:\n" + pedidos);
 	}
 	
 	@Override
