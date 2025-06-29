@@ -1,7 +1,6 @@
 package trabalho;
 
 public class ItemPedido {
-	private int codigo;
 	private Produto produto;
 	private int quantidade;
 	private double preco;
@@ -15,7 +14,7 @@ public class ItemPedido {
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
-	
+
 	public Produto getProduto() {
 		return produto;
 	}
@@ -42,10 +41,10 @@ public class ItemPedido {
 
 	@Override
 	public String toString() {
-	    return "ItemPedido #" + codigo + 
+	    return "ItemPedido" + 
 	           " | Produto: " + (produto != null ? produto.getNome() : "sem produto") +
 	           ", Quantidade: " + quantidade + 
-	           ", Preço unitário: R$ " + String.format("%.2f", preco);
+	           ", Preço unitário: R$ " + String.format("%.2f", preco) + "\n";
 	}
 
 }

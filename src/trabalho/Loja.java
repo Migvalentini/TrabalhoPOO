@@ -237,24 +237,29 @@ public class Loja {
     
     public void excluirProduto(int codigo) throws RegistroNaoEncontradoException, Exception {
     	try {
+            for (Pedido pedido : pedidos) {
+            	if (pedido != null) {
+            		for(ItemPedido p : pedido.getItensPedido()) {
+            			if(p != null && p.getProduto().getCodigo() == codigo) {
+            				throw new Exception("Produto Já Foi Utilizado em Algum Pedido. Exclusão Cancelada!");
+            			}
+            		}
+            	}
+            }
             Produto produtoRemovido = null;
 
             for (Produto produto : produtos) {
-            	if (produtos != null && produto.getCodigo() == codigo) {
-                    produtoRemovido = produto;
-                    produtos.remove(produto);
-                    break;
-                }
+            	if(produto != null) {            		
+            		if (produtos != null && produto.getCodigo() == codigo) {
+            			produtoRemovido = produto;
+            			produtos.remove(produto);
+            			break;
+            		}
+            	}
 			}
 
             if (produtoRemovido == null) {
                 throw new RegistroNaoEncontradoException("Produto");
-            }
-
-            for (Fornecedor fornecedor : fornecedores) {
-                if (fornecedor != null) {
-                    fornecedor.removerProduto(produtoRemovido);
-                }
             }
 
         } catch (Exception e) {
@@ -360,32 +365,36 @@ public class Loja {
    
     //PEDIDO
     
-    public ArrayList<Pedido> consultarPedidos(Integer idCliente, Integer codigo, String dataInicialFormatada, String dataFinalFormatada) {
+    public ArrayList<Pedido> consultarPedidos(Integer idCliente, Integer codigo) {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	
     	for (Pedido pedido : pedidos) {
             if (pedido != null && pedido.getCodigo() == codigo && pedido.getIdCliente() == idCliente) {
                 listaPedidos.add(pedido);
             }
         }
+        
+		return listaPedidos;
+    }
+    
+    public ArrayList<Pedido> consultarPedidos(Integer idCliente, String dataInicialFormatada, String dataFinalFormatada) throws Exception {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        if (listaPedidos.isEmpty()) {
-            try {
-                Date dataInicial = sdf.parse(dataInicialFormatada);
-                Date dataFinal = sdf.parse(dataFinalFormatada);
+        try {
+            Date dataInicial = sdf.parse(dataInicialFormatada);
+            Date dataFinal = sdf.parse(dataFinalFormatada);
 
-                for (Pedido pedido : pedidos) {
-                    if (pedido != null) {
-                        Date dataPedido = pedido.getDataPedido();
-                        if (dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0 && pedido.getIdCliente() == idCliente) {
-                            listaPedidos.add(pedido);
-                        }
+            for (Pedido pedido : pedidos) {
+                if (pedido != null) {
+                    Date dataPedido = pedido.getDataPedido();
+                    if (dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0 && pedido.getIdCliente() == idCliente) {
+                        listaPedidos.add(pedido);
                     }
                 }
-            } catch (Exception e) {
-            	
             }
+        } catch (Exception e) {
+        	throw new Exception(e);
         }
         
 		return listaPedidos;
@@ -444,6 +453,18 @@ public class Loja {
 		
 		for (Pedido pedido : pedidos) {
         	if (pedido != null && pedido.getSituacao() != tipo) {
+            	listaPedidos.add(pedido);
+            }
+        }
+		
+		return listaPedidos;
+    }
+    
+    public ArrayList<Pedido> consultarPedidosNovos() {
+    	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		for (Pedido pedido : pedidos) {
+        	if (pedido != null && pedido.getSituacao() == TipoPedido.NOVO) {
             	listaPedidos.add(pedido);
             }
         }
@@ -525,21 +546,7 @@ public class Loja {
 			throw new Exception(e.getMessage());
 		}
     }
-    
-    public void alterarPedido(int codigoPedido, TipoPedido tipo) throws RegistroNaoEncontradoException, Exception {
-    	try {
-    		for (Pedido pedido : pedidos) {
-    			if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
-    				pedido.setSituacao(tipo);
-    				return;
-    			}
-    		}
-    		throw new RegistroNaoEncontradoException("Pedido");
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-    }
-    
+  
     public void retomarEstoque(int codigoPedido) throws RegistroNaoEncontradoException, Exception {
     	try {			
     		for (Pedido pedido : pedidos) {
@@ -559,11 +566,45 @@ public class Loja {
 		}
     }
     
-    public void alterarPedido(int idCliente, int codigoPedido, TipoPedido tipo) throws RegistroNaoEncontradoException, Exception {
+    public void enviarPedido(int codigoPedido) throws RegistroNaoEncontradoException, Exception {
     	try {			
     		for (Pedido pedido : pedidos) {
-    			if (pedido.getIdCliente() == idCliente && pedido.getCodigo() == codigoPedido && pedido.getSituacao() != tipo) {
-    				pedido.setSituacao(tipo);
+    			if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() == TipoPedido.NOVO) {
+    				pedido.setSituacao(TipoPedido.ENVIADO);
+    				pedido.setDataEnvio(new Date());
+    				return;
+    			}
+    		}
+    		throw new RegistroNaoEncontradoException("Pedido");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+    }
+    
+    public void cancelarPedido(int codigoPedido) throws RegistroNaoEncontradoException, Exception {
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido.getCodigo() == codigoPedido && pedido.getSituacao() != TipoPedido.CANCELADO) {
+    				pedido.setSituacao(TipoPedido.CANCELADO);
+    				pedido.setDataCancelamento(new Date());
+    				return;
+    			}
+    		}
+    		throw new RegistroNaoEncontradoException("Pedido");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+    }
+    
+    public void receberPedido(int idCliente, int codigoPedido) throws RegistroNaoEncontradoException, Exception {
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido.getIdCliente() == idCliente && pedido.getCodigo() == codigoPedido) {
+    				if(pedido.getDataEnvio() == null) {
+    					throw new Exception("O pedido ainda não foi enviado pelo administrador");
+    				}
+    				pedido.setSituacao(TipoPedido.ENTREGUE);
+    				pedido.setDataEntrega(new Date());
     				return;
     			}
     		}

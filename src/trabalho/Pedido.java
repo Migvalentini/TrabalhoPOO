@@ -1,5 +1,6 @@
 package trabalho;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -126,12 +127,13 @@ public class Pedido {
 
 	@Override
 	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    return "Pedido #" + codigo + 
 	           " | Cliente ID: " + idCliente + 
-	           ", Data do Pedido: " + dataPedido + 
-	           ", Entrega: " + (dataEntrega != null ? dataEntrega : "não entregue") +
-	           ", Envio: " + (dataEnvio != null ? dataEnvio : "não enviado") +
-	           ", Cancelamento: " + (dataCancelamento != null ? dataCancelamento : "não cancelado") +
+	           ", Data do Pedido: " + sdf.format(dataPedido) + 
+	           ", Envio: " + (dataEnvio != null ? sdf.format(dataEnvio) : "Não Enviado") +
+	           ", Entrega: " + (dataEntrega != null ? sdf.format(dataEntrega) : "Não Entregue") +
+	           ", Cancelamento: " + (dataCancelamento != null ? sdf.format(dataCancelamento) : "Não Cancelado") +
 	           ", Situação: " + situacao +
 	           ", Total: R$ " + String.format("%.2f", totalPedido) + 
 	           ", Itens:\n" + itensPedido;

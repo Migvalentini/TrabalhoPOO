@@ -64,7 +64,7 @@ public class Cliente extends Pessoa {
 	           " | " + super.toString() + 
 	           ", Cartão de Crédito: " + cartaoCredito + 
 	           ", Usuário: " + (usuario != null ? usuario.getUsuario() : "não definido") +
-	           (pedidos.isEmpty() ? "\nNenhum pedido cadastrado." : 
+	           (pedidos==null || pedidos.isEmpty() ? "\nNenhum pedido cadastrado." : 
 	               "\nPedidos:\n" + pedidos);
 	}
 	

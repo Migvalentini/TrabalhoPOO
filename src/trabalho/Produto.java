@@ -72,12 +72,11 @@ public class Produto implements Comparable<Produto> {
 
 	@Override
 	public String toString() {
-	    return "\nProduto #" + codigo + 
+	    return "\nProduto #" + codigo + (estoque.getQuantidade() == 0 ? " [Indisponível]" : "") +
 	           " | Nome: " + nome + 
 	           ", Descrição: " + descricao + 
 	           ", Estoque: [" + (estoque != null ? estoque : "sem estoque") + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -98,9 +97,7 @@ public class Produto implements Comparable<Produto> {
 
 	@Override
 	public int compareTo(Produto o) {
-		Produto a= o;
-
-		return this.nome.compareTo(a.nome);
+		return this.nome.compareTo(o.nome);
 	}
 
 	
