@@ -270,11 +270,11 @@ public class Menu {
 					break;
 				}
 				Estoque e = this.criarEstoque(sc);
-				p.setEstoque(e);
 				if (e == null) {
 					System.out.println("\nErro ao Cadastrar Estoque!");
 					break;
 				}
+				p.setEstoque(e);
 				
 				mostrarObjetos(loja.fornecedores);
 				
@@ -508,6 +508,7 @@ public class Menu {
 				sc.nextLine();
 
 				loja.enviarPedido(codigoPedido);
+				System.out.println("\nPedido Enviado com Sucesso!");
 				break;
 			} catch(Exception e) {
 				System.out.println("\nErro: " + e.getMessage());
@@ -524,6 +525,7 @@ public class Menu {
 
 				loja.cancelarPedido(codigoPedido);
 				loja.retomarEstoque(codigoPedido);
+				System.out.println("\nPedido Cancelado com Sucesso!");
 				break;
 			} catch(Exception e) {
 				System.out.println("\nErro: " + e.getMessage());
@@ -654,7 +656,7 @@ public class Menu {
 	}
     
     public void menuClientePedidos(Usuario usuario, Scanner sc) {
-    	System.out.println("\n" + linha() + "\n     Menu de Produtos\n" + linha());
+    	System.out.println("\n" + linha() + "\n     Menu de Pedidos\n" + linha());
 		System.out.println("1 - Criar pedido");
 		System.out.println("2 - Consultar pedidos por código");
 		System.out.println("3 - Consultar pedidos por data");

@@ -365,15 +365,19 @@ public class Loja {
    
     //PEDIDO
     
-    public ArrayList<Pedido> consultarPedidos(Integer idCliente, Integer codigo) {
+    public ArrayList<Pedido> consultarPedidos(Integer idCliente, Integer codigo) throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
     	
-    	for (Pedido pedido : pedidos) {
-            if (pedido != null && pedido.getCodigo() == codigo && pedido.getIdCliente() == idCliente) {
-                listaPedidos.add(pedido);
-            }
-        }
-        
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido != null && pedido.getCodigo() == codigo && pedido.getIdCliente() == idCliente) {
+    				listaPedidos.add(pedido);
+    			}
+    		}
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+    	
 		return listaPedidos;
     }
     
@@ -400,7 +404,7 @@ public class Loja {
 		return listaPedidos;
     }
     
-    public ArrayList<Pedido> consultarPedidos(String dataInicialFormatada, String dataFinalFormatada) {
+    public ArrayList<Pedido> consultarPedidos(String dataInicialFormatada, String dataFinalFormatada) throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -417,57 +421,72 @@ public class Loja {
                 }
             }
         } catch (Exception e) {
-
+        	throw new Exception(e);
         }
         
 		return listaPedidos;
     }
     
-    public ArrayList<Pedido> consultarPedidos(int idCliente) {
+    public ArrayList<Pedido> consultarPedidos(int idCliente) throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
 		
-		for (Pedido pedido : pedidos) {
-        	if (pedido != null && pedido.getIdCliente() == idCliente) {
-            	listaPedidos.add(pedido);
-            }
-        }
-        
+		try {			
+			for (Pedido pedido : pedidos) {
+				if (pedido != null && pedido.getIdCliente() == idCliente) {
+					listaPedidos.add(pedido);
+				}
+			}
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 		
 		return listaPedidos;
     }
     
-    public ArrayList<Pedido> consultarPedidos(int idCliente, TipoPedido tipo) {
+    public ArrayList<Pedido> consultarPedidos(int idCliente, TipoPedido tipo) throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
 		
-		for (Pedido pedido : pedidos) {
-        	if (pedido != null && pedido.getIdCliente() == idCliente && pedido.getSituacao() == tipo) {
-            	listaPedidos.add(pedido);
-            }
-        }
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido != null && pedido.getIdCliente() == idCliente && pedido.getSituacao() == tipo) {
+    				listaPedidos.add(pedido);
+    			}
+    		}
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 		
 		return listaPedidos;
     }
     
-    public ArrayList<Pedido> consultarPedidos(TipoPedido tipo) {
+    public ArrayList<Pedido> consultarPedidos(TipoPedido tipo) throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
 		
-		for (Pedido pedido : pedidos) {
-        	if (pedido != null && pedido.getSituacao() != tipo) {
-            	listaPedidos.add(pedido);
-            }
-        }
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido != null && pedido.getSituacao() != tipo) {
+    				listaPedidos.add(pedido);
+    			}
+    		}
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 		
 		return listaPedidos;
     }
     
-    public ArrayList<Pedido> consultarPedidosNovos() {
+    public ArrayList<Pedido> consultarPedidosNovos() throws Exception {
     	ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
 		
-		for (Pedido pedido : pedidos) {
-        	if (pedido != null && pedido.getSituacao() == TipoPedido.NOVO) {
-            	listaPedidos.add(pedido);
-            }
-        }
+    	try {			
+    		for (Pedido pedido : pedidos) {
+    			if (pedido != null && pedido.getSituacao() == TipoPedido.NOVO) {
+    				listaPedidos.add(pedido);
+    			}
+    		}
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 		
 		return listaPedidos;
     }
