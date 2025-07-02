@@ -271,6 +271,18 @@ public class Menu {
 				}
 				Estoque e = this.criarEstoque(sc);
 				p.setEstoque(e);
+				if (e == null) {
+					System.out.println("\nErro ao Cadastrar Estoque!");
+					break;
+				}
+				
+				mostrarObjetos(loja.fornecedores);
+				
+				System.out.print("Digite o código do fornecedor: ");
+		        int codigoFornecedor = sc.nextInt();
+		        sc.nextLine();
+				
+		        loja.vincularProdutoAFornecedor(p, codigoFornecedor);
 				
 				this.loja.cadastrarProduto(p);
 				System.out.println("\nProduto Cadastrado com Sucesso!");
@@ -819,14 +831,6 @@ public class Menu {
 			String descricao = sc.nextLine();
 			
 			Produto p = new Produto(nome, descricao, estoque);
-			
-			mostrarObjetos(loja.fornecedores);
-			
-			System.out.print("Digite o código do fornecedor: ");
-	        int codigoFornecedor = sc.nextInt();
-	        sc.nextLine();
-			
-	        loja.vincularProdutoAFornecedor(p, codigoFornecedor);
 			
             return p;
 		} catch(Exception ex) {
