@@ -409,13 +409,13 @@ public class Loja {
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
-            Date dataInicial = sdf.parse(dataInicialFormatada);
-            Date dataFinal = sdf.parse(dataFinalFormatada);
+        	Date dataInicial = sdf.parse(dataInicialFormatada);
+        	Date dataFinal = sdf.parse(dataFinalFormatada);
 
             for (Pedido pedido : pedidos) {
                 if (pedido != null) {
                     Date dataPedido = pedido.getDataPedido();
-                    if (dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0) {
+                    if ((dataPedido.compareTo(dataInicial) >= 0 && dataPedido.compareTo(dataFinal) <= 0)) {
                         listaPedidos.add(pedido);
                     }
                 }
@@ -573,8 +573,14 @@ public class Loja {
     				ArrayList<ItemPedido> itensPedidos = pedido.getItensPedido();
     				for (ItemPedido itemPedido : itensPedidos) {
     					int quantidade = itemPedido.getQuantidade();
-                        Estoque estoque = itemPedido.getProduto().getEstoque();
-                        estoque.setQuantidade(estoque.getQuantidade() + quantidade);
+    					int quantidadeAtual = itemPedido.getProduto().getEstoque().getQuantidade();
+    					int codigoProduto = itemPedido.getProduto().getCodigo();
+    					
+    					for (Produto p : produtos) {
+							if(p.getCodigo() == codigoProduto) {
+								p.getEstoque().setQuantidade(quantidade + quantidadeAtual);
+							}
+						}
     				}
     				return;
     			}

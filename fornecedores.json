@@ -1,1 +1,62 @@
-[ ]
+[ {
+  "@id" : 1,
+  "nome" : "João",
+  "telefone" : "54 987654321",
+  "email" : "joao@gmail.com",
+  "endereco" : {
+    "rua" : "rua",
+    "numero" : "123",
+    "complemento" : "casa",
+    "bairro" : "bairro",
+    "cep" : "cep",
+    "cidade" : "cidadae",
+    "estado" : "estado"
+  },
+  "codigo" : 1,
+  "descricao" : "Fornecedor",
+  "produtos" : [ {
+    "codigo" : 1,
+    "nome" : "Maça",
+    "descricao" : "Gala",
+    "estoque" : {
+      "quantidade" : 20,
+      "preco" : 3.0
+    },
+    "itensPedido" : [ ]
+  } ]
+}, {
+  "@id" : 2,
+  "nome" : "Pedro",
+  "telefone" : "54 123456789",
+  "email" : "pedro@gmail.com",
+  "endereco" : {
+    "rua" : "rua",
+    "numero" : "123",
+    "complemento" : "casa",
+    "bairro" : "bairro",
+    "cep" : "cep",
+    "cidade" : "cidade",
+    "estado" : "estado"
+  },
+  "codigo" : 2,
+  "descricao" : "Tabalhador",
+  "produtos" : [ {
+    "codigo" : 2,
+    "nome" : "Banana",
+    "descricao" : "Prata",
+    "estoque" : {
+      "quantidade" : 10,
+      "preco" : 2.0
+    },
+    "itensPedido" : [ ]
+  }, {
+    "codigo" : 3,
+    "nome" : "Abacaxi",
+    "descricao" : "Da Terra",
+    "estoque" : {
+      "quantidade" : 50,
+      "preco" : 5.0
+    },
+    "itensPedido" : [ ]
+  } ]
+} ]

@@ -1,1 +1,28 @@
-[ ]
+[ {
+  "codigo" : 3,
+  "nome" : "Abacaxi",
+  "descricao" : "Da Terra",
+  "estoque" : {
+    "quantidade" : 5,
+    "preco" : 5.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 2,
+  "nome" : "Banana",
+  "descricao" : "Prata",
+  "estoque" : {
+    "quantidade" : 10,
+    "preco" : 2.0
+  },
+  "itensPedido" : [ ]
+}, {
+  "codigo" : 1,
+  "nome" : "Maça",
+  "descricao" : "Gala",
+  "estoque" : {
+    "quantidade" : 17,
+    "preco" : 3.0
+  },
+  "itensPedido" : [ ]
+} ]

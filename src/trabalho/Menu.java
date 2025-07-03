@@ -487,9 +487,9 @@ public class Menu {
 			break;
 		case "3":
 			try {				
-				System.out.print("Digite a data inicial (yyyy-MM-dd): ");
+				System.out.print("Digite a data inicial (dd/mm/aaaa): ");
 				String dataInicial = sc.nextLine();
-				System.out.print("Digite a data final (yyyy-MM-dd): ");
+				System.out.print("Digite a data final (dd/mm/aaaa): ");
 				String dataFinal = sc.nextLine();
 				
 				ArrayList<Pedido> listaPedidos = loja.consultarPedidos(dataInicial, dataFinal);
